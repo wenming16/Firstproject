@@ -17,9 +17,6 @@
 #include  "MC9S12XEP100.h"
 #include  "derivative.h"  
 
-//uint8 p=0,s,d=0,ss,dd=0;
-//uint8 jilu[6];
-
 /*=======================================================================
  *函数名:      SCI_init
  *功能:        初始化SCI
