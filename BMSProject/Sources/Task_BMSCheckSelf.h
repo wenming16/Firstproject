@@ -17,6 +17,7 @@
   #include  "WorkModeJudge.h"
   #include  "BattInfoConfig.h"
   #include  "Sys_Init.h"
+  #include  "PIT.h"
 
   typedef struct
   {
@@ -25,4 +26,6 @@
   }BMSCheckSelf_T;
   extern  BMSCheckSelf_T  BMSCheckSelf;
 
+ void BMS_WorkModeCheckself(void);
+ 
 #endif

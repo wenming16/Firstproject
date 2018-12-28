@@ -12,7 +12,7 @@
       Modification:
 ========================================================================*/
  
- #include  "Task_BmsAndChargePile.h"
+ #include  "Task_ChargeCfg.h"
  #include  "Task_CurrentLimit.h"
  #include  "BattInfoParaStructure.h"
  #include  "Task_SOC.h"
@@ -61,11 +61,11 @@ uint8 CAN_ToChargePile(pCANFRAME canptr)
  *返回：       无
  *说明：       BMS发送信息给充电机
 ========================================================================*/ 
-void Task_BmsToChargePile(void) 
+void CAN_BMSToCharge(void) 
 {
   pCANFRAME BMS_to_ChargePile;
   
-  BmsToChargePileInfo();
+  Charge_VoltCurrRequest();
   
   BMS_to_ChargePile->m_IDE = 0;    //标准帧
 	BMS_to_ChargePile->m_RTR = 0;

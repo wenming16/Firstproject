@@ -47,9 +47,9 @@ void Light_Control(uint16 port,uint8 name,uint8 state);
 void Light_Change(uint16 port,uint8 name);
 uint8 Light_StateGet(uint16 port,uint8 pin);
 //****************************¼ÌµçÆ÷***************************************//
-uint8 Relay_Init(uint16 port,uint8 name,uint8 state);
-void Relay_Control(uint16 port,uint8 name,uint8 state);
-uint8 Relay_StateGet(uint16 port,uint8 pin);
+uint8 Port_Init(uint16 port,uint8 name,uint8 state);
+void  Port_Control(uint16 port,uint8 name,uint8 state);
+uint8 Port_StateGet(uint16 port,uint8 pin);
    
 //===========================================================================
 

@@ -75,7 +75,7 @@ void LTC6811_OpenwireDetect()
        if(Cell_vol_up[j][0] == 0)    
          Open_wire[j][0] = 1;                                   // C0开路
        if(Cell_vol_down[j][NUM1_Batper -1] == 0)                 
-         Open_wire[j][NUM1_Batper ] = 1;                           // C12开路
+         Open_wire[j][NUM1_Batper] = 1;                           // C12开路
        break;
      
       case 1:
@@ -88,7 +88,7 @@ void LTC6811_OpenwireDetect()
        if(Cell_vol_up[j][0] == 0)    
          Open_wire[j][0] = 1;                                   // C0开路
        if(Cell_vol_down[j][NUM2_Batper -1] == 0)                 
-         Open_wire[j][NUM2_Batper ] = 1;                           // C12开路
+         Open_wire[j][NUM2_Batper] = 1;                           // C12开路
        break;
        
       case 2:
@@ -101,7 +101,7 @@ void LTC6811_OpenwireDetect()
        if(Cell_vol_up[j][0] == 0)    
          Open_wire[j][0] = 1;                                   // C0开路
        if(Cell_vol_down[j][NUM3_Batper -1] == 0)                 
-         Open_wire[j][NUM3_Batper ] = 1;                           // C12开路
+         Open_wire[j][NUM3_Batper] = 1;                           // C12开路
        break;
        
       case 3:
@@ -114,7 +114,7 @@ void LTC6811_OpenwireDetect()
        if(Cell_vol_up[j][0] == 0)    
          Open_wire[j][0] = 1;                                   // C0开路
        if(Cell_vol_down[j][NUM4_Batper -1] == 0)                 
-         Open_wire[j][NUM4_Batper ] = 1;                           // C12开路
+         Open_wire[j][NUM4_Batper] = 1;                           // C12开路
        break;
         
      case 4:
@@ -127,7 +127,7 @@ void LTC6811_OpenwireDetect()
        if(Cell_vol_up[j][0] == 0)    
          Open_wire[j][0] = 1;                                   // C0开路
        if(Cell_vol_down[j][NUM5_Batper -1] == 0)                 
-         Open_wire[j][NUM5_Batper ] = 1;                           // C12开路
+         Open_wire[j][NUM5_Batper] = 1;                           // C12开路
        break;
         
        default:

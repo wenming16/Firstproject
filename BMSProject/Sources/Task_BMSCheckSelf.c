@@ -22,6 +22,7 @@ BMSCheckSelf_T  BMSCheckSelf;
  *返回：       无
  *说明：       任务时间到标志位给1，10ms执行一次
 ========================================================================*/
+static
 void Checkself_BattState(uint16 *time)
 {
   switch(*time)
@@ -73,6 +74,7 @@ uint32 CheckSelf_SysVoltLow_DischagTemp(uint8 Temp)
     return ((uint32)(2700)*(SYS_SERIES_YiDongLi));//可换成标定变量(分辨率：0.001V/位)
   }
 }
+static
 uint8  CheckSelf_SysVoltLow_DisCharge(uint32 totalvolt, uint8 temp)
 {
    static uint8 cnt=0;
@@ -110,7 +112,7 @@ uint32 CheckSelf_CellVoltLow_Temp(uint8 Temp)
     return ((uint32)(2500));//可换成标定变量(分辨率：0.001V/位)
   }
 }
-
+static
 uint8  CheckSelf_CellVoltLow_DisCharge(uint16 Voltmin, uint8 temp)
 {
    static uint8 cnt=0;
@@ -135,6 +137,7 @@ uint8  CheckSelf_CellVoltLow_DisCharge(uint16 Voltmin, uint8 temp)
 }
 
 /************************放电单体温度过高********************************/
+static
 uint8  CheckSelf_CellTempHigh_DisCharge(uint8 Temp)
 {
    static uint8 cnt=0;
@@ -159,6 +162,7 @@ uint8  CheckSelf_CellTempHigh_DisCharge(uint8 Temp)
 }
 
 /************************放电单体温度过低********************************/
+static
 uint8  CheckSelf_CellTempLow_DisCharge(uint8 Temp)
 {
    static uint8 cnt=0;
@@ -183,6 +187,7 @@ uint8  CheckSelf_CellTempLow_DisCharge(uint8 Temp)
 }
 
 /************************放电电流过过高********************************/
+static
 uint8  CheckSelf_CurrentOver_DisCharge(float curr)
 {
    static uint8 cnt=0;
@@ -207,6 +212,7 @@ uint8  CheckSelf_CurrentOver_DisCharge(float curr)
 }
 
 /************************放电绝缘故障********************************/
+static
 uint8  CheckSelf_InsulDetect_DisCharge(uint8 insul)
 {
    static uint8 cnt=0;
@@ -238,6 +244,7 @@ uint8  CheckSelf_InsulDetect_DisCharge(uint8 insul)
  *说明：       
 ========================================================================*/
 /************************充电系统总压过高********************************/
+static
 uint8  CheckSelf_SysVoltHigh_Charge(uint32 totalvolt)
 {
    static uint8 cnt=0;
@@ -262,6 +269,7 @@ uint8  CheckSelf_SysVoltHigh_Charge(uint32 totalvolt)
    return 2;
 }
 /************************充电单体电压过高********************************/
+static
 uint8  CheckSelf_CellVoltHigh_Charge(uint16 Voltmax)
 {
    static uint8 cnt=0;
@@ -285,6 +293,7 @@ uint8  CheckSelf_CellVoltHigh_Charge(uint16 Voltmax)
    return 2;
 }
 /********************************************************************/
+static
 uint8  CheckSelf_CellTempHigh_Charge(uint8 Temp)
 {
    static uint8 cnt=0;
@@ -307,6 +316,7 @@ uint8  CheckSelf_CellTempHigh_Charge(uint8 Temp)
    return 2;
 }
 /********************************************************************/
+static
 uint8  CheckSelf_CellTempLow_Charge(uint8 Temp)
 {
    static uint8 cnt=0;
@@ -332,6 +342,7 @@ uint8  CheckSelf_CellTempLow_Charge(uint8 Temp)
 }
 
 /********************************************************************/
+static
 uint8  CheckSelf_InsulDetect_Charge(uint8 insul)
 {
    static uint8 cnt=0;
@@ -361,6 +372,7 @@ uint8  CheckSelf_InsulDetect_Charge(uint8 insul)
  *返回：       uint8:是否存在绝缘故障,0:正常;1:故障
  *说明：       初始化作为自检使用
 ========================================================================*/
+static
 uint8  CheckSelf_OpenWireDetect(uint8 state)
 {
   if(state == 0)
@@ -377,6 +389,7 @@ uint8  CheckSelf_OpenWireDetect(uint8 state)
  *返回：       uint8:是否存在自检故障,0:正常;1:故障
  *说明：       初始化作为自检使用
 ========================================================================*/
+static
 uint8 CheckSelf_Discharge(void)
 {
    uint8 state,temp;
@@ -404,6 +417,7 @@ uint8 CheckSelf_Discharge(void)
  *返回：       uint8:是否存在自检故障,0:正常;1:故障
  *说明：       初始化作为自检使用
 ========================================================================*/
+static
 uint8 CheckSelf_Charge(void)
 {
    uint8 state,temp;
@@ -428,7 +442,8 @@ uint8 CheckSelf_Charge(void)
  *返回：       uint8:是否存在自检故障,0:正常;1:故障
  *说明：       初始化中,若自检成功则执行任务,否则一直自检
 ========================================================================*/
-uint8 BMS_CheckSelf(uint16 *time, uint8 workmode)
+static
+uint8 CheckSelf_Process(uint16 *time, uint8 workmode)
 {
    Checkself_BattState(time);//中断时间参数
    switch(workmode)
@@ -451,5 +466,36 @@ uint8 BMS_CheckSelf(uint16 *time, uint8 workmode)
      break;                                                                 
    }
    return 1; 
+}
+
+/*=======================================================================
+ *函数名:      BMS_CheckSelf() 
+ *功能:        自检函数
+ *参数:        time:激励时钟
+               mode:工作模式
+ *返回：       无
+ *说明：       BMS自检过程中，只要BMS工作状态改变那么保证自检只进行1次
+========================================================================*/
+static
+void BMS_CheckselfOnce(uint16 *time, uint8 mode)
+{
+   static uint8 workmode = 1;
+   if(workmode != mode)
+   {
+      while(CheckSelf_Process(time, g_WorkStateJudge.WorkState)!=0);
+      workmode = mode; 
+   }
+}
+/*=======================================================================
+ *函数名:      Task_BMSWorkModeCheckself() 
+ *功能:        自检及工作状态的判断
+ *参数:        无      
+ *返回：       无
+ *说明：       BMS自检过程中，只要BMS工作状态改变那么保证自检只进行1次
+========================================================================*/
+void BMS_WorkModeCheckself(void)
+{
+  BMS_CheckselfOnce(&(PIT_Time_10ms.Period_10ms), g_WorkStateJudge.WorkState);
+  g_WorkStateJudge.WorkState = WokeModeJudgment();
 }
 

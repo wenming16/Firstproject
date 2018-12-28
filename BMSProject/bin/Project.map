@@ -1,5 +1,5 @@
 
-PROGRAM "C:\Users\hxya-005\Desktop\福建易动力\C文件\Project\bin\Project.abs"
+PROGRAM "C:\Users\hxya-005\Desktop\易动力裸机代码\Firstproject\BMSProject\bin\Project.abs"
 
 *********************************************************************************************
 TARGET SECTION
@@ -15,34 +15,7 @@ FILE SECTION
 MC9S12XEP100.c.o                        Model: BANKED,        Lang: ANSI-C
 main.c.o                                Model: BANKED,        Lang: ANSI-C
 Start12.c.o                             Model: BANKED,        Lang: ANSI-C
-HEAP.C.o (ansixbf.lib)                  Model: BANKED,        Lang: ANSI-C
-ALLOC.C.o (ansixbf.lib)                 Model: BANKED,        Lang: ANSI-C
-DCMP.C.o (ansixbf.lib)                  Model: BANKED,        Lang: ANSI-C
-DCONV.C.o (ansixbf.lib)                 Model: BANKED,        Lang: ANSI-C
-DFCONV.C.o (ansixbf.lib)                Model: BANKED,        Lang: ANSI-C
-DMUL.C.o (ansixbf.lib)                  Model: BANKED,        Lang: ANSI-C
-DREGS.C.o (ansixbf.lib)                 Model: BANKED,        Lang: ANSI-C
-FADD.C.o (ansixbf.lib)                  Model: BANKED,        Lang: ANSI-C
-FCMP.C.o (ansixbf.lib)                  Model: BANKED,        Lang: ANSI-C
-FCONV.C.o (ansixbf.lib)                 Model: BANKED,        Lang: ANSI-C
-FMUL.C.o (ansixbf.lib)                  Model: BANKED,        Lang: ANSI-C
-FREGS.C.o (ansixbf.lib)                 Model: BANKED,        Lang: ANSI-C
-rtshc12.c.o (ansixbf.lib)               Model: BANKED,        Lang: ANSI-C
-VREGS.C.o (ansixbf.lib)                 Model: BANKED,        Lang: ANSI-C
-Task_FaultLevelJudge.c.o                Model: BANKED,        Lang: ANSI-C
-PIT.c.o                                 Model: BANKED,        Lang: ANSI-C
-ADC.c.o                                 Model: BANKED,        Lang: ANSI-C
-Task_BMSCheckSelf.c.o                   Model: BANKED,        Lang: ANSI-C
-SPI.c.o                                 Model: BANKED,        Lang: ANSI-C
-LTC6811_CMD.c.o                         Model: BANKED,        Lang: ANSI-C
-LTC6811_OpWire.c.o                      Model: BANKED,        Lang: ANSI-C
-LTC6811_TempCollect.c.o                 Model: BANKED,        Lang: ANSI-C
-LTC6811_VoltCollect.c.o                 Model: BANKED,        Lang: ANSI-C
-Task_VoltTempCollect.c.o                Model: BANKED,        Lang: ANSI-C
-Task_Insulation.c.o                     Model: BANKED,        Lang: ANSI-C
-WorkModeJudge.c.o                       Model: BANKED,        Lang: ANSI-C
 Task_Init.c.o                           Model: BANKED,        Lang: ANSI-C
-Task_DataProcess.c.o                    Model: BANKED,        Lang: ANSI-C
 
 *********************************************************************************************
 STARTUP SECTION
@@ -51,8 +24,8 @@ Entry point: 0xC000 (_Startup)
 _startupData is allocated at 0xC00F and uses 6 Bytes
 extern struct _tagStartup {
   unsigned nofZeroOut     1
-  _Range   pZeroOut       0x2100     2570
-  _Copy    *toCopyDownBeg 0xC97A
+  _Range   pZeroOut       0x2100     96
+  _Copy    *toCopyDownBeg 0xC051
 } _startupData;
 
 *********************************************************************************************
@@ -61,10 +34,8 @@ Section Name                    Size  Type     From       To       Segment
 ---------------------------------------------------------------------------------------------
 .init                             15     R     0xC000     0xC00E   ROM_C000
 .startData                        66     R     0xC00F     0xC050   ROM_C000
-.rodata                          512     R     0xC051     0xC250   ROM_C000
-NON_BANKED                      1833     R     0xC251     0xC979   ROM_C000
-.copy                              2     R     0xC97A     0xC97B   ROM_C000
-.text                           8130     R   0xFE8000   0xFE9FC1   PAGE_FE
+.copy                              2     R     0xC051     0xC052   ROM_C000
+.text                             85     R   0xFE8000   0xFE8054   PAGE_FE
 .stack                           256   R/W     0x2000     0x20FF   RAM
 .abs_section_8                     1   N/I        0x8        0x8   .absSeg0
 .abs_section_9                     1   N/I        0x9        0x9   .absSeg1
@@ -804,14 +775,12 @@ NON_BANKED                      1833     R     0xC251     0xC979   ROM_C000
 .abs_section_3ec                   2   N/I      0x3EC      0x3ED   .absSeg735
 .abs_section_3ee                   2   N/I      0x3EE      0x3EF   .absSeg736
 .abs_section_3f2                   2   N/I      0x3F2      0x3F3   .absSeg737
-.bss                              32   R/W     0x2100     0x211F   RAM
-HEAP_SEGMENT                    2000   R/W     0x2120     0x28EF   RAM
-.common                          538   R/W     0x28F0     0x2B09   RAM
+.common                           96   R/W     0x2100     0x215F   RAM
 .vectSeg738_vect                   2     R     0xFFFE     0xFFFF   .vectSeg738
 
 Summary of section sizes per section type:
-READ_ONLY (R):        2940 (dec:    10560)
-READ_WRITE (R/W):      B0A (dec:     2826)
+READ_ONLY (R):          AA (dec:      170)
+READ_WRITE (R/W):      160 (dec:      352)
 NO_INIT (N/I):         383 (dec:      899)
 
 *********************************************************************************************
@@ -940,7 +909,7 @@ MODULE:                 -- MC9S12XEP100.c.o --
      _SPI1CR1                                    F0       1       1       0   .abs_section_f0
      _SPI1CR2                                    F1       1       1       0   .abs_section_f1
      _SPI1BR                                     F2       1       1       0   .abs_section_f2
-     _SPI1SR                                     F3       1       1       3   .abs_section_f3
+     _SPI1SR                                     F3       1       1       0   .abs_section_f3
      _SPI2CR1                                    F8       1       1       0   .abs_section_f8
      _SPI2CR2                                    F9       1       1       0   .abs_section_f9
      _SPI2BR                                     FA       1       1       0   .abs_section_fa
@@ -1243,7 +1212,7 @@ MODULE:                 -- MC9S12XEP100.c.o --
      _PPSM                                      255       1       1       0   .abs_section_255
      _WOMM                                      256       1       1       0   .abs_section_256
      _MODRR                                     257       1       1       0   .abs_section_257
-     _PTP                                       258       1       1      16   .abs_section_258
+     _PTP                                       258       1       1       0   .abs_section_258
      _PTIP                                      259       1       1       0   .abs_section_259
      _DDRP                                      25A       1       1       0   .abs_section_25a
      _RDRP                                      25B       1       1       0   .abs_section_25b
@@ -1325,7 +1294,7 @@ MODULE:                 -- MC9S12XEP100.c.o --
      _CAN4TXDSR7                                2BB       1       1       0   .abs_section_2bb
      _CAN4TXDLR                                 2BC       1       1       0   .abs_section_2bc
      _CAN4TXTBPR                                2BD       1       1       0   .abs_section_2bd
-     _ATD0STAT0                                 2C6       1       1       1   .abs_section_2c6
+     _ATD0STAT0                                 2C6       1       1       0   .abs_section_2c6
      _VREGHTCL                                  2F0       1       1       0   .abs_section_2f0
      _VREGCTRL                                  2F1       1       1       0   .abs_section_2f1
      _VREGAPICL                                 2F2       1       1       0   .abs_section_2f2
@@ -1404,8 +1373,8 @@ MODULE:                 -- MC9S12XEP100.c.o --
      _TIM_PAFLG                                 3F1       1       1       0   .abs_section_3f1
      _TIM_OCPD                                  3FC       1       1       0   .abs_section_3fc
      _TIM_PTPSR                                 3FE       1       1       0   .abs_section_3fe
-     _PORTAB                                      0       2       2      10   .abs_section_0
-     _DDRAB                                       2       2       2       2   .abs_section_2
+     _PORTAB                                      0       2       2       0   .abs_section_0
+     _DDRAB                                       2       2       2       0   .abs_section_2
      _PORTCD                                      4       2       2       0   .abs_section_4
      _DDRCD                                       6       2       2       0   .abs_section_6
      _PARTID                                     1A       2       2       0   .abs_section_1a
@@ -1456,7 +1425,7 @@ MODULE:                 -- MC9S12XEP100.c.o --
      _SCI0BD                                     C8       2       2       0   .abs_section_c8
      _SCI1BD                                     D0       2       2       0   .abs_section_d0
      _SPI0DR                                     DC       2       2       0   .abs_section_dc
-     _SPI1DR                                     F4       2       2       2   .abs_section_f4
+     _SPI1DR                                     F4       2       2       0   .abs_section_f4
      _SPI2DR                                     FC       2       2       0   .abs_section_fc
      _FCCOB                                     10A       2       2       0   .abs_section_10a
      _ETAG                                      10C       2       2       0   .abs_section_10c
@@ -1483,12 +1452,12 @@ MODULE:                 -- MC9S12XEP100.c.o --
      _CAN4TXTSR                                 2BE       2       2       0   .abs_section_2be
      _ATD0CTL01                                 2C0       2       2       0   .abs_section_2c0
      _ATD0CTL23                                 2C2       2       2       0   .abs_section_2c2
-     _ATD0CTL45                                 2C4       2       2       1   .abs_section_2c4
+     _ATD0CTL45                                 2C4       2       2       0   .abs_section_2c4
      _ATD0CMPE                                  2C8       2       2       0   .abs_section_2c8
      _ATD0STAT2                                 2CA       2       2       0   .abs_section_2ca
      _ATD0DIEN                                  2CC       2       2       0   .abs_section_2cc
      _ATD0CMPHT                                 2CE       2       2       0   .abs_section_2ce
-     _ATD0DR0                                   2D0       2       2       1   .abs_section_2d0
+     _ATD0DR0                                   2D0       2       2       0   .abs_section_2d0
      _ATD0DR1                                   2D2       2       2       0   .abs_section_2d2
      _ATD0DR2                                   2D4       2       2       0   .abs_section_2d4
      _ATD0DR3                                   2D6       2       2       0   .abs_section_2d6
@@ -1567,325 +1536,39 @@ MODULE:                 -- MC9S12XEP100.c.o --
      _TIM_PACNT                                 3F2       2       2       0   .abs_section_3f2
 MODULE:                 -- main.c.o --
 - PROCEDURES:
-     main                                    FE8000      17      23       2   .text       
+     main                                    FE8000       6       6       2   .text       
 - VARIABLES:
 MODULE:                 -- Start12.c.o --
 - PROCEDURES:
-     Init                                    FE8017      29      41       2   .text       
+     Init                                    FE8006      29      41       2   .text       
      _Startup                                  C000       F      15       0   .init       
 - VARIABLES:
      _startupData                              C00F       6       6       3   .startData  
 - LABELS:
      __SEG_END_SSTACK                          2100       0       0       1               
-MODULE:                 -- HEAP.C.o (ansixbf.lib) --
-- PROCEDURES:
-     _heapcrash_                             FE8040       C      12       6   .text       
-- VARIABLES:
-     _heap_                                    2120     7D0    2000       2   HEAP_SEGMENT
-MODULE:                 -- ALLOC.C.o (ansixbf.lib) --
-- PROCEDURES:
-     malloc                                  FE804C      A6     166       4   .text       
-     free                                    FE80F2      C6     198       5   .text       
-- VARIABLES:
-     heap_end                                  2100       2       2       3   .bss        
-     free_ptr                                  2102       2       2       8   .bss        
-MODULE:                 -- DCMP.C.o (ansixbf.lib) --
-- PROCEDURES:
-     _DCMP                                     C251      30      48       4   NON_BANKED  
-- VARIABLES:
-MODULE:                 -- DCONV.C.o (ansixbf.lib) --
-- PROCEDURES:
-     D_TOLONGK                                 C281      31      49       1   NON_BANKED  
-     D_FRLONGK                                 C2B2      18      24       1   NON_BANKED  
-     _DUFLOAT                                  C2CA      14      20       2   NON_BANKED  
-     _DSTRUNC                                  C2DE      19      25       1   NON_BANKED  
-     _DUTRUNC                                  C2F7       3       3       2   NON_BANKED  
-     D_PSHK_UNARY                              C2FA      1E      30       2   NON_BANKED  
-     D_CLRK_UNARY                              C318       D      13       2   NON_BANKED  
-     D_MAXK_UNARY                              C325       A      10       1   NON_BANKED  
-     D_NORMK_UNARY                             C32F      53      83       2   NON_BANKED  
-- VARIABLES:
-MODULE:                 -- DFCONV.C.o (ansixbf.lib) --
-- PROCEDURES:
-     D_FRFK                                    C382      10      16       1   NON_BANKED  
-     _DLONG                                    C392      17      23      28   NON_BANKED  
-- VARIABLES:
-MODULE:                 -- DMUL.C.o (ansixbf.lib) --
-- PROCEDURES:
-     D_DIVKL                                   C3A9      DD     221       1   NON_BANKED  
-     D_MULKL                                   C486      89     137       1   NON_BANKED  
-     _DMUL                                     C50F      11      17       4   NON_BANKED  
-     _DDIV                                     C520      11      17       2   NON_BANKED  
-- VARIABLES:
-MODULE:                 -- DREGS.C.o (ansixbf.lib) --
-- PROCEDURES:
-     D_PULK                                    C531      29      41       2   NON_BANKED  
-     D_PULL                                    C55A      25      37       3   NON_BANKED  
-     D_PSHK                                    C57F      23      35       2   NON_BANKED  
-     D_CLRK                                    C5A2      13      19       3   NON_BANKED  
-     D_MAXK                                    C5B5       A      10       2   NON_BANKED  
-     D_NORMK                                   C5BF      77     119       2   NON_BANKED  
-- VARIABLES:
-MODULE:                 -- FADD.C.o (ansixbf.lib) --
-- PROCEDURES:
-     F_ADDKL                                   C636      5E      94       1   NON_BANKED  
-     _FADD                                     C694      15      21       4   NON_BANKED  
-     _FSUB                                     C6A9      13      19      23   NON_BANKED  
-- VARIABLES:
-MODULE:                 -- FCMP.C.o (ansixbf.lib) --
-- PROCEDURES:
-     _FCMP                                     C6BC      26      38       6   NON_BANKED  
-- VARIABLES:
-MODULE:                 -- FCONV.C.o (ansixbf.lib) --
-- PROCEDURES:
-     F_TOLONGK                                 C6E2      32      50       1   NON_BANKED  
-     F_FRLONGK                                 C714      1E      30       1   NON_BANKED  
-     _FUFLOAT                                  C732      12      18       3   NON_BANKED  
-     _FSTRUNC                                  C744      11      17       1   NON_BANKED  
-     _FUTRUNC                                  C755       3       3       2   NON_BANKED  
-- VARIABLES:
-MODULE:                 -- FMUL.C.o (ansixbf.lib) --
-- PROCEDURES:
-     F_DIVKL                                   C758      84     132       1   NON_BANKED  
-     F_MULKL                                   C7DC      57      87       1   NON_BANKED  
-     _FMUL                                     C833      14      20      14   NON_BANKED  
-     _FDIV                                     C847      1E      30      16   NON_BANKED  
-- VARIABLES:
-MODULE:                 -- FREGS.C.o (ansixbf.lib) --
-- PROCEDURES:
-     F_PULK                                    C865      15      21       5   NON_BANKED  
-     F_PULL                                    C87A      15      21       3   NON_BANKED  
-     F_PSHK                                    C88F      13      19       4   NON_BANKED  
-     F_XGKL                                    C8A2      21      33       2   NON_BANKED  
-     F_CLRK                                    C8C3       B      11       2   NON_BANKED  
-     F_MAXK                                    C8CE       9       9       2   NON_BANKED  
-     F_NORMK                                   C8D7      37      55       3   NON_BANKED  
-- VARIABLES:
-MODULE:                 -- rtshc12.c.o (ansixbf.lib) --
-- PROCEDURES:
-     _ISHL                                     C90E       B      11       2   NON_BANKED  
-     _ISHRU                                    C919       B      11       1   NON_BANKED  
-     _LCMP                                     C924       A      10       1   NON_BANKED  
-     _NEG_P                                    C92E       C      12       1   NON_BANKED  
-     _CASE_CHECKED_BYTE                        C93A      14      20       3   NON_BANKED  
-     _CASE_SEARCH_8_BYTE                       C94E      1A      26       1   NON_BANKED  
-- VARIABLES:
-MODULE:                 -- VREGS.C.o (ansixbf.lib) --
-- PROCEDURES:
-     L_NEGK                                    C968       7       7       1   NON_BANKED  
-     L_PSHK                                    C96F       8       8       2   NON_BANKED  
-     UL_PULK                                   C977       3       3       2   NON_BANKED  
-- VARIABLES:
-MODULE:                 -- Task_FaultLevelJudge.c.o --
-- PROCEDURES:
-- VARIABLES:
-     VoltInfo                                  28F0      6E     110       2   .common     
-     TempInfo                                  295E      10      16       6   .common     
-MODULE:                 -- PIT.c.o --
-- PROCEDURES:
-- VARIABLES:
-     PIT_Time_10ms                             296E       E      14       1   .common     
-MODULE:                 -- ADC.c.o --
-- PROCEDURES:
-     ADC_Value                               FE81B8       C      12       6   .text       
-     ADC_CC2_State                           FE81C4       7       7       2   .text       
-- VARIABLES:
-MODULE:                 -- Task_BMSCheckSelf.c.o --
-- PROCEDURES:
-     Checkself_BattState                     FE81CB      3F      63       2   .text       
-     CheckSelf_SysVoltLow_DischagTemp        FE820A      10      16       2   .text       
-     CheckSelf_SysVoltLow_DisCharge          FE821A      2C      44       2   .text       
-     CheckSelf_CellVoltLow_Temp              FE8246       F      15       2   .text       
-     CheckSelf_CellVoltLow_DisCharge         FE8255      32      50       2   .text       
-     CheckSelf_CellTempHigh_DisCharge        FE8287      25      37       2   .text       
-     CheckSelf_CellTempLow_DisCharge         FE82AC      25      37       2   .text       
-     CheckSelf_CurrentOver_DisCharge         FE82D1      39      57       2   .text       
-     CheckSelf_InsulDetect_DisCharge         FE830A      4E      78       2   .text       
-     CheckSelf_SysVoltHigh_Charge            FE8358      33      51       2   .text       
-     CheckSelf_CellVoltHigh_Charge           FE838B      26      38       2   .text       
-     CheckSelf_CellTempHigh_Charge           FE83B1      25      37       2   .text       
-     CheckSelf_CellTempLow_Charge            FE83D6      25      37       2   .text       
-     CheckSelf_InsulDetect_Charge            FE83FB      4E      78       2   .text       
-     CheckSelf_OpenWireDetect                FE8449       7       7       4   .text       
-     CheckSelf_Discharge                     FE8450      5A      90       2   .text       
-     CheckSelf_Charge                        FE84AA      46      70       2   .text       
-     BMS_CheckSelf                           FE84F0      36      54       2   .text       
-- VARIABLES:
-     cnt.1                                     2104       1       1       5   .bss        
-     cnt.2                                     2105       1       1       5   .bss        
-     cnt.3                                     2106       1       1       5   .bss        
-     cnt.4                                     2107       1       1       5   .bss        
-     cnt.5                                     2108       1       1       5   .bss        
-     cnt.6                                     2109       1       1       5   .bss        
-     cnt.7                                     210A       1       1       5   .bss        
-     cnt.8                                     210B       1       1       5   .bss        
-     cnt.9                                     210C       1       1       5   .bss        
-     cnt.10                                    210D       1       1       5   .bss        
-     cnt.11                                    210E       1       1       5   .bss        
-     OpenWireInfo                              210F       3       3       2   .bss        
-     System_InitState                          2112       C      12       2   .bss        
-MODULE:                 -- SPI.c.o --
-- PROCEDURES:
-     SPI1_Write                              FE8526       9       9       8   .text       
-     SPI1_read                               FE852F       A      10       4   .text       
-     wakeup_idle                             FE8539      10      16      20   .text       
-     delay_time                              FE8549       B      11      18   .text       
-- VARIABLES:
-MODULE:                 -- LTC6811_CMD.c.o --
-- PROCEDURES:
-     Spi_LTC6811Write                        FE8554      18      24       6   .text       
-     Spi_LTC6811WriteRead                    FE856C      48      72       8   .text       
-     set_adc                                 FE85B4      59      89       4   .text       
-     LTC6804_adow                            FE860D      42      66       4   .text       
-     LTC6804_adcv                            FE864F      42      66       2   .text       
-     LTC6804_adax                            FE8691      42      66       2   .text       
-     LTC6804_rdcv_reg                        FE86D3      6B     107       4   .text       
-     LTC6804_rdcv                            FE873E     166     358      14   .text       
-     LTC6804_rdaux_reg                       FE88A4      5B      91       4   .text       
-     LTC6804_rdaux                           FE88FF     138     312       9   .text       
-     Ltc6804_Clrcell                         FE8A37      47      71       2   .text       
-     Ltc6804_clraux                          FE8A7E      47      71       2   .text       
-     pec15_calc                              FE8AC5      38      56      18   .text       
-     HXYA_Gpio_Search                        FE8AFD     434    1076      10   .text       
-- VARIABLES:
-     crc15Table                                C051     200     512       2   .rodata     
-     ADCV                                      297C       2       2       6   .common     
-     ADSTAT                                    297E       2       2       2   .common     
-     ADOW                                      2980       2       2       5   .common     
-     ADAX                                      2982       2       2       5   .common     
-MODULE:                 -- LTC6811_OpWire.c.o --
-- PROCEDURES:
-     LTC6811_OpenwireDetect                  FE8F31     232     562      30   .text       
-- VARIABLES:
-     g_LTC6811_OpwireInfo                      2984       7       7       5   .common     
-MODULE:                 -- LTC6811_TempCollect.c.o --
-- PROCEDURES:
-     LTC6811_TempCMDSend                     FE9163       9       9       2   .text       
-     LTC6811_TempCollect                     FE916C     161     353       2   .text       
-- VARIABLES:
-     g_LTC6811_TempInfo                        298B      12      18      22   .common     
-MODULE:                 -- LTC6811_VoltCollect.c.o --
-- PROCEDURES:
-     LTC6811_VoltCMDSend                     FE92CD       9       9       2   .text       
-     LTC6811_VoltCollect                     FE92D6     215     533      17   .text       
-- VARIABLES:
-     g_LTC6811_VoltInfo                        299D      3C      60      18   .common     
-MODULE:                 -- Task_VoltTempCollect.c.o --
-- PROCEDURES:
-     Task_VoltCMDSend                        FE94EB       5       5       2   .text       
-     Task_VoltCollect                        FE94F0       5       5       2   .text       
-     Task_TempCMDSend                        FE94F5       5       5       2   .text       
-     Task_TempCollect                        FE94FA       5       5       2   .text       
-     Task_OpenWireDetect                     FE94FF       5       5       2   .text       
-- VARIABLES:
-MODULE:                 -- Task_Insulation.c.o --
-- PROCEDURES:
-     Insulation_Init                         FE9504       D      13       2   .text       
-     Task_InsulationDetect                   FE9511     A67    2663     150   .text       
-- VARIABLES:
-     Time_Flag.1                               211E       1       1       4   .bss        
-     Time_Cnt.2                                211F       1       1       5   .bss        
-     IsoDetect                                 29D9      15      21      64   .common     
-     SumVpositive                              29EE       4       4      14   .common     
-     SumVnegtive                               29F2       4       4      14   .common     
-     Vpositive_1                               29F6       4       4      27   .common     
-     Vnegtive_1                                29FA       4       4      26   .common     
-     VposBuff                                  29FE      18      24       6   .common     
-     VnegBuff                                  2A16      18      24       6   .common     
-     VposBuff1                                 2A2E      18      24       6   .common     
-     VnegBuff1                                 2A46      18      24       6   .common     
-     VposBuff2                                 2A5E      18      24       6   .common     
-     VnegBuff2                                 2A76      18      24       6   .common     
-     Max_Volt                                  2A8E       2       2       6   .common     
-     Max_Volt1                                 2A90       2       2       6   .common     
-     Min_Volt                                  2A92       2       2       6   .common     
-     Min_Volt1                                 2A94       2       2       7   .common     
-MODULE:                 -- WorkModeJudge.c.o --
-- PROCEDURES:
-     WokeModeJudgment                        FE9F78      24      36       2   .text       
-- VARIABLES:
 MODULE:                 -- Task_Init.c.o --
 - PROCEDURES:
-     Task_Handle                             FE9F9C      26      38       2   .text       
+     Task_Handle                             FE802F      26      38       2   .text       
 - VARIABLES:
-     tasks                                     2A96      60      96       3   .common     
-MODULE:                 -- Task_DataProcess.c.o --
-- PROCEDURES:
-- VARIABLES:
-     DataColletInfo                            2AF6      14      20       6   .common     
+     tasks                                     2100      60      96       3   .common     
 
 *********************************************************************************************
 MODULE STATISTIC
   Name                                      Data   Code  Const
 ---------------------------------------------------------------------------------------------
   MC9S12XEP100.c.o                           899      0      0
-  main.c.o                                     0     23      0
+  main.c.o                                     0      6      0
   Start12.c.o                                  0     56      0
-  HEAP.C.o (ansixbf.lib)                    2000     12      0
-  ALLOC.C.o (ansixbf.lib)                      4    364      0
-  DCMP.C.o (ansixbf.lib)                       0     48      0
-  DCONV.C.o (ansixbf.lib)                      0    257      0
-  DFCONV.C.o (ansixbf.lib)                     0     39      0
-  DMUL.C.o (ansixbf.lib)                       0    392      0
-  DREGS.C.o (ansixbf.lib)                      0    261      0
-  FADD.C.o (ansixbf.lib)                       0    134      0
-  FCMP.C.o (ansixbf.lib)                       0     38      0
-  FCONV.C.o (ansixbf.lib)                      0    118      0
-  FMUL.C.o (ansixbf.lib)                       0    269      0
-  FREGS.C.o (ansixbf.lib)                      0    169      0
-  rtshc12.c.o (ansixbf.lib)                    0     90      0
-  VREGS.C.o (ansixbf.lib)                      0     18      0
-  Task_FaultLevelJudge.c.o                   126      0      0
-  PIT.c.o                                     14      0      0
-  ADC.c.o                                      0     19      0
-  Task_BMSCheckSelf.c.o                       26    859      0
-  SPI.c.o                                      0     46      0
-  LTC6811_CMD.c.o                              8   2525    512
-  LTC6811_OpWire.c.o                           7    562      0
-  LTC6811_TempCollect.c.o                     18    362      0
-  LTC6811_VoltCollect.c.o                     60    542      0
-  Task_VoltTempCollect.c.o                     0     25      0
-  Task_Insulation.c.o                        191   2676      0
-  WorkModeJudge.c.o                            0     36      0
   Task_Init.c.o                               96     38      0
-  Task_DataProcess.c.o                        20      0      0
   other                                      256     68      2
 
 *********************************************************************************************
 SECTION USE IN OBJECT-ALLOCATION SECTION
 ---------------------------------------------------------------------------------------------
 SECTION: ".text"
-  main Init _heapcrash_ malloc free ADC_Value ADC_CC2_State 
-  Checkself_BattState CheckSelf_SysVoltLow_DischagTemp 
-  CheckSelf_SysVoltLow_DisCharge CheckSelf_CellVoltLow_Temp 
-  CheckSelf_CellVoltLow_DisCharge CheckSelf_CellTempHigh_DisCharge 
-  CheckSelf_CellTempLow_DisCharge CheckSelf_CurrentOver_DisCharge 
-  CheckSelf_InsulDetect_DisCharge CheckSelf_SysVoltHigh_Charge 
-  CheckSelf_CellVoltHigh_Charge CheckSelf_CellTempHigh_Charge 
-  CheckSelf_CellTempLow_Charge CheckSelf_InsulDetect_Charge 
-  CheckSelf_OpenWireDetect CheckSelf_Discharge CheckSelf_Charge BMS_CheckSelf 
-  SPI1_Write SPI1_read wakeup_idle delay_time Spi_LTC6811Write 
-  Spi_LTC6811WriteRead set_adc LTC6804_adow LTC6804_adcv LTC6804_adax 
-  LTC6804_rdcv_reg LTC6804_rdcv LTC6804_rdaux_reg LTC6804_rdaux Ltc6804_Clrcell 
-  Ltc6804_clraux pec15_calc HXYA_Gpio_Search LTC6811_OpenwireDetect 
-  LTC6811_TempCMDSend LTC6811_TempCollect LTC6811_VoltCMDSend 
-  LTC6811_VoltCollect Task_VoltCMDSend Task_VoltCollect Task_TempCMDSend 
-  Task_TempCollect Task_OpenWireDetect Insulation_Init Task_InsulationDetect 
-  WokeModeJudgment Task_Handle 
-SECTION: ".bss"
-  heap_end free_ptr cnt.1 cnt.2 cnt.3 cnt.4 cnt.5 cnt.6 cnt.7 cnt.8 cnt.9 
-  cnt.10 cnt.11 OpenWireInfo System_InitState Time_Flag.1 Time_Cnt.2 
+  main Init Task_Handle 
 SECTION: ".init"
   _Startup 
-SECTION: ".rodata"
-  crc15Table 
-SECTION: "NON_BANKED"
-  _DCMP D_TOLONGK D_FRLONGK _DUFLOAT _DSTRUNC _DUTRUNC D_PSHK_UNARY 
-  D_CLRK_UNARY D_MAXK_UNARY D_NORMK_UNARY D_FRFK _DLONG D_DIVKL D_MULKL _DMUL 
-  _DDIV D_PULK D_PULL D_PSHK D_CLRK D_MAXK D_NORMK F_ADDKL _FADD _FSUB _FCMP 
-  F_TOLONGK F_FRLONGK _FUFLOAT _FSTRUNC _FUTRUNC F_DIVKL F_MULKL _FMUL _FDIV 
-  F_PULK F_PULL F_PSHK F_XGKL F_CLRK F_MAXK F_NORMK _ISHL _ISHRU _LCMP _NEG_P 
-  _CASE_CHECKED_BYTE _CASE_SEARCH_8_BYTE L_NEGK L_PSHK UL_PULK 
 SECTION: ".abs_section_8"
   _PORTE 
 SECTION: ".abs_section_9"
@@ -3362,20 +3045,15 @@ SECTION: ".abs_section_3ee"
   _TIM_TC7 
 SECTION: ".abs_section_3f2"
   _TIM_PACNT 
-SECTION: "HEAP_SEGMENT"
-  _heap_ 
 SECTION: ".common"
-  VoltInfo TempInfo PIT_Time_10ms ADCV ADSTAT ADOW ADAX g_LTC6811_OpwireInfo 
-  g_LTC6811_TempInfo g_LTC6811_VoltInfo IsoDetect SumVpositive SumVnegtive 
-  Vpositive_1 Vnegtive_1 VposBuff VnegBuff VposBuff1 VnegBuff1 VposBuff2 
-  VnegBuff2 Max_Volt Max_Volt1 Min_Volt Min_Volt1 tasks DataColletInfo 
+  tasks 
 
 *********************************************************************************************
 OBJECT LIST SORTED BY ADDRESS
      Name                                      Addr   hSize   dSize     Ref    Section   RLIB
 ---------------------------------------------------------------------------------------------
-     _PORTAB                                      0       2       2      10   .abs_section_0
-     _DDRAB                                       2       2       2       2   .abs_section_2
+     _PORTAB                                      0       2       2       0   .abs_section_0
+     _DDRAB                                       2       2       2       0   .abs_section_2
      _PORTCD                                      4       2       2       0   .abs_section_4
      _DDRCD                                       6       2       2       0   .abs_section_6
      _PORTE                                       8       1       1       0   .abs_section_8
@@ -3539,8 +3217,8 @@ OBJECT LIST SORTED BY ADDRESS
      _SPI1CR1                                    F0       1       1       0   .abs_section_f0
      _SPI1CR2                                    F1       1       1       0   .abs_section_f1
      _SPI1BR                                     F2       1       1       0   .abs_section_f2
-     _SPI1SR                                     F3       1       1       3   .abs_section_f3
-     _SPI1DR                                     F4       2       2       2   .abs_section_f4
+     _SPI1SR                                     F3       1       1       0   .abs_section_f3
+     _SPI1DR                                     F4       2       2       0   .abs_section_f4
      _SPI2CR1                                    F8       1       1       0   .abs_section_f8
      _SPI2CR2                                    F9       1       1       0   .abs_section_f9
      _SPI2BR                                     FA       1       1       0   .abs_section_fa
@@ -3857,7 +3535,7 @@ OBJECT LIST SORTED BY ADDRESS
      _PPSM                                      255       1       1       0   .abs_section_255
      _WOMM                                      256       1       1       0   .abs_section_256
      _MODRR                                     257       1       1       0   .abs_section_257
-     _PTP                                       258       1       1      16   .abs_section_258
+     _PTP                                       258       1       1       0   .abs_section_258
      _PTIP                                      259       1       1       0   .abs_section_259
      _DDRP                                      25A       1       1       0   .abs_section_25a
      _RDRP                                      25B       1       1       0   .abs_section_25b
@@ -3951,13 +3629,13 @@ OBJECT LIST SORTED BY ADDRESS
      _CAN4TXTSR                                 2BE       2       2       0   .abs_section_2be
      _ATD0CTL01                                 2C0       2       2       0   .abs_section_2c0
      _ATD0CTL23                                 2C2       2       2       0   .abs_section_2c2
-     _ATD0CTL45                                 2C4       2       2       1   .abs_section_2c4
-     _ATD0STAT0                                 2C6       1       1       1   .abs_section_2c6
+     _ATD0CTL45                                 2C4       2       2       0   .abs_section_2c4
+     _ATD0STAT0                                 2C6       1       1       0   .abs_section_2c6
      _ATD0CMPE                                  2C8       2       2       0   .abs_section_2c8
      _ATD0STAT2                                 2CA       2       2       0   .abs_section_2ca
      _ATD0DIEN                                  2CC       2       2       0   .abs_section_2cc
      _ATD0CMPHT                                 2CE       2       2       0   .abs_section_2ce
-     _ATD0DR0                                   2D0       2       2       1   .abs_section_2d0
+     _ATD0DR0                                   2D0       2       2       0   .abs_section_2d0
      _ATD0DR1                                   2D2       2       2       0   .abs_section_2d2
      _ATD0DR2                                   2D4       2       2       0   .abs_section_2d4
      _ATD0DR3                                   2D6       2       2       0   .abs_section_2d6
@@ -4112,239 +3790,23 @@ OBJECT LIST SORTED BY ADDRESS
      _TIM_PACNT                                 3F2       2       2       0   .abs_section_3f2
      _TIM_OCPD                                  3FC       1       1       0   .abs_section_3fc
      _TIM_PTPSR                                 3FE       1       1       0   .abs_section_3fe
-     heap_end                                  2100       2       2       3   .bss        
-     free_ptr                                  2102       2       2       8   .bss        
-     cnt.1                                     2104       1       1       5   .bss        
-     cnt.2                                     2105       1       1       5   .bss        
-     cnt.3                                     2106       1       1       5   .bss        
-     cnt.4                                     2107       1       1       5   .bss        
-     cnt.5                                     2108       1       1       5   .bss        
-     cnt.6                                     2109       1       1       5   .bss        
-     cnt.7                                     210A       1       1       5   .bss        
-     cnt.8                                     210B       1       1       5   .bss        
-     cnt.9                                     210C       1       1       5   .bss        
-     cnt.10                                    210D       1       1       5   .bss        
-     cnt.11                                    210E       1       1       5   .bss        
-     OpenWireInfo                              210F       3       3       2   .bss        
-     System_InitState                          2112       C      12       2   .bss        
-     Time_Flag.1                               211E       1       1       4   .bss        
-     Time_Cnt.2                                211F       1       1       5   .bss        
-     _heap_                                    2120     7D0    2000       2   HEAP_SEGMENT
-     VoltInfo                                  28F0      6E     110       2   .common     
-     TempInfo                                  295E      10      16       6   .common     
-     PIT_Time_10ms                             296E       E      14       1   .common     
-     ADCV                                      297C       2       2       6   .common     
-     ADSTAT                                    297E       2       2       2   .common     
-     ADOW                                      2980       2       2       5   .common     
-     ADAX                                      2982       2       2       5   .common     
-     g_LTC6811_OpwireInfo                      2984       7       7       5   .common     
-     g_LTC6811_TempInfo                        298B      12      18      22   .common     
-     g_LTC6811_VoltInfo                        299D      3C      60      18   .common     
-     IsoDetect                                 29D9      15      21      64   .common     
-     SumVpositive                              29EE       4       4      14   .common     
-     SumVnegtive                               29F2       4       4      14   .common     
-     Vpositive_1                               29F6       4       4      27   .common     
-     Vnegtive_1                                29FA       4       4      26   .common     
-     VposBuff                                  29FE      18      24       6   .common     
-     VnegBuff                                  2A16      18      24       6   .common     
-     VposBuff1                                 2A2E      18      24       6   .common     
-     VnegBuff1                                 2A46      18      24       6   .common     
-     VposBuff2                                 2A5E      18      24       6   .common     
-     VnegBuff2                                 2A76      18      24       6   .common     
-     Max_Volt                                  2A8E       2       2       6   .common     
-     Max_Volt1                                 2A90       2       2       6   .common     
-     Min_Volt                                  2A92       2       2       6   .common     
-     Min_Volt1                                 2A94       2       2       7   .common     
-     tasks                                     2A96      60      96       3   .common     
-     DataColletInfo                            2AF6      14      20       6   .common     
+     tasks                                     2100      60      96       3   .common     
      _Startup                                  C000       F      15       0   .init       
-     crc15Table                                C051     200     512       2   .rodata     
-     _DCMP                                     C251      30      48       4   NON_BANKED  
-     D_TOLONGK                                 C281      31      49       1   NON_BANKED  
-     D_FRLONGK                                 C2B2      18      24       1   NON_BANKED  
-     _DUFLOAT                                  C2CA      14      20       2   NON_BANKED  
-     _DSTRUNC                                  C2DE      19      25       1   NON_BANKED  
-     _DUTRUNC                                  C2F7       3       3       2   NON_BANKED  
-     D_PSHK_UNARY                              C2FA      1E      30       2   NON_BANKED  
-     D_CLRK_UNARY                              C318       D      13       2   NON_BANKED  
-     D_MAXK_UNARY                              C325       A      10       1   NON_BANKED  
-     D_NORMK_UNARY                             C32F      53      83       2   NON_BANKED  
-     D_FRFK                                    C382      10      16       1   NON_BANKED  
-     _DLONG                                    C392      17      23      28   NON_BANKED  
-     D_DIVKL                                   C3A9      DD     221       1   NON_BANKED  
-     D_MULKL                                   C486      89     137       1   NON_BANKED  
-     _DMUL                                     C50F      11      17       4   NON_BANKED  
-     _DDIV                                     C520      11      17       2   NON_BANKED  
-     D_PULK                                    C531      29      41       2   NON_BANKED  
-     D_PULL                                    C55A      25      37       3   NON_BANKED  
-     D_PSHK                                    C57F      23      35       2   NON_BANKED  
-     D_CLRK                                    C5A2      13      19       3   NON_BANKED  
-     D_MAXK                                    C5B5       A      10       2   NON_BANKED  
-     D_NORMK                                   C5BF      77     119       2   NON_BANKED  
-     F_ADDKL                                   C636      5E      94       1   NON_BANKED  
-     _FADD                                     C694      15      21       4   NON_BANKED  
-     _FSUB                                     C6A9      13      19      23   NON_BANKED  
-     _FCMP                                     C6BC      26      38       6   NON_BANKED  
-     F_TOLONGK                                 C6E2      32      50       1   NON_BANKED  
-     F_FRLONGK                                 C714      1E      30       1   NON_BANKED  
-     _FUFLOAT                                  C732      12      18       3   NON_BANKED  
-     _FSTRUNC                                  C744      11      17       1   NON_BANKED  
-     _FUTRUNC                                  C755       3       3       2   NON_BANKED  
-     F_DIVKL                                   C758      84     132       1   NON_BANKED  
-     F_MULKL                                   C7DC      57      87       1   NON_BANKED  
-     _FMUL                                     C833      14      20      14   NON_BANKED  
-     _FDIV                                     C847      1E      30      16   NON_BANKED  
-     F_PULK                                    C865      15      21       5   NON_BANKED  
-     F_PULL                                    C87A      15      21       3   NON_BANKED  
-     F_PSHK                                    C88F      13      19       4   NON_BANKED  
-     F_XGKL                                    C8A2      21      33       2   NON_BANKED  
-     F_CLRK                                    C8C3       B      11       2   NON_BANKED  
-     F_MAXK                                    C8CE       9       9       2   NON_BANKED  
-     F_NORMK                                   C8D7      37      55       3   NON_BANKED  
-     _ISHL                                     C90E       B      11       2   NON_BANKED  
-     _ISHRU                                    C919       B      11       1   NON_BANKED  
-     _LCMP                                     C924       A      10       1   NON_BANKED  
-     _NEG_P                                    C92E       C      12       1   NON_BANKED  
-     _CASE_CHECKED_BYTE                        C93A      14      20       3   NON_BANKED  
-     _CASE_SEARCH_8_BYTE                       C94E      1A      26       1   NON_BANKED  
-     L_NEGK                                    C968       7       7       1   NON_BANKED  
-     L_PSHK                                    C96F       8       8       2   NON_BANKED  
-     UL_PULK                                   C977       3       3       2   NON_BANKED  
-     main                                    FE8000      17      23       2   .text       
-     Init                                    FE8017      29      41       2   .text       
-     _heapcrash_                             FE8040       C      12       6   .text       
-     malloc                                  FE804C      A6     166       4   .text       
-     free                                    FE80F2      C6     198       5   .text       
-     ADC_Value                               FE81B8       C      12       6   .text       
-     ADC_CC2_State                           FE81C4       7       7       2   .text       
-     Checkself_BattState                     FE81CB      3F      63       2   .text       
-     CheckSelf_SysVoltLow_DischagTemp        FE820A      10      16       2   .text       
-     CheckSelf_SysVoltLow_DisCharge          FE821A      2C      44       2   .text       
-     CheckSelf_CellVoltLow_Temp              FE8246       F      15       2   .text       
-     CheckSelf_CellVoltLow_DisCharge         FE8255      32      50       2   .text       
-     CheckSelf_CellTempHigh_DisCharge        FE8287      25      37       2   .text       
-     CheckSelf_CellTempLow_DisCharge         FE82AC      25      37       2   .text       
-     CheckSelf_CurrentOver_DisCharge         FE82D1      39      57       2   .text       
-     CheckSelf_InsulDetect_DisCharge         FE830A      4E      78       2   .text       
-     CheckSelf_SysVoltHigh_Charge            FE8358      33      51       2   .text       
-     CheckSelf_CellVoltHigh_Charge           FE838B      26      38       2   .text       
-     CheckSelf_CellTempHigh_Charge           FE83B1      25      37       2   .text       
-     CheckSelf_CellTempLow_Charge            FE83D6      25      37       2   .text       
-     CheckSelf_InsulDetect_Charge            FE83FB      4E      78       2   .text       
-     CheckSelf_OpenWireDetect                FE8449       7       7       4   .text       
-     CheckSelf_Discharge                     FE8450      5A      90       2   .text       
-     CheckSelf_Charge                        FE84AA      46      70       2   .text       
-     BMS_CheckSelf                           FE84F0      36      54       2   .text       
-     SPI1_Write                              FE8526       9       9       8   .text       
-     SPI1_read                               FE852F       A      10       4   .text       
-     wakeup_idle                             FE8539      10      16      20   .text       
-     delay_time                              FE8549       B      11      18   .text       
-     Spi_LTC6811Write                        FE8554      18      24       6   .text       
-     Spi_LTC6811WriteRead                    FE856C      48      72       8   .text       
-     set_adc                                 FE85B4      59      89       4   .text       
-     LTC6804_adow                            FE860D      42      66       4   .text       
-     LTC6804_adcv                            FE864F      42      66       2   .text       
-     LTC6804_adax                            FE8691      42      66       2   .text       
-     LTC6804_rdcv_reg                        FE86D3      6B     107       4   .text       
-     LTC6804_rdcv                            FE873E     166     358      14   .text       
-     LTC6804_rdaux_reg                       FE88A4      5B      91       4   .text       
-     LTC6804_rdaux                           FE88FF     138     312       9   .text       
-     Ltc6804_Clrcell                         FE8A37      47      71       2   .text       
-     Ltc6804_clraux                          FE8A7E      47      71       2   .text       
-     pec15_calc                              FE8AC5      38      56      18   .text       
-     HXYA_Gpio_Search                        FE8AFD     434    1076      10   .text       
-     LTC6811_OpenwireDetect                  FE8F31     232     562      30   .text       
-     LTC6811_TempCMDSend                     FE9163       9       9       2   .text       
-     LTC6811_TempCollect                     FE916C     161     353       2   .text       
-     LTC6811_VoltCMDSend                     FE92CD       9       9       2   .text       
-     LTC6811_VoltCollect                     FE92D6     215     533      17   .text       
-     Task_VoltCMDSend                        FE94EB       5       5       2   .text       
-     Task_VoltCollect                        FE94F0       5       5       2   .text       
-     Task_TempCMDSend                        FE94F5       5       5       2   .text       
-     Task_TempCollect                        FE94FA       5       5       2   .text       
-     Task_OpenWireDetect                     FE94FF       5       5       2   .text       
-     Insulation_Init                         FE9504       D      13       2   .text       
-     Task_InsulationDetect                   FE9511     A67    2663     150   .text       
-     WokeModeJudgment                        FE9F78      24      36       2   .text       
-     Task_Handle                             FE9F9C      26      38       2   .text       
+     main                                    FE8000       6       6       2   .text       
+     Init                                    FE8006      29      41       2   .text       
+     Task_Handle                             FE802F      26      38       2   .text       
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
 ---------------------------------------------------------------------------------------------
 NOT USED PROCEDURES
-ALLOC.C.o (ansixbf.lib):
-  calloc realloc 
-DCONV.C.o (ansixbf.lib):
-  _DSFLOAT 
-DFCONV.C.o (ansixbf.lib):
-  D_TOFK _DSHORT 
-DREGS.C.o (ansixbf.lib):
-  D_STAL D_TLK D_TKL D_XGKL D_CLRL 
-FADD.C.o (ansixbf.lib):
-  _FINC _FDEC _FNEG _FABS 
-FCONV.C.o (ansixbf.lib):
-  _FSFLOAT 
-FREGS.C.o (ansixbf.lib):
-  F_STAL F_TLK F_TKL F_CLRL 
-rtshc12.c.o (ansixbf.lib):
-  _BSHL _BSHRS _BSHRU _BDIVMODU _BDIVMODS _ISHRS _LSHL _LSHRU _LSHRS _LADD 
-  _LSUB _LAND _LOR _LXOR _LCMP_P _LCMP_PP _LNEG _LCOM _LINC _LDEC _LMUL 
-  _LMULU16x32 _LMULS16x32 _lDivMod _LDIVU _LDIVS _LMODU _LMODS _ILSEXT _COPY 
-  _CASE_DIRECT _CASE_DIRECT_BYTE _CASE_CHECKED _CASE_SEARCH _CASE_SEARCH_BYTE 
-  _CASE_SEARCH_8 _FCALL _FPCMP _PADD _PSUB _PINC _PDEC 
-VREGS.C.o (ansixbf.lib):
-  SL_PULK 
-Task_FaultLevelJudge.c.o:
-  Task_FaultLevelJudge Fault1_VoltSys_DisCharge Fault2_VoltSys_DisCharge 
-  Recover1_VoltSys_DisCharge Fault_DisChg_VoltS Fault1_VoltCell_DisCharge 
-  Fault2_VoltCell_DisCharge Recover1_VoltCell_DisCharge Fault_DisChg_VoltC 
-  Fault_DisChg_VoltCD Fault_DisChg_TempH Fault_DisChg_TempL Fault_DisChg_TempD 
-  Fault_DisChg_CurrH Fault_DisChg_Insul Fault_VoltSys_Charge 
-  Fault_VoltCell_High_Charge Fault_VoltCell_Diff_Charge Fault_Temp_High_Charge 
-  Fault_Temp_Low_Charge Fault_Temp_Diff_Charge Fault_Current_Charge 
-PIT.c.o:
-  PITInit Init_PIT isrPIT0 
-ADC.c.o:
-  Init_ADC ADC_Current 
-SPI.c.o:
-  SPI1_Init wakeup_sleep 
-LTC6811_CMD.c.o:
-  Spi_LTC6811Read LTC6804_wrcfg LTC6804_adstat LTC6804_rdstat_reg 
-  LTC6804_rdstat Ltc6804_Clrstat 
-LTC6811_TempCollect.c.o:
-  LTC6811_ChipTempCMDSend LTC6811_ChipTempCollect 
-Task_VoltTempCollect.c.o:
-  Task_ChipTempCMDSend Task_ChipTempCollect 
 Task_Init.c.o:
   Task_Init Task_Create 
-Task_DataProcess.c.o:
-  Task_DataProcess DataCollection_Volt DataCollection_Temp 
-NOT USED VARIABLES
-rtshc12.c.o (ansixbf.lib):
-  _PowOfTwo_8 _PowOfTwo_16 _PowOfTwo_32 errno 
-Task_FaultLevelJudge.c.o:
-  cnt.1 FltL.2 cnt.3 FltL.4 V_Diff.5 cnt.6 FltL.7 cnt.8 FltL.9 cnt.10 FltL.11 
-  T_Diff.12 cnt.13 FltL.14 cnt.15 FltL.16 cnt.17 FltL.18 cnt.19 FltL.20 cnt.21 
-  FltL.22 V_Diff.23 cnt.24 FltL.25 cnt.26 FltL.27 cnt.28 FltL.29 T_Diff.30 
-  cnt.31 FltL.32 cnt.33 FltL.34 Fault_DisCharge Fault_Charge State_Offline 
-  FltThreshold_DisChg FltThreshold_Charge 
-Task_BMSCheckSelf.c.o:
-  BMSCheckSelf 
-LTC6811_OpWire.c.o:
-  crc15Table 
-LTC6811_TempCollect.c.o:
-  voltage_temp.1 
-Task_Insulation.c.o:
-  VoltFlag1.3 VoltFlag2.4 total_VOL total_VOL1 
-WorkModeJudge.c.o:
-  g_WorkStateJudge 
-Task_DataProcess.c.o:
-  Module_VoltInfo Module_TempInfo 
 
 *********************************************************************************************
 COPYDOWN SECTION
 ---------------------------------------------------------------------------------------------
-------- ROM-ADDRESS: 0xC97A ---- SIZE       2 ---
+------- ROM-ADDRESS: 0xC051 ---- SIZE       2 ---
 Filling bytes inserted
  0000
 
@@ -4352,113 +3814,8 @@ Filling bytes inserted
 OBJECT-DEPENDENCIES SECTION
 ---------------------------------------------------------------------------------------------
 _Startup                  USES __SEG_END_SSTACK Init main 
-D_FRLONGK                 USES D_NORMK_UNARY 
-_DUFLOAT                  USES UL_PULK D_FRLONGK D_PSHK_UNARY 
-_DSTRUNC                  USES D_PULL D_TOLONGK L_PSHK 
-_DUTRUNC                  USES _DSTRUNC 
-D_MAXK_UNARY              USES D_CLRK_UNARY 
-D_NORMK_UNARY             USES D_CLRK_UNARY D_MAXK_UNARY 
-D_FRFK                    USES D_NORMK_UNARY 
-_DLONG                    USES F_PULK D_FRFK D_PSHK_UNARY 
-D_DIVKL                   USES D_MAXK D_NORMK 
-D_MULKL                   USES D_CLRK D_NORMK 
-_DMUL                     USES D_PULK D_PULL D_MULKL D_PSHK 
-_DDIV                     USES D_PULL D_PULK D_DIVKL D_PSHK 
-D_MAXK                    USES D_CLRK 
-D_NORMK                   USES D_CLRK D_MAXK 
-F_ADDKL                   USES F_XGKL F_NORMK 
-_FADD                     USES F_PULK F_PULL F_ADDKL F_PSHK 
-_FSUB                     USES _FADD 
-_FUFLOAT                  USES UL_PULK F_FRLONGK F_PSHK 
-_FSTRUNC                  USES F_PULK F_TOLONGK L_PSHK 
-_FUTRUNC                  USES _FSTRUNC 
-F_DIVKL                   USES F_MAXK F_NORMK 
-F_MULKL                   USES F_CLRK F_NORMK 
-_FMUL                     USES F_PULK F_PULL F_MULKL F_PSHK 
-_FDIV                     USES F_PULL F_PULK F_DIVKL F_PSHK 
-F_MAXK                    USES F_CLRK 
-F_NORMK                   USES F_MAXK 
-L_NEGK                    USES _NEG_P 
-L_PSHK                    USES L_NEGK 
-main                      USES PIT_Time_10ms WokeModeJudgment BMS_CheckSelf 
-                                Task_Handle 
+main                      USES Task_Handle 
 Init                      USES _startupData 
-malloc                    USES heap_end _heap_ free_ptr _heapcrash_ 
-free                      USES _heap_ heap_end free free_ptr _heapcrash_ 
-ADC_Value                 USES _ATD0CTL45 _ATD0STAT0 _ATD0DR0 
-ADC_CC2_State             USES ADC_Value 
-Checkself_BattState       USES _CASE_SEARCH_8_BYTE Task_OpenWireDetect 
-                                Task_VoltCMDSend Task_VoltCollect Task_TempCMDSend 
-                                Task_TempCollect Task_InsulationDetect 
-CheckSelf_SysVoltLow_DisCharge USES CheckSelf_SysVoltLow_DischagTemp cnt.1 
-CheckSelf_CellVoltLow_DisCharge USES CheckSelf_CellVoltLow_Temp _LCMP cnt.2 
-CheckSelf_CellTempHigh_DisCharge USES cnt.3 
-CheckSelf_CellTempLow_DisCharge USES cnt.4 
-CheckSelf_CurrentOver_DisCharge USES _FCMP cnt.5 
-CheckSelf_InsulDetect_DisCharge USES _DUFLOAT _DCMP cnt.6 
-CheckSelf_SysVoltHigh_Charge USES cnt.7 
-CheckSelf_CellVoltHigh_Charge USES cnt.8 
-CheckSelf_CellTempHigh_Charge USES cnt.9 
-CheckSelf_CellTempLow_Charge USES cnt.10 
-CheckSelf_InsulDetect_Charge USES _DUFLOAT _DCMP cnt.11 
-CheckSelf_Discharge       USES DataColletInfo TempInfo 
-                                CheckSelf_SysVoltLow_DisCharge VoltInfo CheckSelf_CellVoltLow_DisCharge 
-                                CheckSelf_CellTempHigh_DisCharge CheckSelf_CellTempLow_DisCharge 
-                                CheckSelf_CurrentOver_DisCharge IsoDetect CheckSelf_InsulDetect_DisCharge 
-                                OpenWireInfo CheckSelf_OpenWireDetect 
-CheckSelf_Charge          USES DataColletInfo CheckSelf_SysVoltHigh_Charge 
-                                VoltInfo CheckSelf_CellVoltHigh_Charge TempInfo 
-                                CheckSelf_CellTempHigh_Charge CheckSelf_CellTempLow_Charge IsoDetect 
-                                CheckSelf_InsulDetect_Charge OpenWireInfo CheckSelf_OpenWireDetect 
-BMS_CheckSelf             USES Checkself_BattState CheckSelf_Discharge 
-                                System_InitState CheckSelf_Charge 
-SPI1_Write                USES _SPI1SR _SPI1DR 
-SPI1_read                 USES _SPI1SR _SPI1DR 
-wakeup_idle               USES _PTP delay_time 
-Spi_LTC6811Write          USES SPI1_Write 
-Spi_LTC6811WriteRead      USES SPI1_Write delay_time SPI1_read 
-set_adc                   USES ADCV ADOW ADSTAT ADAX 
-LTC6804_adow              USES ADOW pec15_calc wakeup_idle _PTP 
-                                Spi_LTC6811Write delay_time 
-LTC6804_adcv              USES ADCV pec15_calc wakeup_idle _PTP 
-                                Spi_LTC6811Write delay_time 
-LTC6804_adax              USES ADAX pec15_calc wakeup_idle _PTP 
-                                Spi_LTC6811Write delay_time 
-LTC6804_rdcv_reg          USES pec15_calc wakeup_idle _PTP 
-                                Spi_LTC6811WriteRead delay_time 
-LTC6804_rdcv              USES malloc LTC6804_rdcv_reg LTC6804_rdcv free 
-                                pec15_calc 
-LTC6804_rdaux_reg         USES pec15_calc wakeup_idle _PTP 
-                                Spi_LTC6811WriteRead delay_time 
-LTC6804_rdaux             USES malloc LTC6804_rdaux_reg LTC6804_rdaux free 
-                                pec15_calc 
-Ltc6804_Clrcell           USES pec15_calc wakeup_idle _PTP 
-                                Spi_LTC6811WriteRead delay_time 
-Ltc6804_clraux            USES pec15_calc wakeup_idle _PTP 
-                                Spi_LTC6811WriteRead delay_time 
-pec15_calc                USES _ISHRU crc15Table 
-LTC6811_OpenwireDetect    USES set_adc LTC6804_adow wakeup_idle LTC6804_rdcv 
-                                g_LTC6811_OpwireInfo LTC6811_OpenwireDetect _CASE_CHECKED_BYTE 
-                                _ISHL 
-LTC6811_TempCMDSend       USES Ltc6804_clraux LTC6804_adax 
-LTC6811_TempCollect       USES wakeup_idle LTC6804_rdaux HXYA_Gpio_Search 
-                                g_LTC6811_TempInfo 
-LTC6811_VoltCMDSend       USES Ltc6804_Clrcell LTC6804_adcv 
-LTC6811_VoltCollect       USES wakeup_idle LTC6804_rdcv _ISHL 
-                                _CASE_CHECKED_BYTE LTC6811_VoltCollect g_LTC6811_VoltInfo 
-Task_VoltCMDSend          USES LTC6811_VoltCMDSend 
-Task_VoltCollect          USES LTC6811_VoltCollect 
-Task_TempCMDSend          USES LTC6811_TempCMDSend 
-Task_TempCollect          USES LTC6811_TempCollect 
-Task_OpenWireDetect       USES LTC6811_OpenwireDetect 
-Insulation_Init           USES _DDRAB _PORTAB 
-Task_InsulationDetect     USES Insulation_Init Time_Flag.1 Time_Cnt.2 
-                                Task_InsulationDetect VposBuff VnegBuff Max_Volt Min_Volt Max_Volt1 
-                                Min_Volt1 _FUFLOAT _FDIV IsoDetect SumVnegtive 
-                                SumVpositive _FADD _FMUL _FCMP _PORTAB VposBuff1 VnegBuff1 
-                                _DLONG Vpositive_1 _FSUB VposBuff2 VnegBuff2 
-                                Vnegtive_1 _DMUL _DUTRUNC _DDIV _FUTRUNC _DCMP ADC_Value 
-WokeModeJudgment          USES ADC_CC2_State 
 Task_Handle               USES tasks 
 
 *********************************************************************************************
@@ -4468,356 +3825,6 @@ DEPENDENCY TREE
  | 
  +- main                
  |  | 
- |  +- WokeModeJudgment    
- |  |  | 
- |  |  +- ADC_CC2_State       
- |  |     | 
- |  |     +- ADC_Value           
- |  |          
- |  +- BMS_CheckSelf       
- |  |  | 
- |  |  +- Checkself_BattState 
- |  |  |  | 
- |  |  |  +- _CASE_SEARCH_8_BYTE 
- |  |  |  |    
- |  |  |  +- Task_OpenWireDetect 
- |  |  |  |  | 
- |  |  |  |  +- LTC6811_OpenwireDetect
- |  |  |  |     | 
- |  |  |  |     +- set_adc             
- |  |  |  |     |    
- |  |  |  |     +- LTC6804_adow        
- |  |  |  |     |  | 
- |  |  |  |     |  +- pec15_calc          
- |  |  |  |     |  |  | 
- |  |  |  |     |  |  +- _ISHRU              
- |  |  |  |     |  |       
- |  |  |  |     |  +- wakeup_idle         
- |  |  |  |     |  |  | 
- |  |  |  |     |  |  +- delay_time          
- |  |  |  |     |  |       
- |  |  |  |     |  +- Spi_LTC6811Write    
- |  |  |  |     |  |  | 
- |  |  |  |     |  |  +- SPI1_Write          
- |  |  |  |     |  |       
- |  |  |  |     |  +- delay_time           (see above)
- |  |  |  |     |     
- |  |  |  |     +- wakeup_idle          (see above)
- |  |  |  |     |  
- |  |  |  |     +- LTC6804_rdcv        
- |  |  |  |     |  | 
- |  |  |  |     |  +- malloc              
- |  |  |  |     |  |  | 
- |  |  |  |     |  |  +- _heapcrash_         
- |  |  |  |     |  |       
- |  |  |  |     |  +- LTC6804_rdcv_reg    
- |  |  |  |     |  |  | 
- |  |  |  |     |  |  +- pec15_calc           (see above)
- |  |  |  |     |  |  |  
- |  |  |  |     |  |  +- wakeup_idle          (see above)
- |  |  |  |     |  |  |  
- |  |  |  |     |  |  +- Spi_LTC6811WriteRead
- |  |  |  |     |  |  |  | 
- |  |  |  |     |  |  |  +- SPI1_Write           (see above)
- |  |  |  |     |  |  |  |  
- |  |  |  |     |  |  |  +- delay_time           (see above)
- |  |  |  |     |  |  |  |  
- |  |  |  |     |  |  |  +- SPI1_read           
- |  |  |  |     |  |  |       
- |  |  |  |     |  |  +- delay_time           (see above)
- |  |  |  |     |  |     
- |  |  |  |     |  +- free                
- |  |  |  |     |  |  | 
- |  |  |  |     |  |  +- _heapcrash_          (see above)
- |  |  |  |     |  |     
- |  |  |  |     |  +- pec15_calc           (see above)
- |  |  |  |     |     
- |  |  |  |     +- _CASE_CHECKED_BYTE  
- |  |  |  |     |    
- |  |  |  |     +- _ISHL               
- |  |  |  |          
- |  |  |  +- Task_VoltCMDSend    
- |  |  |  |  | 
- |  |  |  |  +- LTC6811_VoltCMDSend 
- |  |  |  |     | 
- |  |  |  |     +- Ltc6804_Clrcell     
- |  |  |  |     |  | 
- |  |  |  |     |  +- pec15_calc           (see above)
- |  |  |  |     |  |  
- |  |  |  |     |  +- wakeup_idle          (see above)
- |  |  |  |     |  |  
- |  |  |  |     |  +- Spi_LTC6811WriteRead (see above)
- |  |  |  |     |  |  
- |  |  |  |     |  +- delay_time           (see above)
- |  |  |  |     |     
- |  |  |  |     +- LTC6804_adcv        
- |  |  |  |        | 
- |  |  |  |        +- pec15_calc           (see above)
- |  |  |  |        |  
- |  |  |  |        +- wakeup_idle          (see above)
- |  |  |  |        |  
- |  |  |  |        +- Spi_LTC6811Write     (see above)
- |  |  |  |        |  
- |  |  |  |        +- delay_time           (see above)
- |  |  |  |           
- |  |  |  +- Task_VoltCollect    
- |  |  |  |  | 
- |  |  |  |  +- LTC6811_VoltCollect 
- |  |  |  |     | 
- |  |  |  |     +- wakeup_idle          (see above)
- |  |  |  |     |  
- |  |  |  |     +- LTC6804_rdcv         (see above)
- |  |  |  |     |  
- |  |  |  |     +- _ISHL                (see above)
- |  |  |  |     |  
- |  |  |  |     +- _CASE_CHECKED_BYTE   (see above)
- |  |  |  |        
- |  |  |  +- Task_TempCMDSend    
- |  |  |  |  | 
- |  |  |  |  +- LTC6811_TempCMDSend 
- |  |  |  |     | 
- |  |  |  |     +- Ltc6804_clraux      
- |  |  |  |     |  | 
- |  |  |  |     |  +- pec15_calc           (see above)
- |  |  |  |     |  |  
- |  |  |  |     |  +- wakeup_idle          (see above)
- |  |  |  |     |  |  
- |  |  |  |     |  +- Spi_LTC6811WriteRead (see above)
- |  |  |  |     |  |  
- |  |  |  |     |  +- delay_time           (see above)
- |  |  |  |     |     
- |  |  |  |     +- LTC6804_adax        
- |  |  |  |        | 
- |  |  |  |        +- pec15_calc           (see above)
- |  |  |  |        |  
- |  |  |  |        +- wakeup_idle          (see above)
- |  |  |  |        |  
- |  |  |  |        +- Spi_LTC6811Write     (see above)
- |  |  |  |        |  
- |  |  |  |        +- delay_time           (see above)
- |  |  |  |           
- |  |  |  +- Task_TempCollect    
- |  |  |  |  | 
- |  |  |  |  +- LTC6811_TempCollect 
- |  |  |  |     | 
- |  |  |  |     +- wakeup_idle          (see above)
- |  |  |  |     |  
- |  |  |  |     +- LTC6804_rdaux       
- |  |  |  |     |  | 
- |  |  |  |     |  +- malloc               (see above)
- |  |  |  |     |  |  
- |  |  |  |     |  +- LTC6804_rdaux_reg   
- |  |  |  |     |  |  | 
- |  |  |  |     |  |  +- pec15_calc           (see above)
- |  |  |  |     |  |  |  
- |  |  |  |     |  |  +- wakeup_idle          (see above)
- |  |  |  |     |  |  |  
- |  |  |  |     |  |  +- Spi_LTC6811WriteRead (see above)
- |  |  |  |     |  |  |  
- |  |  |  |     |  |  +- delay_time           (see above)
- |  |  |  |     |  |     
- |  |  |  |     |  +- free                 (see above)
- |  |  |  |     |  |  
- |  |  |  |     |  +- pec15_calc           (see above)
- |  |  |  |     |     
- |  |  |  |     +- HXYA_Gpio_Search    
- |  |  |  |          
- |  |  |  +- Task_InsulationDetect
- |  |  |     | 
- |  |  |     +- Insulation_Init     
- |  |  |     |    
- |  |  |     +- _FUFLOAT            
- |  |  |     |  | 
- |  |  |     |  +- UL_PULK             
- |  |  |     |  |    
- |  |  |     |  +- F_FRLONGK           
- |  |  |     |  |    
- |  |  |     |  +- F_PSHK              
- |  |  |     |       
- |  |  |     +- _FDIV               
- |  |  |     |  | 
- |  |  |     |  +- F_PULL              
- |  |  |     |  |    
- |  |  |     |  +- F_PULK              
- |  |  |     |  |    
- |  |  |     |  +- F_DIVKL             
- |  |  |     |  |  | 
- |  |  |     |  |  +- F_MAXK              
- |  |  |     |  |  |  | 
- |  |  |     |  |  |  +- F_CLRK              
- |  |  |     |  |  |       
- |  |  |     |  |  +- F_NORMK             
- |  |  |     |  |     | 
- |  |  |     |  |     +- F_MAXK               (see above)
- |  |  |     |  |        
- |  |  |     |  +- F_PSHK               (see above)
- |  |  |     |     
- |  |  |     +- _FADD               
- |  |  |     |  | 
- |  |  |     |  +- F_PULK               (see above)
- |  |  |     |  |  
- |  |  |     |  +- F_PULL               (see above)
- |  |  |     |  |  
- |  |  |     |  +- F_ADDKL             
- |  |  |     |  |  | 
- |  |  |     |  |  +- F_XGKL              
- |  |  |     |  |  |    
- |  |  |     |  |  +- F_NORMK              (see above)
- |  |  |     |  |     
- |  |  |     |  +- F_PSHK               (see above)
- |  |  |     |     
- |  |  |     +- _FMUL               
- |  |  |     |  | 
- |  |  |     |  +- F_PULK               (see above)
- |  |  |     |  |  
- |  |  |     |  +- F_PULL               (see above)
- |  |  |     |  |  
- |  |  |     |  +- F_MULKL             
- |  |  |     |  |  | 
- |  |  |     |  |  +- F_CLRK               (see above)
- |  |  |     |  |  |  
- |  |  |     |  |  +- F_NORMK              (see above)
- |  |  |     |  |     
- |  |  |     |  +- F_PSHK               (see above)
- |  |  |     |     
- |  |  |     +- _FCMP               
- |  |  |     |    
- |  |  |     +- _DLONG              
- |  |  |     |  | 
- |  |  |     |  +- F_PULK               (see above)
- |  |  |     |  |  
- |  |  |     |  +- D_FRFK              
- |  |  |     |  |  | 
- |  |  |     |  |  +- D_NORMK_UNARY       
- |  |  |     |  |     | 
- |  |  |     |  |     +- D_CLRK_UNARY        
- |  |  |     |  |     |    
- |  |  |     |  |     +- D_MAXK_UNARY        
- |  |  |     |  |        | 
- |  |  |     |  |        +- D_CLRK_UNARY         (see above)
- |  |  |     |  |           
- |  |  |     |  +- D_PSHK_UNARY        
- |  |  |     |       
- |  |  |     +- _FSUB               
- |  |  |     |  | 
- |  |  |     |  +- _FADD                (see above)
- |  |  |     |     
- |  |  |     +- _DMUL               
- |  |  |     |  | 
- |  |  |     |  +- D_PULK              
- |  |  |     |  |    
- |  |  |     |  +- D_PULL              
- |  |  |     |  |    
- |  |  |     |  +- D_MULKL             
- |  |  |     |  |  | 
- |  |  |     |  |  +- D_CLRK              
- |  |  |     |  |  |    
- |  |  |     |  |  +- D_NORMK             
- |  |  |     |  |     | 
- |  |  |     |  |     +- D_CLRK               (see above)
- |  |  |     |  |     |  
- |  |  |     |  |     +- D_MAXK              
- |  |  |     |  |        | 
- |  |  |     |  |        +- D_CLRK               (see above)
- |  |  |     |  |           
- |  |  |     |  +- D_PSHK              
- |  |  |     |       
- |  |  |     +- _DUTRUNC            
- |  |  |     |  | 
- |  |  |     |  +- _DSTRUNC            
- |  |  |     |     | 
- |  |  |     |     +- D_PULL               (see above)
- |  |  |     |     |  
- |  |  |     |     +- D_TOLONGK           
- |  |  |     |     |    
- |  |  |     |     +- L_PSHK              
- |  |  |     |        | 
- |  |  |     |        +- L_NEGK              
- |  |  |     |           | 
- |  |  |     |           +- _NEG_P              
- |  |  |     |                
- |  |  |     +- _DDIV               
- |  |  |     |  | 
- |  |  |     |  +- D_PULL               (see above)
- |  |  |     |  |  
- |  |  |     |  +- D_PULK               (see above)
- |  |  |     |  |  
- |  |  |     |  +- D_DIVKL             
- |  |  |     |  |  | 
- |  |  |     |  |  +- D_MAXK               (see above)
- |  |  |     |  |  |  
- |  |  |     |  |  +- D_NORMK              (see above)
- |  |  |     |  |     
- |  |  |     |  +- D_PSHK               (see above)
- |  |  |     |     
- |  |  |     +- _FUTRUNC            
- |  |  |     |  | 
- |  |  |     |  +- _FSTRUNC            
- |  |  |     |     | 
- |  |  |     |     +- F_PULK               (see above)
- |  |  |     |     |  
- |  |  |     |     +- F_TOLONGK           
- |  |  |     |     |    
- |  |  |     |     +- L_PSHK               (see above)
- |  |  |     |        
- |  |  |     +- _DCMP               
- |  |  |     |    
- |  |  |     +- ADC_Value            (see above)
- |  |  |        
- |  |  +- CheckSelf_Discharge 
- |  |  |  | 
- |  |  |  +- CheckSelf_SysVoltLow_DisCharge
- |  |  |  |  | 
- |  |  |  |  +- CheckSelf_SysVoltLow_DischagTemp
- |  |  |  |       
- |  |  |  +- CheckSelf_CellVoltLow_DisCharge
- |  |  |  |  | 
- |  |  |  |  +- CheckSelf_CellVoltLow_Temp
- |  |  |  |  |    
- |  |  |  |  +- _LCMP               
- |  |  |  |       
- |  |  |  +- CheckSelf_CellTempHigh_DisCharge
- |  |  |  |    
- |  |  |  +- CheckSelf_CellTempLow_DisCharge
- |  |  |  |    
- |  |  |  +- CheckSelf_CurrentOver_DisCharge
- |  |  |  |  | 
- |  |  |  |  +- _FCMP                (see above)
- |  |  |  |     
- |  |  |  +- CheckSelf_InsulDetect_DisCharge
- |  |  |  |  | 
- |  |  |  |  +- _DUFLOAT            
- |  |  |  |  |  | 
- |  |  |  |  |  +- UL_PULK              (see above)
- |  |  |  |  |  |  
- |  |  |  |  |  +- D_FRLONGK           
- |  |  |  |  |  |  | 
- |  |  |  |  |  |  +- D_NORMK_UNARY        (see above)
- |  |  |  |  |  |     
- |  |  |  |  |  +- D_PSHK_UNARY         (see above)
- |  |  |  |  |     
- |  |  |  |  +- _DCMP                (see above)
- |  |  |  |     
- |  |  |  +- CheckSelf_OpenWireDetect
- |  |  |       
- |  |  +- CheckSelf_Charge    
- |  |     | 
- |  |     +- CheckSelf_SysVoltHigh_Charge
- |  |     |    
- |  |     +- CheckSelf_CellVoltHigh_Charge
- |  |     |    
- |  |     +- CheckSelf_CellTempHigh_Charge
- |  |     |    
- |  |     +- CheckSelf_CellTempLow_Charge
- |  |     |    
- |  |     +- CheckSelf_InsulDetect_Charge
- |  |     |  | 
- |  |     |  +- _DUFLOAT             (see above)
- |  |     |  |  
- |  |     |  +- _DCMP                (see above)
- |  |     |     
- |  |     +- CheckSelf_OpenWireDetect (see above)
- |  |        
  |  +- Task_Handle         
  |       
  +- _Startup            
@@ -4832,6 +3839,6 @@ STATISTIC SECTION
 
 ExeFile:
 --------
-Number of blocks to be downloaded: 6
-Total size of all blocks to be downloaded: 10560
+Number of blocks to be downloaded: 5
+Total size of all blocks to be downloaded: 170
 

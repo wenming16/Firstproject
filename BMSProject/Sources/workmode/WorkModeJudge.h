@@ -22,10 +22,10 @@
   
   typedef struct
   {
-    uint8  WorkState;                       // 工作状态
-    uint8  WorkState_EnterTime_DisCharge;   // 放电状态进入计时   
-    uint8  WorkState_EnterTime_Charge;      // 快充状态进入计时     
-    uint8  WorkState_EnterFlag;             // 进入放电程序中记录
+    uint8  WorkState;  
+    //uint8  WorkState_EnterTime_DisCharge;   // 放电状态进入计时   
+    //uint8  WorkState_EnterTime_Charge;      // 快充状态进入计时     
+    //uint8  WorkState_EnterFlag;             // 进入放电程序中记录
   }WorkStateJudge_T;
   extern WorkStateJudge_T  g_WorkStateJudge;
   

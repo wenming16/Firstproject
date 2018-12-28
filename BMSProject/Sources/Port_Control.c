@@ -83,7 +83,7 @@ uint8 Light_StateGet(uint16 port,uint8 pin)
  
  *说明：       
 ========================================================================*/ 
-uint8 Relay_Init(uint16 port,uint8 name,uint8 state) 
+uint8 Port_Init(uint16 port,uint8 name,uint8 state) 
 {
    uint8 Init_state;
    Init_state = Init_GPIO(port,name,1,state);    //初始化继电器 
@@ -98,7 +98,7 @@ uint8 Relay_Init(uint16 port,uint8 name,uint8 state)
  
  *说明：       
 ========================================================================*/ 
-void Relay_Control(uint16 port,uint8 name,uint8 state)
+void Port_Control(uint16 port,uint8 name,uint8 state)
 {
     GPIO_Set(port,PRT,name,state);   //控制继电器状态     
 } 
@@ -111,7 +111,7 @@ void Relay_Control(uint16 port,uint8 name,uint8 state)
  
  *说明：       
 ========================================================================*/ 
-uint8 Relay_StateGet(uint16 port,uint8 pin)
+uint8 Port_StateGet(uint16 port,uint8 pin)
 {
    uint8 state;
    state = GPIO_Get(port,1,pin);

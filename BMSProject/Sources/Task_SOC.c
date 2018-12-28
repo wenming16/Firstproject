@@ -338,41 +338,44 @@ float inition_soc(float v)
 /*=======================================================================
  *函数名:      SOC_StaticTime
  *功能:        计算当系统为常电时，系统SOC查表的时间
- *参数:        readTime:实时读取的时间
+ *参数:        readhour、readminite:实时读取的时间(时/分)
                current：实时测量电流的大小 
-        
+               currentset：静态电流大小设置
+               starttime：满足条件时存储的初始时间
+               hourset:用户设定的多长时间满足条件
+               
  *返回：       uint8：返回是否需要查表,1:进行查表;0:不查表 
  *说明：       当系统为常电时，判断电流为0且SOC在[0~20]或[90~100]范围内时间超过
                3小时时进行查表初始初始化
 ========================================================================*/
-static
-uint8 SOC_StaticTime(uint8 readhour, uint8 readminite, float current)
+
+uint8 Sleep_StaticTime(uint8 readhour, uint8 readminite, float current, float currentset, uint16 *starttime, uint16 hourset)
 {
     static uint8 Time_firstflag;
     static uint8 cnt[2];
-    if(abs(current)<0.5)
+    if(abs(current)<currentset)
     {  
-      if(++cnt[0]*SOC_Period/1000>20) //当20S内都是电流小于0.5A开始计时
+      if(++cnt[0]*SOC_Period/1000>10) //当10S内都是电流小于2A开始计时
       {  
-        cnt[0] = 20; 
+        cnt[0] = 10; 
         cnt[1] = 0;
         if(Time_firstflag == 0)
         { 
            Time_firstflag = 1;
-           SOCInfo.SOC_CheckTable_StartTime = ((uint16)readhour<<8) | readminite ;           
+           *starttime = ((uint16)readhour<<8) | readminite ;           
         }
         else
         {
-          if((((uint16)readhour<<8) | readminite)-SOCInfo.SOC_CheckTable_StartTime >= 0)
+          if((((uint16)readhour<<8) | readminite)-(*starttime) >= 0)
           {
-            if((((uint16)readhour<<8) | readminite)-SOCInfo.SOC_CheckTable_StartTime >= ((uint16)4<<8))//大于4小时查表
+            if((((uint16)readhour<<8) | readminite)-(*starttime) >= (hourset<<8))//大于4小时查表
             {
                 return TRUE;
             }
           }
           else
           {
-            if(((uint16)24<<8)-SOCInfo.SOC_CheckTable_StartTime+(((uint16)readhour<<8) | readminite) >= ((uint16)4<<8))
+            if(((uint16)24<<8)-(*starttime)+(((uint16)readhour<<8) | readminite) >= (hourset<<8))
             {   
                 return TRUE;
             }
@@ -380,7 +383,7 @@ uint8 SOC_StaticTime(uint8 readhour, uint8 readminite, float current)
         }
       }
     }
-    else if(++cnt[1]*SOC_Period/1000>2)//电流跳变持续超过2s认为它是处于非工作状态
+    else if(++cnt[1]*SOC_Period/1000>2)//电流跳变持续超过2s才认为它是处于非工作状态
     {
        cnt[0] = 0;
        cnt[1] = 2;
@@ -402,10 +405,10 @@ uint8 SOC_StaticTime(uint8 readhour, uint8 readminite, float current)
  *说明：       
 ========================================================================*/ 
 static
-float Energy_TotalCal(uint8 mode,float ah1,uint32 Total_V,float Total_E,float current)
+float Energy_TotalCal(uint8 mode, float ah1, uint32 Total_V,float Total_E,float current)
 {
   static float Energy=0;
-  static float mode_n;
+  float mode_n;
   
   if(mode == MODE_CHARGE)
   {

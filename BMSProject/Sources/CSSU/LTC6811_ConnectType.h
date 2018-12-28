@@ -18,11 +18,11 @@
   
   //各个6804的具体配置
   //导线开路的配置数
-  #define NUM1_Batper            NUM1_Batper_true
-  #define NUM2_Batper            NUM2_Batper_true  
-  #define NUM3_Batper            NUM3_Batper_true
-  #define NUM4_Batper            NUM4_Batper_true
-  #define NUM5_Batper            NUM5_Batper_true
+  #define NUM1_Batper            (NUM1_Batper_true)
+  #define NUM2_Batper            (NUM2_Batper_true)  
+  #define NUM3_Batper            (NUM3_Batper_true)
+  #define NUM4_Batper            (NUM4_Batper_true)
+  #define NUM5_Batper            (NUM5_Batper_true)
   //第1个6811的电压采集连接方式
   #define NUM1_Batper_true       8 //每个6804测量电池的个数
   #define NUM1_Batper_front      4 //6804中第一个ADC1接的电池个数

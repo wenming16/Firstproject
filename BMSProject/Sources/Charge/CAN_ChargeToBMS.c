@@ -12,7 +12,7 @@
       Modification:
 ========================================================================*/
 
-#include  "Task_BmsAndChargePile.h"
+#include  "Task_ChargeCfg.h"
 
 ChargePileBMS_T         ChargePileBMS;
 ChargePileBMS_State_T   ChargePileBMS_State;
@@ -23,7 +23,7 @@ ChargePileBMS_State_T   ChargePileBMS_State;
  *返回：       无
  *说明：       
 ========================================================================*/
-void ChargePile_to_Bms(pCANFRAME data)
+void CAN_ChargetoBMS(pCANFRAME data)
 {
   uint8   Val8;
   uint16  Val;
@@ -52,9 +52,6 @@ void ChargePile_to_Bms(pCANFRAME data)
      ChargePileBMS_State.On_Line          = (Val8>>3)&0x01; 
      ChargePileBMS_State.GetMsg           = (Val8>>4)&0x01;  
   }
-  
-        
       
-  //Task_Flag_Counter.UpMonitor_to_BMS++;
 }         
 
