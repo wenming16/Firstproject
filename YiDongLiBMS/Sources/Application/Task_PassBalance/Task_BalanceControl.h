@@ -4,7 +4,7 @@
    
     #include   "TypeDefinition.h"
     
-    #define    balanceperio  500 
+    #define    BALANCEPERIO  500        
     
     void Task_BalanceControl_ON(void);
     void Task_BalanceControl_OFF(void);

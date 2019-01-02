@@ -17,12 +17,13 @@
 #include  "WorkModeJudge.h"
 #include  "Task_EEEReadWrite.h"
 #include  "Task_UpMonitor.h"
+#include  "Task_Init.h"
 
 #include  "Filter_Function.h"
 #include  "ADC.h"
 
 SOCInfo_T     g_SOCInfo;
-EnergyInfo_T  EnergyInfo;
+EnergyInfo_T  g_EnergyInfo;
 
 
 static float  inition_soc(float v);
@@ -57,6 +58,7 @@ void Task_SOCSOH(void)
   
   SOH_Cal();
   
+  g_Roll_Tick.Roll_SOCSOH++;
 }
 
 /*=======================================================================
@@ -117,7 +119,7 @@ void SOC_AhIntegral(float current, uint16 Voltagemin, uint16 Voltagemax, uint16 
       *(uint16*)(0x0D10) =  (uint16)(g_SOCInfo.SOC_Init); //g_SOCInfo.SOC_Init
 
   }
-  else if(((g_SOCInfo.SOC_ValueRead < 0.2)||(g_SOCInfo.SOC_ValueRead > 0.9)) && (g_SysTime.SOC_Static_Time >= 4))
+  else if(((g_SOCInfo.SOC_ValueRead < 0.2)||(g_SOCInfo.SOC_ValueRead > 0.9)||(Vmax>=3.334)||(Vmin<=3.242)&&(Vmin>=2.68)) && (g_SysTime.SOC_Static_Time >= 4))
   {   //当SOC小于20%或大于90%,且电池静置时间大于4小时,或在常电状态下电流小于0.5A持续时间大于3小时进行查表     
       //SOC_LEP_DATA.SOC_t = 2;
       g_SysTime.SOC_Static_Time = 0; 
@@ -161,7 +163,7 @@ void SOC_AhIntegral(float current, uint16 Voltagemin, uint16 Voltagemax, uint16 
       }      
     }             
    
-    EnergyInfo.Energy_Total_Charge = Energy_TotalCal(g_WorkStateJudge.WorkState,ah1,g_DataColletInfo.SysVolt_Total,EnergyInfo.Energy_Total_Charge,current);
+    g_EnergyInfo.Energy_Total_Charge = Energy_TotalCal(g_WorkStateJudge.WorkState,ah1,g_VoltInfo.SysVolt_Total,g_EnergyInfo.Energy_Total_Charge,current);
   }            
   //放电状态
   else     
@@ -180,7 +182,7 @@ void SOC_AhIntegral(float current, uint16 Voltagemin, uint16 Voltagemax, uint16 
         g_SOCInfo.SOC_ValueInitDiff  = g_SOCInfo.SOC_ValueRealtimeDiff;
       }
     }
-    EnergyInfo.Energy_Total_DisCharge = Energy_TotalCal(g_WorkStateJudge.WorkState,ah1,g_DataColletInfo.SysVolt_Total,EnergyInfo.Energy_Total_DisCharge,current);          
+    g_EnergyInfo.Energy_Total_DisCharge = Energy_TotalCal(g_WorkStateJudge.WorkState,ah1,g_VoltInfo.SysVolt_Total,g_EnergyInfo.Energy_Total_DisCharge,current);          
   } 
   
   g_SOCInfo.SOC_LowestVoltGet  = g_SOCInfo.SOC_LowestVoltGet-AH;        //按查表的最小电压累加SOC
@@ -237,7 +239,7 @@ void SOC_AhIntegral(float current, uint16 Voltagemin, uint16 Voltagemax, uint16 
   {
      g_SOCInfo.SOC_ValueRead = 0;
   }     
-  EEprom_Data.Charge_Times = EEprom_Data.Charge_Times + (uint16)(EnergyInfo.Energy_Total_Charge/SYS_ELECTRIC_QUANTITY); //充电次数 
+  EEprom_Data.Charge_Times = EEprom_Data.Charge_Times + (uint16)(g_EnergyInfo.Energy_Total_Charge/SYS_ELECTRIC_QUANTITY); //充电次数 
   g_SOCInfo.SOC_CalTime++; 
 } 
 
@@ -399,7 +401,7 @@ void SOH_Cal(void)
    uint32 Bms_Life_Count;
      
    Bms_Life_Count = CELL_LIFE_CYCLE*SYS_CAPACITY;  //充电次数(2000)*单体额定容量
-   g_BMSMonitor_SOH.SOH = 1 - (EnergyInfo.Energy_Total_Charge/SYS_VOLT_NOMINAL/1000.0/CELL_LIFE_CYCLE*0.2);   //初始SOH-计算值(标定值：Bms_Life_Count)
+   g_BMSMonitor_SOH.SOH = 1 - (g_EnergyInfo.Energy_Total_Charge/SYS_VOLT_NOMINAL/1000.0/CELL_LIFE_CYCLE*0.2);   //初始SOH-计算值(标定值：Bms_Life_Count)
 
 }
 

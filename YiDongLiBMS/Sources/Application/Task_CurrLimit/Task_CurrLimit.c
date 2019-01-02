@@ -13,6 +13,7 @@
 ========================================================================*/
   #include"Task_CurrLimit.h"
   #include"Task_DataProcess.h"
+  #include"Task_Init.h"
  
  CurrLimit_T CurrLimit;
 
@@ -44,7 +45,7 @@ void Task_CurrLimit(void)
   //充电电流限制
   CurrLimit.Curr_Charge_Cons = ChagCurrLimit_Cons(g_TempInfo.CellTemp_Ave);
     
-  //Task_Flag_Counter.Counter_ChargeCurrent++;
+  g_Roll_Tick.Roll_Currlimit++;
 
 } 
 

@@ -18,7 +18,6 @@
   #include  "derivative.h" 
 
   #define  BUS_CLOCK		   32000000	   //总线频率
-  #define  OSC_CLOCK		   16000000	   //晶振频率
 
   typedef enum
   {

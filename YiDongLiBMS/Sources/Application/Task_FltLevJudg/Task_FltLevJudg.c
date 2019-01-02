@@ -16,33 +16,36 @@
 #include  "Task_InsulDetect.h"
 #include  "FltLevcfg.h"
 #include  "Task_UpMonitor.h"
+#include  "Task_Init.h"
 
 /*=======================================================================
                                   ÉùÃ÷
 ========================================================================*/ 
-Fault_DisCharge_T g_Flt_DisChg; 
-Fault_Charge_T    g_Flt_Charge;
-State_Offline_T   State_Offline;
+Fault_DisCharge_T  g_Flt_DisChg; 
+Fault_Charge_T     g_Flt_Charge;
+State_Offline_T    State_Offline;
+HeartBeat_T        HeartBeat;
 
  //·Åµç¹ÊÕÏÅĞ¶Ï
- static uint8 Fault_DisChg_VoltS(uint32 Volt,uint8 Temp); 
- static uint8 Fault_DisChg_VoltC(uint16 Volt,uint8 Temp);
- static uint8 Fault_DisChg_VoltCD(uint16 V_max,uint16 V_min);
- static uint8 Fault_DisChg_TempH(uint8 Temp);
- static uint8 Fault_DisChg_TempL(uint8 Temp);
- static uint8 Fault_DisChg_TempD(uint8 T_max,uint8 T_min);
- static uint8 Fault_DisChg_CurrH(float Current);
- static uint8 Fault_DisChg_Insul(uint16 Insul);
+ static uint8 Fault_DisChg_VoltS(uint32 Volt,uint8 Temp); //·Åµç×ÜÑ¹µÍ
+ static uint8 Fault_DisChg_VoltC(uint16 Volt,uint8 Temp); //·Åµçµ¥ÌåµçÑ¹µÍ
+ static uint8 Fault_DisChg_VoltCD(uint16 V_Diff);         //·ÅµçÑ¹²î
+ static uint8 Fault_DisChg_TempH(uint8 Temp);             //·Åµç¸ßÎÂ
+ static uint8 Fault_DisChg_TempL(uint8 Temp);             //·ÅµçµÍÎÂ
+ static uint8 Fault_DisChg_TempD(uint8 T_Diff);           //·ÅµÍÎÂ²î
+ static uint8 Fault_DisChg_CurrH(float Current);          //·Åµç¹ıÁ÷
+ static uint8 Fault_DisChg_Insul(uint16 Insul);           //¾øÔµ¹ÊÕÏ
  //³äµç¹ÊÕÏÅĞ¶Ï
- static uint8 Fault_Charge_VoltS(uint32 Volt);
- static uint8 Fault_Charge_VoltCH(uint16 Volt);
- static uint8 Fault_Charge_VoltCD(uint16 V_max,uint16 V_min);
- static uint8 Fault_Charge_TempH(uint8 Temp);
- static uint8 Fault_Charge_TempL(uint8 Temp);
- static uint8 Fault_Charge_TempD(uint8 T_max,uint8 T_min);
- static uint8 Fault_Charge_CurrH(float Current);
- static uint8 Fault_Charge_Insul(uint16 Insul);
-
+ static uint8 Fault_Charge_VoltS(uint32 Volt);            //³äµç×ÜÑ¹¸ß
+ static uint8 Fault_Charge_VoltCH(uint16 Volt);           //³äµçµ¥Ìå¸ß
+ static uint8 Fault_Charge_VoltCD(uint16 V_Diff);         //³äµçÑ¹²î
+ static uint8 Fault_Charge_TempH(uint8 Temp);             //³äµç¸ßÎÂ
+ static uint8 Fault_Charge_TempL(uint8 Temp);             //³äµçµÍÎÂ
+ static uint8 Fault_Charge_TempD(uint8 T_Diff);           //³äµçÎÂ²î
+ static uint8 Fault_Charge_CurrH(float Current);          //³äµç¹ıÁ÷
+ static uint8 Fault_Charge_Insul(uint16 Insul);           //¾øÔµ¹ÊÕÏ
+ //Í¨ĞÅµôÏß
+ static uint8 Fault_CSSU_OffLine(void);                   //´Ó°åµôÏß
  /*=======================================================================
                               ¹ÊÕÏÅĞ¶Ïº¯Êı0x00
  ========================================================================
@@ -57,13 +60,10 @@ void Init_TaskFltLevJudg(void)
 {
   //¹ÊÕÏµÈ¼¶ÅĞ¶Ï±äÁ¿ÇåÁã
   memset(&g_Flt_DisChg,           0, sizeof(Fault_DisCharge_T));  //·Åµç¹ÊÕÏµÈ¼¶ÇåÁã
-  memset(&g_Flt_Charge,           0, sizeof(Fault_Charge_T));        //³äµç¹ÊÕÏµÈ¼¶ÇåÁã
-  memset(&State_Offline,          0, sizeof(State_Offline_T));        //µôÏß¹ÊÕÏ×´Ì¬ÇåÁã
+  memset(&g_Flt_Charge,           0, sizeof(Fault_Charge_T));     //³äµç¹ÊÕÏµÈ¼¶ÇåÁã
+  memset(&State_Offline,          0, sizeof(State_Offline_T));    //µôÏß¹ÊÕÏ×´Ì¬ÇåÁã
   memset(&HeartBeat,              0, sizeof(HeartBeat_T));        //ĞÄÌøĞÅºÅÇåÁã
 }
-
-
-
 /*=======================================================================
                               ¹ÊÕÏÅĞ¶Ïº¯Êı0x00
  ========================================================================
@@ -76,6 +76,7 @@ void Init_TaskFltLevJudg(void)
 ========================================================================*/ 
 void Task_FltLevJudg(uint8 workstate)
 {
+   State_Offline.CSSU1 = Fault_CSSU_OffLine();
    switch(workstate)
    {
     case MODE_DISCHARGE: //·Åµç×´Ì¬
@@ -84,12 +85,12 @@ void Task_FltLevJudg(uint8 workstate)
       g_Flt_Charge.Level_Charge_BalanceOff_Flag = 0;
       
       //ÅĞ¶Ï·Åµç×´Ì¬¹ÊÕÏ
-      g_Flt_DisChg.Level_Volt_Sys_Low           = Fault_DisChg_VoltS(g_DataColletInfo.SysVolt_Total, g_TempInfo.CellTemp_Ave);
+      g_Flt_DisChg.Level_Volt_Sys_Low           = Fault_DisChg_VoltS(g_VoltInfo.SysVolt_Total, g_TempInfo.CellTemp_Ave);
       g_Flt_DisChg.Level_Volt_Cell_Low          = Fault_DisChg_VoltC(g_VoltInfo.CellVolt_Min, g_TempInfo.CellTemp_Ave);
-      g_Flt_DisChg.Level_Volt_Cell_Diff_High    = Fault_DisChg_VoltCD(g_VoltInfo.CellVolt_Max, g_VoltInfo.CellVolt_Min);
+      g_Flt_DisChg.Level_Volt_Cell_Diff_High    = Fault_DisChg_VoltCD(g_VoltInfo.CellVolt_Diff);
       g_Flt_DisChg.Level_Temp_High              = Fault_DisChg_TempH(g_TempInfo.CellTemp_Max);
       g_Flt_DisChg.Level_Temp_Low               = Fault_DisChg_TempL(g_TempInfo.CellTemp_Min);
-      g_Flt_DisChg.Level_Temp_Diff_High         = Fault_DisChg_TempD(g_TempInfo.CellTemp_Max, g_TempInfo.CellTemp_Min);
+      g_Flt_DisChg.Level_Temp_Diff_High         = Fault_DisChg_TempD(g_TempInfo.CellTemp_Diff);
       g_Flt_DisChg.Level_Current_DisCharge_High = Fault_DisChg_CurrH(g_DataColletInfo.DataCollet_Current_Filter);
       g_Flt_DisChg.Level_Insul                  = Fault_DisChg_Insul(g_IsoDetect.insulation_resist);
       //¶Ï¿ª¼ÌµçÆ÷µÄ¶ş¼¶¹ÊÕÏ±ê¼Ç
@@ -98,7 +99,7 @@ void Task_FltLevJudg(uint8 workstate)
          (g_Flt_DisChg.Level_Temp_High == 2)||\
          (g_Flt_DisChg.Level_Temp_Low == 2) ||\
          (g_Flt_DisChg.Level_Current_DisCharge_High == 2) ||\
-         (g_Flt_DisChg.Level_Insul == 2))
+         (g_Flt_DisChg.Level_Insul == 2)||(State_Offline.CSSU1 == 1))
       {
         g_Flt_DisChg.Level_DisCharge_SwitchOff_flag = 1;  
       }
@@ -112,32 +113,32 @@ void Task_FltLevJudg(uint8 workstate)
       g_Flt_DisChg.Level_DisCharge_SwitchOff_flag = 0;
       
       //ÅĞ¶Ï³äµç×´Ì¬¹ÊÕÏ
-      g_Flt_Charge.Level_Volt_Sys_High        = Fault_Charge_VoltS(g_DataColletInfo.SysVolt_Total);
+      g_Flt_Charge.Level_Volt_Sys_High        = Fault_Charge_VoltS(g_VoltInfo.SysVolt_Total);
       g_Flt_Charge.Level_Volt_Cell_High       = Fault_Charge_VoltCH(g_VoltInfo.CellVolt_Max);
-      g_Flt_Charge.Level_Volt_Cell_Diff_High  = Fault_Charge_VoltCD(g_VoltInfo.CellVolt_Max, g_VoltInfo.CellVolt_Min);
+      g_Flt_Charge.Level_Volt_Cell_Diff_High  = Fault_Charge_VoltCD(g_VoltInfo.CellVolt_Diff);
       g_Flt_Charge.Level_Temp_High            = Fault_Charge_TempH(g_TempInfo.CellTemp_Max);
       g_Flt_Charge.Level_Temp_Low             = Fault_Charge_TempL(g_TempInfo.CellTemp_Min);
-      g_Flt_Charge.Level_Temp_Diff_High       = Fault_Charge_TempD(g_TempInfo.CellTemp_Max, g_TempInfo.CellTemp_Min);
+      g_Flt_Charge.Level_Temp_Diff_High       = Fault_Charge_TempD(g_TempInfo.CellTemp_Diff);
       g_Flt_Charge.Level_Current_Charge_High  = Fault_Charge_CurrH(g_DataColletInfo.DataCollet_Current_Filter);
       g_Flt_Charge.Level_Insul                = Fault_Charge_Insul(g_IsoDetect.insulation_resist);
       //¶Ï¿ª¼ÌµçÆ÷µÄ¶ş¼¶¹ÊÕÏ±ê¼Ç
-      if((g_Flt_Charge.Level_Volt_Sys_High==2) || \
-         (g_Flt_Charge.Level_Volt_Cell_High==2) || \
+      if((g_Flt_Charge.Level_Volt_Sys_High==2) ||\
+         (g_Flt_Charge.Level_Volt_Cell_High==2) ||\
          (g_Flt_Charge.Level_Temp_High == 2)||\
          (g_Flt_Charge.Level_Temp_Low == 2)||\
-         (g_Flt_Charge.Level_Insul == 2))
+         (g_Flt_Charge.Level_Insul == 2)||(State_Offline.CSSU1 == 1))
       {
         g_Flt_Charge.Level_Charge_SwitchOff_flag = 1;  
       }
       //¾ùºâ
-      if((g_Flt_Charge.Level_Volt_Sys_High!=0) || \
-         (g_Flt_Charge.Level_Volt_Cell_High != 0)||\
+      if((g_Flt_Charge.Level_Volt_Sys_High!=0) ||\
+         (g_Flt_Charge.Level_Volt_Cell_High != 0)|\
          (g_Flt_Charge.Level_Volt_Cell_Diff_High != 0)||\
          (g_Flt_Charge.Level_Temp_High != 0)||\
          (g_Flt_Charge.Level_Temp_Low != 0) ||\
          (g_Flt_Charge.Level_Temp_Diff_High != 0) ||\
          (g_Flt_Charge.Level_Current_Charge_High != 0) ||\
-         (g_Flt_Charge.Level_Insul != 0))
+         (g_Flt_Charge.Level_Insul != 0)||(State_Offline.CSSU1 != 0))
       {
         g_Flt_Charge.Level_Charge_BalanceOff_Flag = 1;  
       }
@@ -147,11 +148,9 @@ void Task_FltLevJudg(uint8 workstate)
       }
       
     break;
-   }
+   }  
    
-   //ÈÎÎñÔËĞĞ¼ÆÊı±ê¼Ç
-  //Task_Flag_Cnt.F_FaultLevelJudge++;
-  
+   g_Roll_Tick.Roll_FltJudg++; 
 }
 /*============================¹ÊÕÏÅĞ¶Ïº¯Êı===============================*/
 
@@ -454,13 +453,10 @@ static uint8 Fault_DisChg_VoltC(uint16 Volt,uint8 Temp)  //ÊäÈëµ¥ÌåµçÑ¹ºÍ»·¾³ÎÂ¶
  *ËµÃ÷£º       
 ========================================================================*/ 
 //ÅĞ¶Ï¹ÊÕÏµÈ¼¶
-static uint8 Fault_DisChg_VoltCD(uint16 V_max,uint16 V_min)  //ÊäÈëµ¥Ìå×î¸ß/µÍµçÑ¹
+static uint8 Fault_DisChg_VoltCD(uint16 V_Diff)  //ÊäÈëµ¥Ìå×î¸ß/µÍµçÑ¹
 {
-  static uint16 V_Diff;
   static uint8 cnt[2];      //Ê±¼ä¼ÆÊı
   static uint8 FltL;
-  
-  V_Diff = V_max - V_min;   //Çó×î´óÑ¹²î
   
   //ÅĞ¶Ï¹ÊÕÏµÈ¼¶
   if(FltL==0)           //0¼¶¹ÊÕÏ
@@ -685,13 +681,10 @@ static uint8 Fault_DisChg_TempL(uint8 Temp)  //ÊäÈëÎÂ¶È
  *ËµÃ÷£º       
 ========================================================================*/ 
 //ÅĞ¶Ï¹ÊÕÏµÈ¼¶
-static uint8 Fault_DisChg_TempD(uint8 T_max,uint8 T_min)  //ÊäÈëµ¥Ìå×î¸ß/µÍµçÑ¹
+static uint8 Fault_DisChg_TempD(uint8 T_Diff)  //ÊäÈëµ¥Ìå×î¸ß/µÍµçÑ¹
 {
-  static uint8 T_Diff;
   static uint8 cnt[2];      //Ê±¼ä¼ÆÊı
   static uint8 FltL;
-  
-  T_Diff = T_max - T_min;   //Çó×î´óÑ¹²î
   
   //ÅĞ¶Ï¹ÊÕÏµÈ¼¶
   if(FltL==0)           //0¼¶¹ÊÕÏ
@@ -1041,13 +1034,10 @@ static uint8 Fault_Charge_VoltCH(uint16 Volt)  //ÊäÈëµ¥ÌåµçÑ¹ºÍ»·¾³ÎÂ¶È
  *ËµÃ÷£º       
 ========================================================================*/ 
 //ÅĞ¶Ï¹ÊÕÏµÈ¼¶
-static uint8 Fault_Charge_VoltCD(uint16 V_max,uint16 V_min)  //ÊäÈëµ¥Ìå×î¸ß/µÍµçÑ¹
+static uint8 Fault_Charge_VoltCD(uint16 V_Diff)  //ÊäÈëµ¥Ìå×î¸ß/µÍµçÑ¹
 {
-  static uint16 V_Diff;
   static uint8 cnt[2];      //Ê±¼ä¼ÆÊı
   static uint8 FltL;
-  
-  V_Diff = V_max - V_min;   //Çó×î´óÑ¹²î
   
   //ÅĞ¶Ï¹ÊÕÏµÈ¼¶
   if(FltL==0)           //0¼¶¹ÊÕÏ
@@ -1272,13 +1262,10 @@ static uint8 Fault_Charge_TempL(uint8 Temp)  //ÊäÈëÎÂ¶È
  *ËµÃ÷£º       
 ========================================================================*/ 
 //ÅĞ¶Ï¹ÊÕÏµÈ¼¶
-static uint8 Fault_Charge_TempD(uint8 T_max,uint8 T_min)  //ÊäÈëµ¥Ìå×î¸ß/µÍµçÑ¹
+static uint8 Fault_Charge_TempD(uint8 T_Diff)  //ÊäÈëµ¥Ìå×î¸ß/µÍµçÑ¹
 {
-  static uint8 T_Diff;
   static uint8 cnt[2];      //Ê±¼ä¼ÆÊı
   static uint8 FltL;
-  
-  T_Diff = T_max - T_min;   //Çó×î´óÑ¹²î
   
   //ÅĞ¶Ï¹ÊÕÏµÈ¼¶
   if(FltL==0)           //0¼¶¹ÊÕÏ
@@ -1401,6 +1388,29 @@ static uint8 Fault_Charge_CurrH(float Current)//ÊäÈëÎÂ¶È
     cnt[3] = 0; 
   }
   return(FltL);
+}
+
+//CSSUµôÏß¼ì²â
+static 
+uint8 Fault_CSSU_OffLine(void)
+{
+  static uint8 cnt;      
+  uint8 state=0;
+  if(HeartBeat.HeartBeat_CSSU1 == 1 )
+  { 
+     HeartBeat.HeartBeat_CSSU1 = 0;
+     state = 0;
+     cnt = 0;      
+  }
+  else
+  {
+     if(++cnt*PERIOD_DISCHARGE/1000>=2)//2S
+     {
+       cnt = 0;
+       state = 1; 
+     }
+  }
+  return state;
 }
 /*================================³äµç¹ıÁ÷================================*/
 

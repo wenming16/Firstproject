@@ -30,39 +30,34 @@
 ========================================================================*/
 uint8 CAN2_Init(uint16 Baud_Rate) 
 {
-  uint8 Cnt[3];
+  uint8 CAN2cnt[3] = {0,0,0};
   
-  if((Baud_Rate != 125)||(Baud_Rate != 250)||(Baud_Rate != 500))
+  if((Baud_Rate != 125)&&(Baud_Rate != 250)&&(Baud_Rate != 500))
   {
     return(Init_Fault_CAN_BaudRate);
   }
   
-  if(CAN2CTL0_INITRQ==0)      // 查询是否进入初始化状态   
+  if(CAN2CTL0_INITRQ==0)       // 查询是否进入初始化状态   
   {
-    CAN2CTL0_INITRQ =1;        // 进入初始化状态
-  }
-  else
-  {
-    return (Init_Fault_CAN_EnterState);
+    CAN2CTL0_INITRQ = 1;       // 进入初始化状态
   }
   
   do
   {
-    if(++Cnt[0]>=200)
+    if(++CAN2cnt[0]>200)
     {
-      Cnt[0] = 0;
-      return(Init_Fault_CAN_Unready);
+      return(Init_Fault_CAN_Unready1);
     }
   }
   while (CAN2CTL1_INITAK==0);  //等待进入初始化状态
-  Cnt[0] = 0;
-
+  CAN2cnt[0] = 0;
+  
   CAN2BTR0_SJW = 0;            //设置同步
   
   switch(Baud_Rate)
   {
     case 500:
-      CAN2BTR0_BRP = 3;            //设置预分频值 
+      CAN2BTR0_BRP = 3;        //设置预分频值 
       CAN2BTR1 = 0x1c;     //设置时段1和时段2的Tq个数 
       break;
     
@@ -75,7 +70,7 @@ uint8 CAN2_Init(uint16 Baud_Rate)
       CAN2BTR0_BRP = 15;            //设置预分频值  
       CAN2BTR1 = 0x1c;     //设置时段1和时段2的Tq个数 
       break;
-  }
+  } 
  
 //关闭滤波器                                  
   CAN2IDMR0 = 0xFF;
@@ -90,28 +85,26 @@ uint8 CAN2_Init(uint16 Baud_Rate)
   CAN2CTL1 = 0xC0;             //使能MSCAN模块,设置为一般运行模式、使用总线时钟源 
 
   CAN2CTL0 = 0x00;             //返回一般模式运行
-
-  do
-  {
-    if(++Cnt[1]>=200)
-    {
-      Cnt[1] = 0;
-      return(Init_Fault_CAN_Unready);
-    }
-  }
-  while(CAN2CTL1_INITAK);      //等待回到一般运行模式
-  Cnt[1] = 0;
   
   do
   {
-    if(++Cnt[2]>=200)
+    if(++CAN2cnt[1]>200)
     {
-      Cnt[2] = 0;
-      return(Init_Fault_CAN_Unready);
+      return(Init_Fault_CAN_Unready2);
+    }
+  }
+  while(CAN2CTL1_INITAK);      //等待回到一般运行模式
+  CAN2cnt[1] = 0;
+  
+  do
+  {
+    if(++CAN2cnt[2]>200)
+    {
+      return(Init_Fault_CAN_Synchr);
     }
   }
   while(CAN2CTL0_SYNCH==0);    //等待总线时钟同步
-  Cnt[2] = 0;
+  CAN2cnt[2] = 0;
   
   CAN2RIER_RXFIE = 1;          //使能接收中断
   
@@ -129,8 +122,8 @@ uint8 CAN2_Init(uint16 Baud_Rate)
 ========================================================================*/ 
 uint8 CAN2_SendMsg(pCANFRAME sendFrame)
 {
-  uint8 send_buf,i;
-  uint8 Cnt[1];
+  uint8  send_buf,i;
+  uint8  Cnt=0;
   
   // 检查数据长度
   if(sendFrame->m_dataLen > 8)
@@ -144,15 +137,11 @@ uint8 CAN2_SendMsg(pCANFRAME sendFrame)
   do
   {
     // 寻找空闲的缓冲器
+    Cnt++;
     CAN2TBSEL=CAN2TFLG;
     send_buf=CAN2TBSEL;
-    if(++Cnt[0]>=200)
-    {
-      Cnt[0] = 0;
-      return(SendMsg_Fault_NoEmptyNode);
-    }
   } 
-  while(!send_buf); 
+  while((!send_buf)&&(Cnt<200)); 
   //写入标识符ID
   
   if (sendFrame->m_IDE == 0)  //按标准帧填充ID
@@ -163,17 +152,17 @@ uint8 CAN2_SendMsg(pCANFRAME sendFrame)
   else  //按扩展帧填充ID
   {
     CAN2TXIDR0 = (uint8)(sendFrame->m_ID>>21);
-    CAN2TXIDR1 = (((uint8)(sendFrame->m_ID>>13)) & 0xe0)|0x18|(((uint8)(sendFrame->m_ID>>15)) &0x07);
+    CAN2TXIDR1 = (((uint8)(sendFrame->m_ID>>13)) & 0xe0)|0x18|(((uint8)(sendFrame->m_ID>>15))&0x07);
     CAN2TXIDR2 = (uint8)(sendFrame->m_ID>>7);
     CAN2TXIDR3 = (uint8)(sendFrame->m_ID<<1);
   }
   
   if(sendFrame->m_RTR==1)
   {     
-      CAN2TXIDR1 |= 0x10;
+    CAN2TXIDR1 |= 0x10;
   }
       
-  for (i=0;i<sendFrame->m_dataLen;++i)  
+  for (i=0; i<sendFrame->m_dataLen; i++)  
   {
     *((&CAN2TXDSR0) + i) = sendFrame->m_data[i];
   } 
@@ -262,19 +251,15 @@ void CAN2_GetMsg_Process(pCANFRAME receiveFrame)
      default:             //接收上位机和内网的报文
        if((receiveFrame->m_ID)>>24 == 0x18)//内网报文 
        {
-         switch(receiveFrame->m_ID)
-         {
-          case 0x18FF9700:
-            State_Offline.CSSU1 = 0;
-            break;
-         }                      
-        DataFromCSSU(receiveFrame);
+          HeartBeat.HeartBeat_CSSU1 = 1;
+          DataFromCSSU(receiveFrame);
        } 
        else if((receiveFrame->m_ID)>>24 == 0x19)//标定报文
        {            
          if((receiveFrame->m_ID)>>8 == 0x19FF99)
          {
            DataFromCSSU(receiveFrame); 
+           HeartBeat.HeartBeat_CSSU1 = 1;
          }
          else
          {
@@ -296,9 +281,9 @@ void CAN2_GetMsg_Process(pCANFRAME receiveFrame)
 //CAN1接收内网数据 
 interrupt void Interrupt_CAN2()            
 {     
-    pCANFRAME mgGet2;
+    CANFRAME mgGet2;
     //Task_Flag_Time.CAN1++;    
-    if (CAN2_GetMsg(mgGet2));
+    if (CAN2_GetMsg(&mgGet2));
 } 
 #pragma CODE_SEG DEFAULT
 

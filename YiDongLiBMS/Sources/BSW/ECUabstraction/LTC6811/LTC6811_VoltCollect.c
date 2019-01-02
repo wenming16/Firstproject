@@ -12,6 +12,7 @@
  
 ========================================================================*/
 #include  "LTC6811_VoltCollect.h" 
+#include  "LTC6811_CMD.h"
 
 LTC6811_VoltInfo_T g_LTC6811_VoltInfo;
 /*=======================================================================
@@ -45,9 +46,7 @@ void LTC6811_VoltCollect(void)
   uint16 pecv_flag=0;
   uint16 PEC_error_v[NUM_IC*4];
   uint8  pecv_error_ce=0;          
-  
-  //SS2=0;
-  //SS2=1;
+
   LTC6811_Wakeup();//»½ÐÑ
   
   for(i = 0;i < NUM_IC*4; i++)

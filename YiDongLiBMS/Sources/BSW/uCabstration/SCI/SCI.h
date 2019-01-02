@@ -17,7 +17,6 @@
   
   #include  "TypeDefinition.h"
   #include  "MC9S12XEP100.h"
-  #include  "derivative.h"
     
   typedef enum
   {

@@ -26,8 +26,9 @@
     uint16  CellVolt_Min;           //单体最小电压
     uint8   CellVolt_MaxNode;       //单体最大电压节点
     uint8   CellVolt_MinNode;       //单体最小电压节点
-    uint16  CellVolt_Diff;
+    uint16  CellVolt_Diff;          //单体压差
     uint16  CellVolt_Ave;           //只会用于均衡控制
+    uint32  SysVolt_Total;          //系统总压
   }VoltInfo_T;
   extern VoltInfo_T g_VoltInfo;
 
@@ -69,9 +70,9 @@
   //采集的数据
   typedef struct
   {
-    uint32  SysVolt_Total;                           //系统电压总和    分辨率:0.0001V
-    uint16  InsulVolt_Total;
-    uint8   Flt_CSSU_TempH;
+    //uint32  SysVolt_Total;                           //系统电压总和    分辨率:0.0001V
+    //uint16  InsulVolt_Total;
+    uint8   CSSU_Flt_TempH;
     float   DataCollet_Current_Filter;               //滤波处理后的电流
   }DataColletInfo_T;
   extern DataColletInfo_T g_DataColletInfo;

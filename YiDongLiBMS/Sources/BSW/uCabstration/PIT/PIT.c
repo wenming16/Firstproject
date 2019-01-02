@@ -16,8 +16,7 @@
                
  //构件函数实现
 
- PIT_TimePeriod_T PIT_TimePeriod; 
-
+ PIT_TimePeriod_T PIT_TimePeriod;  
 /*=======================================================================
  *函数名:      PITInit(uint8 channel,uint8 MUXSEL,uint8 MTLD,uint16 LD)
  *功能:        定时器初始化函数
@@ -26,19 +25,18 @@
  
  *说明：       
 ========================================================================*/
-/*  
-void init_PIT0(void)
+uint8 PIT0_Init(void)
 {
- 
-     PITMTLD0=249;     //为0通道8位计数器赋值
-     PITLD0 = 1279;     //为0通道16位计数器赋值   //(249+1)*(1279+1)/32M=10ms
-     PITMUX_PMUX0=0;   //第0通道使用微计数器0
-     PITCE_PCE0=1;     //第0通道计数器工作 
-     PITCFLMT=0X80;    //使能PIT模块
-     PITINTE_PINTE0 = 0; //0通道定时器定时中断被使能
+   PITMTLD0=249;       //为0通道8位计数器赋值
+   PITLD0 = 1279;      //为0通道16位计数器赋值   //(249+1)*(1279+1)/32M=10ms
+   PITMUX_PMUX0=0;     //第0通道使用微计数器0
+   PITCE_PCE0=1;       //第0通道计数器工作 
+   PITCFLMT=0x80;      //使能PIT模块
+   PITINTE_PINTE0 = 1; //0通道定时器定时中断被使能
+   return 0;
 }
-  
-void init_PIT1(void)
+/*   
+void PIT1_Init(void)
 {
  
      PITMTLD1=249;     //为1通道8位计数器赋值
@@ -48,7 +46,8 @@ void init_PIT1(void)
      PITCFLMT=0X80;    //使能PIT模块
      PITINTE_PINTE1=1; //0通道定时器定时中断被使能
 }    
-*/  
+*/ 
+//不能用
 void PITInit(uint8 channel,uint8 MUXSEL,uint8 MTLD,uint16 LD)
 {     
   if (channel >= 7)
@@ -106,13 +105,13 @@ void PITInit(uint8 channel,uint8 MUXSEL,uint8 MTLD,uint16 LD)
   // 清通道0溢出标志,载入新的计时时间
   PITTF|=1<<channel;
   // 禁止PIT通道0中断 
-  PITINTE &= ~(1<<channel);       
+  PITINTE &= (1<<channel);       
 }
 
-extern void Task_Roll();
+//extern void Task_Roll();
 #pragma CODE_SEG __NEAR_SEG NON_BANKED
 //计时中断，中断周期为10ms
-interrupt void isrPIT0()               //PIT0定时中断函数；
+interrupt void Interrupt_PIT0()//PIT0定时中断函数:10ms周期
 {  
    if (PITTF_PTF0 ==1) 
    {   
@@ -120,12 +119,12 @@ interrupt void isrPIT0()               //PIT0定时中断函数；
    }
    
    Task_Roll();      
-                  
-   if(PIT_TimePeriod.T500ms++ >= 50)
+   PIT_TimePeriod.T500ms++;               
+   if(PIT_TimePeriod.T500ms > 50)
    {
       PIT_TimePeriod.T500ms = 0;
    } 
 }
-#pragma CODE_SEG DEFAULT
+#pragma CODE_SEG DEFAULT 
 
 

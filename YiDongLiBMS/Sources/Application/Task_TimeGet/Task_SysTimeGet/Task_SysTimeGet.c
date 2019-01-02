@@ -13,8 +13,7 @@
 #include  "DS3231_TimeGet.h"
 #include  "Task_PowerOnOff.h"
 #include  "stdtypes.h"
-
-
+#include  "Task_Init.h"
 
 SysTime_T g_SysTime;
 /*=======================================================================
@@ -118,4 +117,7 @@ void Task_SysTimeGet(void)
    }
    g_SysTime.BMS_StartRun_Time = Read_IIC_Time.IIC_Read_Minute;
    g_SysTime.BMS_TotalRun_MiniteTime = g_SysTime.BMS_TotalRun_MiniteTime + timediff; //系统的总运行时间
+
+   g_Roll_Tick.Roll_SysTime++;
+
 }

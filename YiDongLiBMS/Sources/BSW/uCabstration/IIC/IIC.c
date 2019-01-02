@@ -24,12 +24,6 @@
 ========================================================================*/
 uint8 IIC_Init(void) 
 {
-
-  SCL_dir = 1;
-  SDA_dir = 1;
-  SCL = 1;
-  SDA = 1;
-  
   IIC0_IBFD = 0x94;   //总线时钟32MHz,设置SCL主频为100KHz
   IIC0_IBCR = 0x80;   //使能IIC模块,禁止中断
   IIC0_IBSR_IBAL = 1; //清除IBAL标志位  
@@ -39,7 +33,7 @@ uint8 IIC_Init(void)
 
 /* IIC器件的写函数 */
 uint8 IIC_write(uint8 addr,uint8 writeaddr,uint8 data) 
-{
+{   
   uint8 cnt[6];
   
   IIC0_IBCR_TXAK = 0;               // 接收到数据后有应答
@@ -49,17 +43,16 @@ uint8 IIC_write(uint8 addr,uint8 writeaddr,uint8 data)
   IIC0_IBDR = addr;
   do
   {
-    if(++cnt[0]==200)
+    if(++cnt[0]>100)
     {
       return(Fault_IICWrite_IBIF1);
     }
   }
   while(IIC0_IBSR_IBIF == 0); 
-  
   IIC0_IBSR_IBIF = 1;
   do
   {
-    if(++cnt[1]==200)
+    if(++cnt[1]>100)
     {
       return(Fault_IICWrite_RXAK1);
     }
@@ -69,17 +62,16 @@ uint8 IIC_write(uint8 addr,uint8 writeaddr,uint8 data)
   IIC0_IBDR = writeaddr;
   do
   {
-    if(++cnt[2]==200)
+    if(++cnt[2]>100)
     {
       return(Fault_IICWrite_IBIF2);
     }
   }
   while(IIC0_IBSR_IBIF == 0); 
-  
   IIC0_IBSR_IBIF = 1;
   do
   {
-    if(++cnt[3]==200)
+    if(++cnt[3]>100)
     {
       return(Fault_IICWrite_RXAK2);
     }
@@ -89,17 +81,16 @@ uint8 IIC_write(uint8 addr,uint8 writeaddr,uint8 data)
   IIC0_IBDR =data;
   do
   {
-    if(++cnt[4]==200)
+    if(++cnt[4]>100)
     {
       return(Fault_IICWrite_IBIF3);
     }
   }
   while(IIC0_IBSR_IBIF == 0);
-   
   IIC0_IBSR_IBIF = 1;
   do
   {
-    if(++cnt[5]==200)
+    if(++cnt[5]>100)
     {
       return(Fault_IICWrite_RXAK3);
     }

@@ -48,7 +48,6 @@ uint16 Level2_FltCode(Flt_BMSCheckSelf_T*ptr)
              (ptr->CellTemp_Low<<4)|(ptr->CellTemp_Over<<5)|(ptr->SysCurr_Over<<6)|\
              (ptr->SysInsul_Flt<<7)|(ptr->OpenWire_Flt<<8);
    
-   
    return fltcode;
 }
 

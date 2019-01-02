@@ -17,12 +17,12 @@
 #include  "Task_DataProcess.h" 
 #include  "Task_SOCSOH.h"
 #include  "Task_FltLevJudg.h"
-
+#include  "Task_Init.h"
 #include  "SCI.h"
 
 RS485  RS485_Receive; 
 
-void RS485_Init(void);        
+static uint8 RS485_Init(void);        
 /*=======================================================================
  *函数名:      Init_Screen(void)
  *功能:        初始化显示屏接口
@@ -34,8 +34,8 @@ uint8 Init_Screen(void)
 {
    uint8 state;
    
-   RS485_Init();
-   state = SCI1_Init();
+   state = RS485_Init();
+   state = state|SCI1_Init();
    return state;
 }
 
@@ -59,12 +59,14 @@ void SCI_ScreenTransfer(uint8 numbyte, uint8 *data)
  *返回：       无
  *说明：       
 ========================================================================*/
-void RS485_Init(void) 
+static
+uint8 RS485_Init(void) 
 {
   RS485_EnableDir = 1;
   RS485_Enable = 1; 
   
   memset(&RS485_Receive,0x00, sizeof(RS485));//清除485的数据
+  return 0;
 }
 
 /*=======================================================================
@@ -84,7 +86,7 @@ void RS485_DataReceice(void)
   RS485_Receive.TxData_couple.TX2.BMS_SOC = (uint16)(g_SOCInfo.SOC_ValueRead*100);                                                    
   RS485_Receive.TxData_couple.TX2.Pack_Hightemp = g_TempInfo.CellTemp_Max-20;               
   RS485_Receive.TxData_couple.TX2.Pack_Lowtemp = g_TempInfo.CellTemp_Min-20;                
-  RS485_Receive.TxData_couple.TX2.Pack_Volt = g_DataColletInfo.SysVolt_Total/10;                 
+  RS485_Receive.TxData_couple.TX2.Pack_Volt = g_VoltInfo.SysVolt_Total/10;                 
   RS485_Receive.TxData_couple.TX2.Single_Maxvolt = (g_VoltInfo.CellVolt_Max +5)/10;      
   RS485_Receive.TxData_couple.TX2.Single_Lowvolt = (g_VoltInfo.CellVolt_Min +5)/10;        
   RS485_Receive.TxData_couple.TX2.iso_resistance = g_VoltInfo.CellVolt_MaxNode+1;    //最高单体节点号   
@@ -131,4 +133,5 @@ void Task_ScreenTransfer(void)
    Screen_delay(10);
    SCI_ScreenTransfer(Array_couple, RS485_Receive.TxData_couple.SCI_Content2);  
    SCI_ScreenTransfer(Array_single, RS485_Receive.TxData_single.SCI_Content1); 
+   g_Roll_Tick.Roll_Screen++;
 }

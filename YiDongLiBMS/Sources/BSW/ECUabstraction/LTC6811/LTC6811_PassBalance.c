@@ -26,7 +26,6 @@ void LTC6811_BalanceCMDSend( uint8 *CFG,uint8 gpio, uint8 refon,uint8 swtrd, uin
                  float  vuv,float   vov,uint16 ddc,uint8 dcto) 
 {           
   uint8 char1,char2,char3;
-  uint8 current_ic;                             /* 对LTC6804_1的初始化命令配置参数 */
 
   *CFG++=(gpio<<3)+(refon<<2)+(swtrd<<1)+adcopt;
   
@@ -58,24 +57,24 @@ void LTC6811_BalanceCMDSend( uint8 *CFG,uint8 gpio, uint8 refon,uint8 swtrd, uin
  *返回：       无
  *说明：       被动均衡函数
 ========================================================================*/
-uint8 LTC6811_BalanceControl(uint16 state1, uint16 state2, uint16 state3, uint8 time) 
+uint8 LTC6811_BalanceControl(uint8 state1, uint8 state2, uint8 state3, uint8 time) 
 {
   uint16 state[3]={0,0,0};
-  if((state1<1||state1>NUM_Battery)||(state2<1||state2>NUM_Battery)||((state3<1||state3>NUM_Battery)))
+  if((state1<1||state1>NUM1_Batper_true)||(state2<1||state2>NUM2_Batper_true)||((state3<1||state3>NUM3_Batper_true)))
   {
     return 1;
   }
-  state[1] = 1<<(state1-1);
+  state[1] = (uint16)1<<(state1-1);
   if(state[1]>NUM1_Batper_front)
   {
     state[1] = 1<<(state1-1+6-NUM1_Batper_front);
   }
-  state[2] = 1<<(state2-1);
-  if(state[1]>NUM1_Batper_front)
+  state[2] = (uint16)1<<(state2-1);
+  if(state[2]>NUM1_Batper_front)
   {
-    state[2] = 1<<(state2-1+6-NUM1_Batper_front); 
+    state[2] = (uint16)1<<(state2-1+6-NUM1_Batper_front); 
   }
-  state[3] = 1<<(state3-1);
+  state[3] = (uint16)1<<(state3-1);
   if(state[1]>NUM1_Batper_front)
   {
     state[3] = 1<<(state3-1+6-NUM1_Batper_front); 

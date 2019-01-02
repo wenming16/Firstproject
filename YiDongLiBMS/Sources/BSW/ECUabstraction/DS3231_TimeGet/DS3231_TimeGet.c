@@ -12,6 +12,7 @@
       Modification:
 ========================================================================*/
 #include  "DS3231_TimeGet.h"
+#include  "IIC.h"
 
 Read_IIC_Time_T Read_IIC_Time;  
 /*=======================================================================
@@ -22,6 +23,7 @@ Read_IIC_Time_T Read_IIC_Time;
  *说明：       将BCD码转换成16进制数,BCD码是用4位2进制数表示1个10进制数,低四位是十进制数，
                高四位是十进制数。例子：0x00100100;高四位就是2，低四位是4，就是24；
 ========================================================================*/
+static
 uint8 BCD2HEX(uint8 val) 
 {
   uint8 value;
@@ -40,6 +42,7 @@ uint8 BCD2HEX(uint8 val)
  *返回：       无
  *说明：       与上面的机制相反；
 ========================================================================*/
+static
 uint8 HEX2BCD(uint8 val) 
 {
     uint8 i,j,k;
@@ -87,7 +90,6 @@ void DS3231SN_INIT(uint8 year, uint8 month, uint8 week, uint8 day, uint8 hour, u
    IIC_write(0xd0,0x05,month);   /*将月数初始化为0*/
    DS3231_DelayTimeus(10);
    IIC_write(0xd0,0x06,year);    /*将年数初始化为0*/
-    
 }
 
 /*=======================================================================
@@ -97,6 +99,7 @@ void DS3231SN_INIT(uint8 year, uint8 month, uint8 week, uint8 day, uint8 hour, u
  *返回：       无
  *说明：       读取秒数，最大是59；
 ========================================================================*/
+static
 uint8 DS3231_Read_Second(void) 
 {
   uint8 receivedata;
@@ -111,6 +114,7 @@ uint8 DS3231_Read_Second(void)
  *返回：       无
  *说明：       读取秒数，最大值59；
 ========================================================================*/
+static
 uint8 DS3231_Read_Minute(void) 
 {
   uint8 receivedata;
@@ -126,6 +130,7 @@ uint8 DS3231_Read_Minute(void)
  *返回：       无
  *说明：       读取小时数，最大值是23小时；
 ========================================================================*/
+static
 uint8 DS3231_Read_Hour(void) 
 {
   uint8 receivedata;
@@ -141,6 +146,7 @@ uint8 DS3231_Read_Hour(void)
  *返回：       无
  *说明：       读取天数，最大值是31天
 ========================================================================*/
+static
 uint8 DS3231_Read_Day(void) 
 {
   uint8 receivedata;
@@ -156,6 +162,7 @@ uint8 DS3231_Read_Day(void)
  *返回：       无
  *说明：       读取的月数，最大值是12月；
 ========================================================================*/
+static
 uint8 DS3231_Read_Month(void) 
 {
   uint8 receivedata;
@@ -171,6 +178,7 @@ uint8 DS3231_Read_Month(void)
  *返回：       无
  *说明：       读取年数，最大值是99年；
 ========================================================================*/
+static
 uint8 DS3231_Read_Year(void) 
 {
   uint8 receivedata;
@@ -213,7 +221,7 @@ uint8 DS3231_Read_Year(void)
     receivedata=IIC_read(0xd0,0x06);
     receivedata=BCD2HEX(receivedata);
     Read_IIC_Time.IIC_Read_Year = receivedata;
-    DS3231_DelayTimeus(10);
+    //DS3231_DelayTimeus(10);
  }
 
  

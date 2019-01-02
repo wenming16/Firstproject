@@ -10,6 +10,7 @@
       Modification:增加了SS的赋值，为了先唤醒LTC6804的SPI。
 ========================================================================*/
 #include  "LTC6811_TempCollect.h"
+#include  "LTC6811_CMD.h"
 
 LTC6811_TempInfo_T g_LTC6811_TempInfo; //LTC6811温度采集全局变量(GPIO温度、芯片温度)
 /*=======================================================================
@@ -36,7 +37,7 @@ void LTC6811_TempCMDSend(void)
 void LTC6811_TempCollect(void)        
 {
    uint8  j,k;
-   uint16 cell_temp[NUM_IC][6];      // 读取辅助寄存器中的Pack温度值 
+   uint16 cell_temp[NUM_IC][6];    // 读取辅助寄存器中的Pack温度值 
    uint16 Cell_temp[NUM_IC][6];      // 温度寄存器
    uint8  PEC_error_t[NUM_IC];
    uint8  maxtemp,mintemp;           // maxtemp=0x8000,mintemp=0X7FFF 32767 = (15个1);
@@ -51,11 +52,10 @@ void LTC6811_TempCollect(void)
    {
       for(j = 0;j < 6;j++)
       {
-          Cell_temp[k][j] = 0;
+         Cell_temp[k][j] = 0;
       }
    }
-   //SS2=0;
-   //SS2=1;
+
    LTC6811_Wakeup();//唤醒
        
    LTC6804_rdaux(0, NUM_IC, cell_temp, PEC_error_t);
@@ -91,6 +91,7 @@ void LTC6811_TempCollect(void)
   {  
     g_LTC6811_TempInfo.CellTemp_Tatoltemp = g_LTC6811_TempInfo.CellTemp_Tatoltemp + g_LTC6811_TempInfo.CellTemp[k];
   }
+  g_LTC6811_TempInfo.CellTemp_Ave = g_LTC6811_TempInfo.CellTemp_Tatoltemp/NUM_Tem;
   
   maxtemp=mintemp=g_LTC6811_TempInfo.CellTemp[0];
   g_LTC6811_TempInfo.CellTemp_MaxNode = g_LTC6811_TempInfo.CellTemp_MinNode=0;

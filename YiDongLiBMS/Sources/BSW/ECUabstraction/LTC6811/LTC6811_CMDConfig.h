@@ -37,7 +37,7 @@
   //#define DCP_DISABLED 1
 
   //读取或者发送命令字节数与时间相对应
-  #define Time_4byte             50        // 微妙级别的，具体请看LTC680芯片的53页；
-  #define Time_28byte           350       
+  //#define Time_4byte             50        // 微妙级别的，具体请看LTC680芯片的53页；
+  //#define Time_28byte           350       
 
 #endif

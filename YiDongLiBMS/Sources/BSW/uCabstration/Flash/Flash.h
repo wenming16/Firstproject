@@ -15,18 +15,15 @@
 
   #include  "TypeDefinition.h"
   #include  "MC9S12XEP100.h"
-  #include  "derivative.h" 
+  //#include  "derivative.h" 
 
   typedef struct    // ×´Ì¬ÔÝ´æÆ÷     Used to copy and store Flash error status registers.
 {
   uint8 fstat_var;
   uint8 ferfstat_var;
-  uint8 ErrCode;
-  
+  uint8 ErrCode;  
 }ErrType;
-
-
-extern ErrType FlashErr;
+extern volatile ErrType FlashErr;
 /************************* #DEFINES ******************************************/
 /**** P-Flash and D-Flash Commands ****/
 
@@ -211,12 +208,12 @@ extern ErrType FlashErr;
 #define NoErr     0x00
 
 // bit masks for FSTAT
-#define mgstat0 0x01  
-#define mgstat1 0x02
-#define mgbusy  0x08
-#define fpviol  0x10
-#define accerr  0x20
-#define ccif    0x80
+#define mgstat0  0x01  
+#define mgstat1  0x02
+#define mgbusy   0x08
+#define fpviol   0x10
+#define accerr   0x20
+#define ccif     0x80
 
 //bit masks for FERSTAT
 #define sfdif    0x01
@@ -230,7 +227,7 @@ extern ErrType FlashErr;
          
 //EEE SIZE SECTION
 /**** SET THE SIZE OF THE EEE HERE ****/
-#define EEE_RAM 4 //Specify the # of EEE RAM sections for the FTM (Flash
+#define EEE_RAM 16 //Specify the # of EEE RAM sections for the FTM (Flash
                   //module) to use as EEE. The valid range is 0-16 sections.
 //0x13_ff00_0x13_ffff   1 ---256byte 
 

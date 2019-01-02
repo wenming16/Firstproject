@@ -58,6 +58,10 @@ void Checkself_BattState(uint16 time)
 
     case 14:
       Task_InsulationDetect();        //¾øÔµ¼ì²âÅÐ¶Ï
+    break;
+    
+    case 16:
+      Task_DataProcess();
       memset(&PIT_TimePeriod, 0x00, sizeof(PIT_TimePeriod_T));
     break;
   }
@@ -95,7 +99,7 @@ uint8  CheckSelf_SysVoltLow_DisCharge(uint32 totalvolt, uint8 temp)
    }
    else
    {
-      if(cnt > 2)
+      if(cnt >= 2)
       {
         cnt = 2;
       }
@@ -132,7 +136,7 @@ uint8  CheckSelf_CellVoltLow_DisCharge(uint16 Voltmin, uint8 temp)
    }
    else
    {
-      if(cnt > 2)
+      if(cnt >= 2)
       {
         cnt = 2;
       }
@@ -157,7 +161,7 @@ uint8  CheckSelf_CellTempHigh_DisCharge(uint8 Temp)
    }
    else
    {
-      if(cnt > 2)
+      if(cnt >= 2)
       {
         cnt = 2;
       }
@@ -182,7 +186,7 @@ uint8  CheckSelf_CellTempLow_DisCharge(uint8 Temp)
    }
    else
    {
-      if(cnt > 2)
+      if(cnt >= 2)
       {
         cnt = 2;
       }
@@ -207,7 +211,7 @@ uint8  CheckSelf_CurrentOver_DisCharge(float curr)
    }
    else
    {
-      if(cnt > 2)
+      if(cnt >= 2)
       {
         cnt = 2;
       }
@@ -232,7 +236,7 @@ uint8  CheckSelf_InsulDetect_DisCharge(uint8 insul)
    }
    else
    {
-      if(cnt > 2)
+      if(cnt >= 2)
       {
         cnt = 2;
       }
@@ -265,7 +269,7 @@ uint8  CheckSelf_SysVoltHigh_Charge(uint32 totalvolt)
    }
    else
    {
-      if(cnt > 2)
+      if(cnt >= 2)
       {
         cnt = 2;
       }
@@ -289,7 +293,7 @@ uint8  CheckSelf_CellVoltHigh_Charge(uint16 Voltmax)
    }
    else
    {
-      if(cnt > 2)
+      if(cnt >= 2)
       {
         cnt = 2;
       }
@@ -313,7 +317,7 @@ uint8  CheckSelf_CellTempHigh_Charge(uint8 Temp)
    }
    else
    {
-      if(cnt > 2)
+      if(cnt >= 2)
       {
         cnt = 2;
       }
@@ -336,7 +340,7 @@ uint8  CheckSelf_CellTempLow_Charge(uint8 Temp)
    }
    else
    {
-      if(cnt > 2)
+      if(cnt >= 2)
       {
         cnt = 2;
       }
@@ -362,7 +366,7 @@ uint8  CheckSelf_InsulDetect_Charge(uint8 insul)
    }
    else
    {
-      if(cnt > 2)
+      if(cnt >= 2)
       {
         cnt = 2;
       }
@@ -404,7 +408,7 @@ uint8 CheckSelf_Discharge(Flt_BMSCheckSelf_T*ptr)
    uint8 state=0;
    memset(ptr, 0x00, sizeof(Flt_BMSCheckSelf_T));
    
-   ptr->SysVolt_Low    = CheckSelf_SysVoltLow_DisCharge(g_DataColletInfo.SysVolt_Total, g_TempInfo.CellTemp_Ave);
+   ptr->SysVolt_Low    = CheckSelf_SysVoltLow_DisCharge(g_VoltInfo.SysVolt_Total, g_TempInfo.CellTemp_Ave);
    state = state|ptr->SysVolt_Low;
    
    ptr->CellVolt_Low   = CheckSelf_CellVoltLow_DisCharge(g_VoltInfo.CellVolt_Min, g_TempInfo.CellTemp_Ave);
@@ -440,7 +444,7 @@ uint8 CheckSelf_Charge(Flt_BMSCheckSelf_T*ptr)
    uint8 state=0;
    memset(ptr, 0x00, sizeof(Flt_BMSCheckSelf_T));
    
-   ptr->SysVolt_Over   = CheckSelf_SysVoltHigh_Charge(g_DataColletInfo.SysVolt_Total);
+   ptr->SysVolt_Over   = CheckSelf_SysVoltHigh_Charge(g_VoltInfo.SysVolt_Total);
    state = state|ptr->SysVolt_Over;
    
    ptr->CellVolt_Over  = CheckSelf_CellVoltHigh_Charge(g_VoltInfo.CellVolt_Max);

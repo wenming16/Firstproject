@@ -16,6 +16,15 @@
   #include  "TypeDefinition.h"
   #include  "PIT.h"
   
+  //PIT初始化
+  enum 
+  {
+    //PIT初始化正常
+    Init_Normal_PIT = 0,
+    Init_Fault_PIT_Channel,
+    Init_Fault_PIT_Period
+  };
+
   uint8 Init_PIT(uint8 channel, uint8 perio);
    
 #endif

@@ -39,6 +39,7 @@
     #define Relay_ScreenPower_pin           4 
     
     uint8 Init_Relay(void);
+    void PositiveRelay_Control(uint8); 
     void Task_PowerOnOff(void);
 
 #endif

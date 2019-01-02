@@ -25,7 +25,13 @@
 ========================================================================*/
 uint8 Init_IIC(void)
 {
-  uint8 state;
+  uint8 state=0;
+  
+  IIC_SCL_dir  = 1; //IIC使能开关
+  IIC_SDA_dir  = 1;
+  IIC_SCL      = 1;
+  IIC_SDA      = 1;
+  
   state = IIC_Init();
   return state;
 }

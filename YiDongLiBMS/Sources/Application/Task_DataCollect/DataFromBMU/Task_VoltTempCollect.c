@@ -12,6 +12,7 @@
 #include  "LTC6811_VoltCollect.h"
 #include  "LTC6811_TempCollect.h"
 #include  "LTC6811_OpWire.h"
+#include  "Task_Init.h"
           
 /*=======================================================================
  *函数名:      Task_VoltCMDSend(void)
@@ -23,6 +24,8 @@
 void Task_VoltCMDSend(void)
 {
    LTC6811_VoltCMDSend();
+   
+   g_Roll_Tick.Roll_VoltCMD++;
 }
 /*=======================================================================
  *函数名:      Task_VoltCollect(void)
@@ -34,6 +37,7 @@ void Task_VoltCMDSend(void)
 void Task_VoltCollect(void)
 {
    LTC6811_VoltCollect(); 
+   g_Roll_Tick.Roll_VoltCol++;
 }
 /*=======================================================================
  *函数名:      Task_TempCMDSend(void)
@@ -45,6 +49,8 @@ void Task_VoltCollect(void)
 void Task_TempCMDSend(void)
 {
    LTC6811_TempCMDSend();
+   
+   g_Roll_Tick.Roll_TempCMD++;
 }
 /*=======================================================================
  *函数名:      Task_TempCollect(void)
@@ -56,6 +62,8 @@ void Task_TempCMDSend(void)
 void Task_TempCollect(void)
 {
    LTC6811_TempCollect();
+   
+   g_Roll_Tick.Roll_TempCol++;
 }
 /*=======================================================================
  *函数名:      Task_ChipTempCMDSend(void)

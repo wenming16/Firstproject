@@ -67,7 +67,7 @@ float FilterFunction_Median(float(*adc)(void), float Median)
    }
    else
    {
-      curr =  Cur_Filter;
+      curr = Cur_Filter;
    }
    return curr;     
 }    

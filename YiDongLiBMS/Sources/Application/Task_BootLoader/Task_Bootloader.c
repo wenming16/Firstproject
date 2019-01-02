@@ -14,6 +14,7 @@
 ========================================================================*/
 #include  "Task_Bootloader.h"                           // 包含所有h文件，可以调用所有函数与变量;   
 #include  "MC9S12XEP100.h"
+#include  "Task_Init.h"
 #include  "hidef.h"
 
 Boot_Data_T Boot_Data;
@@ -53,5 +54,6 @@ void Task_BootLoader()
      COPCTL=0x01;                              // enable watchdog     
      ARMCOP=0x00; 
    }
-   EnableInterrupts;      
+   EnableInterrupts; 
+   g_Roll_Tick.Roll_Boot++;     
 }

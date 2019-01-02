@@ -13,14 +13,10 @@
 #ifndef _IIC_H_
 #define _IIC_H_  
 
-  #include"TypeDefinition.h"
-  #include  "MC9S12XEP100.h"
+  #include  "TypeDefinition.h" 
   #include  "derivative.h"
 
-  #define SCL     PTJ_PTJ7
-  #define SDA     PTJ_PTJ6
-  #define SCL_dir DDRJ_DDRJ7
-  #define SDA_dir DDRJ_DDRJ6
+
 
   typedef enum
   {

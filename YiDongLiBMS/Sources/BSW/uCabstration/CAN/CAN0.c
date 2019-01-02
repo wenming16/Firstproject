@@ -13,7 +13,7 @@
 ========================================================================*/
  
   #include  "CAN.h"
-   #include  "MC9S12XEP100.h"
+  #include  "MC9S12XEP100.h"
 /*=======================================================================
  *函数名:      CAN0_Init(void)
  *功能:        初始化CAN0
@@ -25,8 +25,6 @@
 ========================================================================*/
 uint8 CAN0_Init(uint16 Baud_Rate) 
 {
-  uint8 Cnt[3];
-  
   if((Baud_Rate != 125)||(Baud_Rate != 250)||(Baud_Rate != 500))
   {
     return(Init_Fault_CAN_BaudRate);
@@ -35,22 +33,9 @@ uint8 CAN0_Init(uint16 Baud_Rate)
   if(CAN0CTL0_INITRQ==0)      // 查询是否进入初始化状态   
   {
     CAN0CTL0_INITRQ =1;        // 进入初始化状态
-  }
-  else
-  {
-    return (Init_Fault_CAN_EnterState);
-  }
-  
-  do
-  {
-    if(++Cnt[0]>=200)
-    {
-      Cnt[0] = 0;
-      return(Init_Fault_CAN_Unready);
-    }
-  }
+  }   
+
   while (CAN0CTL1_INITAK==0);  //等待进入初始化状态
-  Cnt[0] = 0;
 
   CAN0BTR0_SJW = 0;            //设置同步
   
@@ -86,27 +71,9 @@ uint8 CAN0_Init(uint16 Baud_Rate)
 
   CAN0CTL0 = 0x00;             //返回一般模式运行
 
-  do
-  {
-    if(++Cnt[1]>=200)
-    {
-      Cnt[1] = 0;
-      return(Init_Fault_CAN_Unready);
-    }
-  }
   while(CAN0CTL1_INITAK);      //等待回到一般运行模式
-  Cnt[1] = 0;
-  
-  do
-  {
-    if(++Cnt[2]>=200)
-    {
-      Cnt[2] = 0;
-      return(Init_Fault_CAN_Unready);
-    }
-  }
+
   while(CAN0CTL0_SYNCH==0);    //等待总线时钟同步
-  Cnt[2] = 0;
   
   CAN0RIER_RXFIE = 1;          //使能接收中断
   

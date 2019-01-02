@@ -30,7 +30,9 @@
 #include  "Task_DataProcess.h"
 #include  "Task_FltLevJudg.h"
 
-TASK tasks[ARRAY_SIZE];            //任务堆栈设计     
+TASK tasks[ARRAY_SIZE];            //任务堆栈设计  
+
+Roll_Tick_T g_Roll_Tick;   
 /*=======================================================================
  *函数名:      Task_Init(uint8 FLAGS, void (*HANDLE)())  
  *功能:        任务创建函数
@@ -115,11 +117,11 @@ void Task_Init()
 ========================================================================*/
 void Task_Roll(void)
 {
-  static uint8 cnt[4];
+  static uint8 cnt[4]={0,0,0,0};
   switch(PIT_TimePeriod.T500ms)//500ms的周期
   {
     case 1:
-      tasks[0].flags = 1;//Task_PowerOnOff
+      //tasks[0].flags = 1;//Task_PowerOnOff
     break;
       
     case 3:        //SOCSOH的计算周期为100ms
@@ -131,7 +133,7 @@ void Task_Roll(void)
     break;
     
     case 5:
-      tasks[2].flags = 1;//Task_BalanceControl_OFF
+      //tasks[2].flags = 1;//Task_BalanceControl_OFF
     break;
     
     case 7:
@@ -151,7 +153,7 @@ void Task_Roll(void)
     break;
     
     case 17:
-      tasks[7].flags = 1;//Task_InsulationDetect
+      //tasks[7].flags = 1;//Task_InsulationDetect
     break;
     
     case 19:
@@ -159,15 +161,15 @@ void Task_Roll(void)
     break;
     
     case 21:
-      tasks[9].flags = 1;//Task_BalanceControl_ON
+      //tasks[9].flags = 1;//Task_BalanceControl_ON
     break;
     
     case 25:
-      tasks[10].flags = 1;//Task_CurrLimit
+      //tasks[10].flags = 1;//Task_CurrLimit
     break;
       
     case 27:
-      tasks[11].flags = 1;
+      //tasks[11].flags = 1;//Task_SysTimeGet
     break;
     
     case 29:
@@ -175,26 +177,26 @@ void Task_Roll(void)
     break;
     
     case 31:
-      tasks[13].flags = 1;//Task_Charge
+     // tasks[13].flags = 1;//Task_Charge
     break;
     
     case 35:
-      tasks[14].flags = 1;//Task_FltCodeStore
+     // tasks[14].flags = 1;//Task_FltCodeStore
     break;
 
     case 37:
-      tasks[16].flags = 1;//Task_FltCodeProcess
+      //tasks[16].flags = 1;//Task_FltCodeProcess
     break;
       
     case 39:
-      tasks[20].flags = 1;//Task_BootLoader
+      //tasks[20].flags = 1;//Task_BootLoader
     break;
 
     case 41:
       if(cnt[0]%20 == 0)//20*0.5S任务 
       {
         cnt[0] = 0;
-        tasks[15].flags = 1;//Task_EEpromWrite
+        //tasks[15].flags = 1;//Task_EEpromWrite
       }
       cnt[0]++;
     break;

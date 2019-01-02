@@ -21,6 +21,7 @@
 
 #include  "Task_InsulDetect.h"
 #include  "ADC_cfg.h" 
+#include  "Task_Init.h" 
 
 #include  "ADC.h" 
 
@@ -248,118 +249,119 @@ void    Task_InsulationDetect(void)
             g_IsoDetect.insulation_resist_N = (uint16)(abs(g_IsoDetect.insulation_Vposit-Vpositive_1)*1.0/Vpositive_1*(1+g_IsoDetect.insulation_Vnegt/g_IsoDetect.insulation_Vposit) * Bias_Resitance); //负极电阻
             g_IsoDetect.insulation_resist_P = (uint16)(abs(g_IsoDetect.insulation_Vposit-Vpositive_1)*1.0/Vpositive_1*(1+g_IsoDetect.insulation_Vposit/g_IsoDetect.insulation_Vnegt) * Bias_Resitance);//正极电阻 
           }
-       }
-     }  
-      
-     else                                   //正极<负极
-     {  
-       Time_Flag = 1; 
-       if(Time_Cnt == 0)
-       {                    
-         HighVoltS1 = INS_SwitchOFF;              //V+开关断开
-         HighVoltS2 = INS_SwitchON;               //V-开关闭合
-       }
-       if(Time_Cnt>0) 
-       {         
-         Time_Flag = 0;
-         Time_Cnt = 0;
-       
-         for(count = 0; count < DetectCount; count++)    // 只要了负极的电压，正极是否可以去掉 //
-         {
-           VposBuff2[count] = ADC_Insul_HVPositive();  //正对底盘：PAD1
-           VnegBuff2[count] = ADC_Insul_HVNegative();   //负对底盘：PAD8            
-         }  
-                    
-          Max_Volt = 0;                 
-          Max_Volt1 = 0; 
-          Min_Volt = 0xFFFF;
-          Min_Volt1 = 0xFFFF;
-          for(i =0; i< DetectCount;i++)            // 查找每一个数组中的最大最小值 //
-          {
-             if(VposBuff2[i] >Max_Volt)
-             {
-                Max_Volt = VposBuff2[i];
-             } 
-             if(VposBuff2[i] < Min_Volt)
-             {
-                Min_Volt = VposBuff2[i];
-             }
-             
-             if(VnegBuff2[i] >Max_Volt1)
-             {
-                Max_Volt1 = VnegBuff2[i];
-             } 
-             if(VnegBuff2[i] < Min_Volt1)
-             {
-                Min_Volt1 = VnegBuff2[i];
-             }
-          }
-          
-          for(count = 0; count < 12; count++)      // 把所有值全部加起来 //
-          {
-             SumVpositive += VposBuff2[count];
-             SumVnegtive += VnegBuff2[count];
+         }
+       }  
+        
+       else                                   //正极<负极
+       {  
+         Time_Flag = 1; 
+         if(Time_Cnt == 0)
+         {                    
+           HighVoltS1 = INS_SwitchOFF;              //V+开关断开
+           HighVoltS2 = INS_SwitchON;               //V-开关闭合
+         }
+         if(Time_Cnt>0) 
+         {         
+           Time_Flag = 0;
+           Time_Cnt = 0;
          
-          }
-                                        // 减去最大最小值，求十个数的平均值 //
-          SumVpositive = SumVpositive - Max_Volt - Min_Volt;
-          SumVnegtive = SumVnegtive - Max_Volt1 - Min_Volt1; 
-          Vpositive_1 = SumVpositive/10.0;
-          Vnegtive_1 = SumVnegtive/10.0;              // 去除最大最小值之后求平均值// 
-          
-          
-          HighVoltS1 = INS_SwitchOFF;
-          HighVoltS2 = INS_SwitchOFF; 
-          
-          
-          SumVpositive=0;
-          SumVnegtive=0;
-          if(g_IsoDetect.insulation_Vposit<0.1)
-          {
-            g_IsoDetect.insulation_resist = (abs(g_IsoDetect.insulation_Vposit-Vnegtive_1)*1.0/Vnegtive_1*(1+g_IsoDetect.insulation_Vposit/g_IsoDetect.insulation_Vnegt) * Bias_Resitance);      
-            g_IsoDetect.insulation_resist_P = (uint16)(abs(g_IsoDetect.insulation_Vnegt-Vnegtive_1)*1.0/Vnegtive_1*(1+g_IsoDetect.insulation_Vposit/g_IsoDetect.insulation_Vnegt) * Bias_Resitance);//正极电阻
-            g_IsoDetect.insulation_resist_N = (uint16)0x1388;
-          }
-          else if(g_IsoDetect.insulation_Vnegt<0.1)
-          {
-            g_IsoDetect.insulation_resist = (uint16)0x1388;      
-            g_IsoDetect.insulation_resist_P = (uint16)0x1388;//正极电阻
-            g_IsoDetect.insulation_resist_N = (uint16)(abs(g_IsoDetect.insulation_Vnegt-Vnegtive_1)/Vnegtive_1*(1+g_IsoDetect.insulation_Vnegt/g_IsoDetect.insulation_Vposit) * Bias_Resitance); //负极电阻
-          }
-          else
-          {                
-            g_IsoDetect.insulation_resist = (abs(g_IsoDetect.insulation_Vnegt-Vnegtive_1)*1.0/Vnegtive_1*(1+g_IsoDetect.insulation_Vposit/g_IsoDetect.insulation_Vnegt) * Bias_Resitance);    //Vposit改为Vneg  
-            g_IsoDetect.insulation_resist_P = (uint16)(abs(g_IsoDetect.insulation_Vnegt-Vnegtive_1)*1.0/Vnegtive_1*(1+g_IsoDetect.insulation_Vposit/g_IsoDetect.insulation_Vnegt) * Bias_Resitance);//正极电阻
-            g_IsoDetect.insulation_resist_N = (uint16)(abs(g_IsoDetect.insulation_Vnegt-Vnegtive_1)/Vnegtive_1*(1+g_IsoDetect.insulation_Vnegt/g_IsoDetect.insulation_Vposit) * Bias_Resitance); //负极电阻
-          }
-       }         
-    }          
-  //判断绝缘故障
-  if(g_IsoDetect.insulation_resist > 0x1388)                   //5M
-  {
-    g_IsoDetect.insulation_grade = 0x00;
-    g_IsoDetect.insulation_curr = 0xaa;
-    g_IsoDetect.insulation_resist = 0x1388;                    //按通信协议 5M
-  }    
-  else 
-  {
-      if(g_IsoDetect.insulation_resist > Resistance_Alarm1)       //无故障
-      {
-        g_IsoDetect.insulation_grade = 0x00;
-        g_IsoDetect.insulation_curr = 0xaa;      
-      } 
-      if(g_IsoDetect.insulation_resist < Resistance_Alarm2)       //最高绝缘故障
-      {
-        g_IsoDetect.insulation_grade = 0x02;
-        g_IsoDetect.insulation_curr = 0x55;
-      }
-      else                                                      //次级故障
-      {
-        g_IsoDetect.insulation_grade = 0x01;
-        g_IsoDetect.insulation_curr = 0x55;
-      }   
-  }  
-}   
-
+           for(count = 0; count < DetectCount; count++)    // 只要了负极的电压，正极是否可以去掉 //
+           {
+             VposBuff2[count] = ADC_Insul_HVPositive();  //正对底盘：PAD1
+             VnegBuff2[count] = ADC_Insul_HVNegative();   //负对底盘：PAD8            
+           }  
+                      
+            Max_Volt = 0;                 
+            Max_Volt1 = 0; 
+            Min_Volt = 0xFFFF;
+            Min_Volt1 = 0xFFFF;
+            for(i =0; i< DetectCount;i++)            // 查找每一个数组中的最大最小值 //
+            {
+               if(VposBuff2[i] >Max_Volt)
+               {
+                  Max_Volt = VposBuff2[i];
+               } 
+               if(VposBuff2[i] < Min_Volt)
+               {
+                  Min_Volt = VposBuff2[i];
+               }
+               
+               if(VnegBuff2[i] >Max_Volt1)
+               {
+                  Max_Volt1 = VnegBuff2[i];
+               } 
+               if(VnegBuff2[i] < Min_Volt1)
+               {
+                  Min_Volt1 = VnegBuff2[i];
+               }
+            }
+            
+            for(count = 0; count < 12; count++)      // 把所有值全部加起来 //
+            {
+               SumVpositive += VposBuff2[count];
+               SumVnegtive += VnegBuff2[count];
+           
+            }
+                                          // 减去最大最小值，求十个数的平均值 //
+            SumVpositive = SumVpositive - Max_Volt - Min_Volt;
+            SumVnegtive = SumVnegtive - Max_Volt1 - Min_Volt1; 
+            Vpositive_1 = SumVpositive/10.0;
+            Vnegtive_1 = SumVnegtive/10.0;              // 去除最大最小值之后求平均值// 
+            
+            
+            HighVoltS1 = INS_SwitchOFF;
+            HighVoltS2 = INS_SwitchOFF; 
+            
+            
+            SumVpositive=0;
+            SumVnegtive=0;
+            if(g_IsoDetect.insulation_Vposit<0.1)
+            {
+              g_IsoDetect.insulation_resist = (abs(g_IsoDetect.insulation_Vposit-Vnegtive_1)*1.0/Vnegtive_1*(1+g_IsoDetect.insulation_Vposit/g_IsoDetect.insulation_Vnegt) * Bias_Resitance);      
+              g_IsoDetect.insulation_resist_P = (uint16)(abs(g_IsoDetect.insulation_Vnegt-Vnegtive_1)*1.0/Vnegtive_1*(1+g_IsoDetect.insulation_Vposit/g_IsoDetect.insulation_Vnegt) * Bias_Resitance);//正极电阻
+              g_IsoDetect.insulation_resist_N = (uint16)0x1388;
+            }
+            else if(g_IsoDetect.insulation_Vnegt<0.1)
+            {
+              g_IsoDetect.insulation_resist = (uint16)0x1388;      
+              g_IsoDetect.insulation_resist_P = (uint16)0x1388;//正极电阻
+              g_IsoDetect.insulation_resist_N = (uint16)(abs(g_IsoDetect.insulation_Vnegt-Vnegtive_1)/Vnegtive_1*(1+g_IsoDetect.insulation_Vnegt/g_IsoDetect.insulation_Vposit) * Bias_Resitance); //负极电阻
+            }
+            else
+            {                
+              g_IsoDetect.insulation_resist = (abs(g_IsoDetect.insulation_Vnegt-Vnegtive_1)*1.0/Vnegtive_1*(1+g_IsoDetect.insulation_Vposit/g_IsoDetect.insulation_Vnegt) * Bias_Resitance);    //Vposit改为Vneg  
+              g_IsoDetect.insulation_resist_P = (uint16)(abs(g_IsoDetect.insulation_Vnegt-Vnegtive_1)*1.0/Vnegtive_1*(1+g_IsoDetect.insulation_Vposit/g_IsoDetect.insulation_Vnegt) * Bias_Resitance);//正极电阻
+              g_IsoDetect.insulation_resist_N = (uint16)(abs(g_IsoDetect.insulation_Vnegt-Vnegtive_1)/Vnegtive_1*(1+g_IsoDetect.insulation_Vnegt/g_IsoDetect.insulation_Vposit) * Bias_Resitance); //负极电阻
+            }
+         }         
+      }          
+    //判断绝缘故障
+    if(g_IsoDetect.insulation_resist > 0x1388)                   //5M
+    {
+      g_IsoDetect.insulation_grade = 0x00;
+      g_IsoDetect.insulation_curr = 0xaa;
+      g_IsoDetect.insulation_resist = 0x1388;                    //按通信协议 5M
+    }    
+    else 
+    {
+        if(g_IsoDetect.insulation_resist > Resistance_Alarm1)       //无故障
+        {
+          g_IsoDetect.insulation_grade = 0x00;
+          g_IsoDetect.insulation_curr = 0xaa;      
+        } 
+        if(g_IsoDetect.insulation_resist < Resistance_Alarm2)       //最高绝缘故障
+        {
+          g_IsoDetect.insulation_grade = 0x02;
+          g_IsoDetect.insulation_curr = 0x55;
+        }
+        else                                                      //次级故障
+        {
+          g_IsoDetect.insulation_grade = 0x01;
+          g_IsoDetect.insulation_curr = 0x55;
+        }   
+    }  
+    
+  }   
+g_Roll_Tick.Roll_Insul++;
 Time_Cnt++;      
 }

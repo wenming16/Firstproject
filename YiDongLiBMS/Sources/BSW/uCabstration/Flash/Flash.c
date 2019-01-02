@@ -1,20 +1,16 @@
-/*=======================================================================
- *Subsystem:   裸机
- *File:        EEPROM.C
- *Author:      Wenming
- *Description: 通信：
-               接口：
-               波特率：
- ========================================================================
- * History:    修改历史记录列表
- * 1. Date:
-      Author:
-      Modification:
-========================================================================*/
-#include  "Flash.h"
+/*====================================================================================
+* File name: 	 eeprom.c
+* Description:  .  
+* Created on:  01-12-2014
+* Author:  JT
+=======================================================================================
+ History:
+---------------------------------------------------------------------------------------
+01-12-2014		Version 1.0.0       JT		Initialized version
+-------------------------------------------------------------------------------------*/
+#include "Flash.h"
 
-
-ErrType FlashErr;
+volatile  ErrType FlashErr;
 /*************************************************************/
 /*                      初始化EEPROM模块                     */
 /*************************************************************/ 
@@ -22,17 +18,17 @@ void Init_Eeprom(volatile ErrType *pErr)
 {
  
   /*********(1)SET UP THE FLASH CLOCK DIVIDE REGISTER********/
-  while (!FSTAT_CCIF);                  // Wait for FTM to be ready
-  
+  while (!FSTAT_CCIF);               // Wait for FTM to be ready
+   
   FCLKDIV = FCLK_DIV;  
-  pErr->ErrCode = 0;                   // Now write FCLKDIV before using the FTM.
+  pErr->ErrCode = 0;                // Now write FCLKDIV before using the FTM.
   
-  if(FCLKDIV != (FCLK_DIV | 0x80))     // Ensure the value is written.
+  if(FCLKDIV != (FCLK_DIV | 0x80))  // Ensure the value is written.
   {
-      pErr->ErrCode =  FDIV_NOT_SET;   // Report an error code.
+    pErr->ErrCode =  FDIV_NOT_SET;  // Report an error code.
   }
 }
-//signed char dfPart, erPart;
+
 void ChecPartErr(ErrHandle pErr)
 {
   signed char dfPart, erPart;
@@ -61,7 +57,7 @@ void ChecPartErr(ErrHandle pErr)
 
 /******************************************************************************/
 //错误检查
-void ErrorCheck(volatile ErrType status, volatile uint8 statbits,volatile uint8 ferstatbits)
+void ErrorCheck(volatile ErrType status, volatile unsigned char statbits,volatile unsigned char ferstatbits)
 {
   //Compare the copied FSTAT and FERSTAT register results against the selected
   //error bits. A match indicates an error and loops forever.
@@ -71,7 +67,7 @@ void ErrorCheck(volatile ErrType status, volatile uint8 statbits,volatile uint8 
   }
 }
 /******************************************************************************/
-/*uint8  ReportError(uint8 error_code)					
+/*unsigned char  ReportError(unsigned char error_code)					
 {      
    //error_code = error_code;
    //User reported errors are sent here.
@@ -100,14 +96,14 @@ Notes     : Clears any error flags and uses parameters to initiate an FTM comman
             显示了怎样装载和执行FTM命令
 ******************************************************************************/
 
-ErrType LaunchFlashCommand(char params, uint8 ccob0high, uint8 ccob0low, unsigned int ccob1,
+ErrType LaunchFlashCommand(char params, unsigned char ccob0high, unsigned char ccob0low, unsigned int ccob1,
 unsigned int ccob2,unsigned int ccob3,unsigned int ccob4,unsigned int ccob5, unsigned int ccob6, unsigned int ccob7)
 { 
-  uint8 temp1;
+  unsigned char temp;
   volatile ErrType status;          //Used to copy and store Flash status registers.
     
-   temp1 = FCLKDIV;                  //Read the FCLKDIV register
-  if((temp1 & 0x80) != 0x80)         //If FDIVLD not set, then write FCLKDIV.
+   temp = FCLKDIV;                  //Read the FCLKDIV register
+  if((temp & 0x80) != 0x80)         //If FDIVLD not set, then write FCLKDIV.
   {
     FCLKDIV = FCLK_DIV;             //Write FCLKDIV before launching FTM command.
    //if(FCLKDIV != (FCLK_DIV|0x80)) //Check to make sure value is written.
@@ -157,7 +153,7 @@ unsigned int ccob2,unsigned int ccob3,unsigned int ccob4,unsigned int ccob5, uns
         }
       }
     }
-    /**********************************************************/
+    //判断故障状态
     FSTAT = 0x80;                   //Clear buffer-empty-flag to start FTM command.
     while (!FSTAT_CCIF);            //Now wait for the FTM command to complete.
     status.fstat_var = FSTAT;       //Copy FSTAT register state for later comparison.
@@ -166,11 +162,13 @@ unsigned int ccob2,unsigned int ccob3,unsigned int ccob4,unsigned int ccob5, uns
     return(status);                 //After FTM command completed, return status.
 	} 
 	else 
-   status.ErrCode = COMMAND_BUSY;   //FTM is currently busy.
-   return(status);
+	{
+    status.ErrCode = COMMAND_BUSY;   //FTM is currently busy.
+	}
+	return(status);
 }
 /******************************************************************************/
-char * copy_string(char * source, char * dest)
+/*char * copy_string(char * source, char * dest)
 {
   char index = 0;
 
@@ -180,5 +178,5 @@ char * copy_string(char * source, char * dest)
     index++;                        //Incement index to next character position.
   }
   return(&dest[--index]);           //Return last character address.
-}
+} */
 /******************************************************************************/

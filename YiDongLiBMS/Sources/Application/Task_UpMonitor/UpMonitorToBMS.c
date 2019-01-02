@@ -17,6 +17,7 @@
 #include  "MC9S12XEP100.h"
 #include  "derivative.h"
 #include  "Task_FltSave.h" 
+#include  "Task_PowerOnOff.h"  
 #include  "Task_EEEReadWrite.h" 
 #include  "Task_SysTimeGet.h"
 
@@ -316,7 +317,14 @@ void UpMonitor_to_Bms(pCANFRAME data)
           Val8 = data -> m_data[3];                       //下标主正继电器
           if(Val8!=0xFF)
           {
-            PositiveRelay_Control(Val8);  
+            if(Val8 == 1)
+            {
+              PositiveRelay_Control(Relay_ON); 
+            }
+            else if(Val8 == 0)
+            {
+              PositiveRelay_Control(Relay_OFF);
+            }
           }
           g_SysTime.BMS_TotalRun_MiniteTime = (*(uint16*)0x0D20);
         break;

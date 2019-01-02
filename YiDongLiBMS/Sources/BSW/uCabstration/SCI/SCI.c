@@ -25,7 +25,7 @@
 ========================================================================*/
 uint8 SCI1_Init(void) 
 {    
-  unsigned int SCI_temp;
+  uint16 SCI_temp;
   
   SCI_temp = 32000000/16/9600;
   SCI1BD = SCI_temp;              // 设置SCI0波特率为12500（BAUD），BUS_CLOCK=32MHz

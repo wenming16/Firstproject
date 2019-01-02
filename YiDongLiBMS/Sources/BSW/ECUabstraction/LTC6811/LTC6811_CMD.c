@@ -67,7 +67,7 @@ void Spi_LTC6811Read(uint8 *rx_data,uint8 rx_len)
   
   for (i = 0; i < rx_len; i++)
   {
-      rx_data[i] = (uint8)SPI1_read();
+    rx_data[i] = (uint8)SPI1_read();
   }
 }
 /*=======================================================================
@@ -82,25 +82,25 @@ void Spi_LTC6811Read(uint8 *rx_data,uint8 rx_len)
 ========================================================================*/
 void Spi_LTC6811WriteRead(uint8 tx_Data[],uint8 tx_len,uint8 *rx_data,uint8 rx_len)
 {
-    uint8 i;
-    uint8 temp1;
-    
-    for (i = 0; i < tx_len; i++)// 发送命令给LTC6804芯片；
-    {
-        SPI1_Write(tx_Data[i]);
-    }  
-    
-    if(rx_len !=0) 
-    {
-        SPI1_Write(0x00);
-        LTC6811_DelayTime(500);
-        temp1 = (uint8)SPI1_read();
-        for (i = 0; i < rx_len; i++)
-        {
-            SPI1_Write(0x00); //读字节之前先写一个字
-            rx_data[i] = (uint8)SPI1_read();
-        }
-    }
+  uint8 i;
+  uint8 temp1;
+  
+  for (i = 0; i < tx_len; i++)// 发送命令给LTC6804芯片；
+  {
+      SPI1_Write(tx_Data[i]);
+  }  
+  
+  if(rx_len !=0) 
+  {
+      SPI1_Write(0x00);
+      LTC6811_DelayTime(500);
+      temp1 = (uint8)SPI1_read();
+      for (i = 0; i < rx_len; i++)
+      {
+          SPI1_Write(0x00); //读字节之前先写一个字
+          rx_data[i] = (uint8)SPI1_read();
+      }
+  }
 }
 
 /*=======================================================================
@@ -126,7 +126,6 @@ void LTC6811_DelayTime(uint16 t)
 void LTC6811_Wakeup(void)
 {
   LTC6811_Enable = 0;
-  LTC6811_DelayTime(5);// Guarantees the isoSPI will be in ready mode
   LTC6811_Enable = 1;
 } 
 
@@ -173,7 +172,7 @@ void LTC6804_wrcfg(uint8 total_ic, uint8 config[][6])
   }
   
   //4
-  LTC6811_Wakeup (); 															                                    	// This will guarantee that the LTC6804 isoSPI port is awake.This command can be removed.
+  LTC6811_Wakeup(); 															                                    	// This will guarantee that the LTC6804 isoSPI port is awake.This command can be removed.
   
   //5
   LTC6811_Enable = 0;

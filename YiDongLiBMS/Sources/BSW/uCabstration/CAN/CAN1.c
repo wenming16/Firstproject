@@ -11,10 +11,11 @@
       Author:
       Modification:
 ========================================================================*/
-  #include  "CAN.h"
-  #include  "MC9S12XEP100.h"
-  #include  "Task_Charge.h"
-    
+#include  "CAN.h"
+#include  "MC9S12XEP100.h"
+#include  "Task_Charge.h"
+ 
+static void CAN1_GetMsg_Process(pCANFRAME receiveFrame);   
 /*=======================================================================
  *函数名:      CAN1_Init(void)
  *功能:        初始化CAN1
@@ -26,34 +27,29 @@
 ========================================================================*/
 uint8 CAN1_Init(uint16 Baud_Rate) 
 {
-  uint8 Cnt[3];
+  uint8 CAN1cnt[3] = {0,0,0};
   
-  if((Baud_Rate != 125)||(Baud_Rate != 250)||(Baud_Rate != 500))
+  if((Baud_Rate != 125)&&(Baud_Rate != 250)&&(Baud_Rate != 500))
   {
     return(Init_Fault_CAN_BaudRate);
   }
   
-  if(CAN1CTL0_INITRQ==0)      // 查询是否进入初始化状态   
+  if(CAN1CTL0_INITRQ == 0)      // 查询是否进入初始化状态   
   {
-    CAN1CTL0_INITRQ =1;        // 进入初始化状态
+    CAN1CTL0_INITRQ = 1;        // 进入初始化状态
   }
-  else
-  {
-    return (Init_Fault_CAN_EnterState);
-  }
-  
+
   do
   {
-    if(++Cnt[0]>=200)
+    if(++CAN1cnt[0]>200)
     {
-      Cnt[0] = 0;
-      return(Init_Fault_CAN_Unready);
+      return(Init_Fault_CAN_Unready1);
     }
   }
-  while (CAN1CTL1_INITAK==0);  //等待进入初始化状态
-  Cnt[0] = 0;
-
-  CAN1BTR0_SJW = 0;            //设置同步
+  while (CAN1CTL1_INITAK==0);   //等待进入初始化状态
+  CAN1cnt[0] = 0;
+  
+  CAN1BTR0_SJW = 0;             //设置同步
   
   switch(Baud_Rate)
   {
@@ -85,29 +81,27 @@ uint8 CAN1_Init(uint16 Baud_Rate)
 
   CAN1CTL1 = 0xC0;             //使能MSCAN模块,设置为一般运行模式、使用总线时钟源 
 
-  CAN1CTL0 = 0x00;             //返回一般模式运行
-
+  CAN1CTL0 = 0x00;
+               //返回一般模式运行
   do
   {
-    if(++Cnt[1]>=200)
+    if(++CAN1cnt[1]>200)
     {
-      Cnt[1] = 0;
-      return(Init_Fault_CAN_Unready);
+      return(Init_Fault_CAN_Unready2);
     }
   }
   while(CAN1CTL1_INITAK);      //等待回到一般运行模式
-  Cnt[1] = 0;
+  CAN1cnt[1] = 0;
   
   do
   {
-    if(++Cnt[2]>=200)
+    if(++CAN1cnt[2]>200)
     {
-      Cnt[2] = 0;
-      return(Init_Fault_CAN_Unready);
+      return(Init_Fault_CAN_Synchr);
     }
   }
   while(CAN1CTL0_SYNCH==0);    //等待总线时钟同步
-  Cnt[2] = 0;
+  CAN1cnt[2] = 0;
   
   CAN1RIER_RXFIE = 1;          //使能接收中断
   
@@ -126,7 +120,7 @@ uint8 CAN1_Init(uint16 Baud_Rate)
 uint8 CAN1_SendMsg(pCANFRAME sendFrame)
 {
   uint8 send_buf,i;
-  uint8 Cnt[1];
+  uint8 Cnt=0;
   
   // 检查数据长度
   if(sendFrame->m_dataLen > 8)
@@ -134,7 +128,7 @@ uint8 CAN1_SendMsg(pCANFRAME sendFrame)
 
   // 检查总线时钟
   if(CAN1CTL0_SYNCH==0)
-    return (SendMsg_Fault_NoEmptyNode);
+    return (SendMsg_Fault_Synch);
 
   send_buf = 0;
   do
@@ -142,13 +136,9 @@ uint8 CAN1_SendMsg(pCANFRAME sendFrame)
     // 寻找空闲的缓冲器
     CAN1TBSEL=CAN1TFLG;
     send_buf=CAN1TBSEL;
-    if(++Cnt[0]>=200)
-    {
-      Cnt[0] = 0;
-      return(SendMsg_Fault_NoEmptyNode);
-    }
+    Cnt++;
   } 
-  while(!send_buf); 
+  while((!send_buf)&&(Cnt<200)); 
   //写入标识符ID
   
   if (sendFrame->m_IDE == 0)  //按标准帧填充ID
@@ -222,16 +212,30 @@ uint8 CAN1_GetMsg(pCANFRAME receiveFrame)
 	   receiveFrame->m_data[i] = *(&(CAN1RXDSR0)+i);
   } 
   
+  CAN1_GetMsg_Process(receiveFrame);
+
+  CAN1RFLG_RXF = 1;
+
+  return(GetMsg_Normal);
+}
+
+/*=======================================================================
+ *函数名:      CAN1_GetMsg_Process(pCANFRAME receiveFrame)
+ *功能:        CAN2接收数据时的处理方法
+ *参数:        扩展帧
+ *返回：       无
+ 
+ *说明：       
+========================================================================*/
+static
+void CAN1_GetMsg_Process(pCANFRAME receiveFrame)
+{
   switch(receiveFrame->m_ID) 
   {
     case 0x112:
       CAN_ChargetoBMS(receiveFrame);
     break;
   }
-
-  CAN1RFLG_RXF = 1;
-
-  return(GetMsg_Normal);
 }
 
 /*=======================================================================
@@ -245,9 +249,9 @@ uint8 CAN1_GetMsg(pCANFRAME receiveFrame)
 //CAN1接收充电机数据 
 interrupt void Interrupt_CAN1()            
 {     
-    pCANFRAME mgGet1;
+    CANFRAME mgGet1;
     //Task_Flag_Time.CAN1++;    
-    if (CAN1_GetMsg(mgGet1));
+    if (CAN1_GetMsg(&mgGet1));
 } 
 #pragma CODE_SEG DEFAULT
 

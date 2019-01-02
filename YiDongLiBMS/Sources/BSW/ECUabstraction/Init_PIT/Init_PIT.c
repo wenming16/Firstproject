@@ -11,9 +11,8 @@
       Author:
       Modification:
 ========================================================================*/
-
 #include "Init_PIT.h"
-
+#include "PIT.h"
 /*=======================================================================
  *函数名:      Init_PIT(uint8 channel, uint8 perio)
  *功能:        定时器初始化函数
@@ -29,24 +28,26 @@ uint8 Init_PIT(uint8 channel, uint8 perio)
   {
     return (Init_Fault_PIT_Channel);
   }
-  if((perio!=1)||(perio!=5)||(perio!=10))
+  if((perio==1)||(perio==5)||(perio==10))
   {
-    return Init_Fault_PIT_Period;
-  }
-  switch (perio)
-  {
-    case 1:
-      PITInit(channel, 1, 249, 129);
-    break;
-    
-    case 5:
-      PITInit(channel, 1, 249, 639);
-    break;
-    
-    case 10:
-      PITInit(channel, 1, 249, 1279);
-    break;
+    switch (perio)
+    {
+      case 1:
+        PITInit(channel, 1, 249, 129);
+      break;
       
+      case 5:
+        PITInit(channel, 1, 249, 639);
+      break;
+      
+      case 10:
+        PITInit(channel, 1, 249, 1279);
+      break;
+    }
+  }
+  else
+  {
+     return Init_Fault_PIT_Period;
   }
   return (Init_Normal_PIT);
 }

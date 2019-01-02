@@ -33,6 +33,19 @@ uint16 ADC_CC2_State(void)
 }
 
 /*=======================================================================
+ *函数名:      WorkMode_DelayTime(uint16)  
+ *功能:        工作状态判断延时
+ *参数:        ts:延时节拍数       
+ *返回：       无
+ *说明：       进行AD采集时进行短暂的延时
+========================================================================*/
+static
+void WorkMode_DelayTime(uint16 ts)
+{
+  uint16 i;
+  for(i=0; i<ts; i++);
+} 
+/*=======================================================================
  *函数名:      WokeModeJudgment(void)  
  *功能:        判断充电还是放电状态
  *参数:        无       
@@ -43,14 +56,13 @@ uint8 WokeModeJudgment(void)
 {  
   //判断车的状态(充电or放电)
   uint8  i=0, q=0;
-  uint16 cc2state;
   for(i=0; i<10; i++)
   {
-     cc2state = ADC_CC2_State();
-     if(cc2state <= 3000)
-     {
-       q++;
-     }
+    if(ADC_CC2_State() <= 3000)
+    {
+      q++;
+      WorkMode_DelayTime(20);
+    }
   }   
   if(q == 10)//连续10次是相同的状态
   {

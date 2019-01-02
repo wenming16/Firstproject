@@ -45,7 +45,7 @@
     float   Energy_Total_DisCharge;          //总放电量
      
   }EnergyInfo_T;
-  extern    EnergyInfo_T    EnergyInfo;
+  extern    EnergyInfo_T    g_EnergyInfo;
 
   void Task_SOCSOH(void);
   

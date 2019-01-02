@@ -13,8 +13,6 @@
 #ifndef _TASK_VOLTTEMPCOLLECT_H_
 #define _TASK_VOLTTEMPCOLLECT_H_ 
   
-  
- 
   void Task_VoltCMDSend(void);
   void Task_VoltCollect(void);
   void Task_TempCMDSend(void);

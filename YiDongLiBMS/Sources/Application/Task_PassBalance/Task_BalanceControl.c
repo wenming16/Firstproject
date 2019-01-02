@@ -19,6 +19,7 @@
 #include  "Task_DataProcess.h"
 #include  "Task_FltLevJudg.h"
 #include  "LTC6811_VoltCollect.h"
+#include  "Task_Init.h"
 
 #include  "LTC6811_PassBalance.h"
 
@@ -49,7 +50,7 @@ uint8 BalanceControl_Strategy(float curr, uint8 faultflg, uint16 voltmax, uint32
   {
     if((voltmax - (totalvolt/25.0)) > balancevolt)
     {
-       if(++cnt*balanceperio/1000>2)//持续2s,连续发命令是否会出错?
+       if(++cnt*BALANCEPERIO/1000>2)//持续2s,连续发命令是否会出错?
        {
          if(balacenod <= NUM1_Batper_true)
          {
@@ -94,6 +95,8 @@ void Task_BalanceControl_ON(void)
    uint8 balancestate;
    balancestate = BalanceControl_Strategy(g_DataColletInfo.DataCollet_Current_Filter, g_Flt_Charge.Level_Charge_BalanceOff_Flag,\
                                           g_LTC6811_VoltInfo.CellVolt_Max, g_LTC6811_VoltInfo.CellVolt_Total, g_LTC6811_VoltInfo.CellVolt_MaxNode, 500);
+
+  g_Roll_Tick.Roll_BalanOn++;
 }
 /*=======================================================================
  *函数名:      Task_BalanceControl_OFF(void)
@@ -104,5 +107,7 @@ void Task_BalanceControl_ON(void)
 ========================================================================*/
 void Task_BalanceControl_OFF(void)
 {
-   LTC6811_BalanceControl(0x00, 0x00, 0x00, 1);//关闭均衡功能
+   LTC6811_BalanceControl(0x00, 0x00, 0x00, 0);//关闭均衡功能
+   
+   g_Roll_Tick.Roll_BalanOff++;
 }

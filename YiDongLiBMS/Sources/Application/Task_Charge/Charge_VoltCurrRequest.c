@@ -34,7 +34,7 @@ void Charge_VoltCurrRequest(void)
   g_BMSCharge.VoltC_Min           = g_VoltInfo.CellVolt_Min;
   g_BMSCharge.SOC                 = g_SOCInfo.SOC_ValueRead;
   g_BMSCharge.Temp_Max            = g_TempInfo.CellTemp_Max;
-  g_BMSCharge.VoltS               = g_DataColletInfo.SysVolt_Total;
+  g_BMSCharge.VoltS               = g_VoltInfo.SysVolt_Total;
   
   //³äµç¹ýÎÂ
   if(g_Flt_Charge.Level_Temp_High == 2)

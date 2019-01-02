@@ -22,8 +22,8 @@
     Init_Normal_CAN = 0,
     //初始化位置失败的对应
     Init_Fault_CAN_BaudRate,
-    Init_Fault_CAN_EnterState,
-    Init_Fault_CAN_Unready,
+    Init_Fault_CAN_Unready1,
+    Init_Fault_CAN_Unready2,
     Init_Fault_CAN_Synchr
   };
   

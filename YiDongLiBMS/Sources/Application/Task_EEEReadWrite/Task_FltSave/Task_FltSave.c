@@ -21,10 +21,10 @@
 #include  "DS3231_TimeGet.h"
 #include  "Task_InsulDetect.h"
 #include  "Task_DataProcess.h"
-
+#include  "Task_Init.h"
 #include  "Task_UpMonitor.h"
 
-FltCodeSave_T  g_EEE_FltSave;
+FltCodeSave_T  g_FltCodeSave;
 
 
 /*=========================================================================================================================
@@ -883,8 +883,6 @@ uint8 ReadFltCodeFromEEE(uint8 read_flag,uint8 clear_flag)
            CAN_ToUpMonitor(FltCodeBMSToUpmonitor); 
        } 
        
-       
-       
        EPAGE = 0xFD;
        EEPROM_ptr = (uint8* )0x0820;
        FltCodeBMSToUpmonitor->m_ID = Eeprom_Communication_ID;       
@@ -997,6 +995,7 @@ void Task_FltCodeStore(void)
     
     readfault[16] = ReadFltCodeFromEEE(read_flag,clear_flag);
 
+  g_Roll_Tick.Roll_FltCodeS++;
 }
 
 

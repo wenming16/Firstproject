@@ -18,6 +18,7 @@
 #include  "Task_FltLevJudg.h"
 #include  "Port_Control.h"
 #include  "Task_SysTimeGet.h"
+#include  "Task_Init.h"
 
 /*=======================================================================
  *函数名:      PositiveRelay_Init
@@ -54,7 +55,6 @@ uint8 Init_Relay(void)//主正继电器
  *返回：       无
  *说明：       分别对主正继电器、CSSU电源开关、显示屏开关的控制
 ========================================================================*/
-static
 void PositiveRelay_Control(uint8 switchstate)//主正继电器
 {
   switch(switchstate)
@@ -179,4 +179,8 @@ void Task_PowerOnOff(void)
 {
    PowerOnOff_Control(g_Flt_DisChg.Level_DisCharge_SwitchOff_flag|g_Flt_Charge.Level_Charge_SwitchOff_flag,\
                       30, 2, 12);
+
+   g_Roll_Tick.Roll_Power++;
 }
+
+

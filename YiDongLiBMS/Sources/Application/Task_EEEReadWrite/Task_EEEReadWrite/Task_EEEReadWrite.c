@@ -17,6 +17,7 @@
 #include  "FltLevcfg.h"
 #include  "ADC_cfg.h"
 #include  "Task_UpMonitor.h"
+#include  "Task_Init.h"
   
 EEprom_Data_T EEprom_Data; 
 
@@ -76,8 +77,8 @@ void Get_EEprom_Value()
    EEprom_Data.Charge_Times = 0;
    g_SysTime.BMS_TotalRun_MiniteTime = 0; 
    g_SysTime.BMS_PowerOff_Time = 0;
-   EnergyInfo.Energy_Total_Charge = 0;
-   EnergyInfo.Energy_Total_DisCharge = 0;
+   g_EnergyInfo.Energy_Total_Charge = 0;
+   g_EnergyInfo.Energy_Total_DisCharge = 0;
    g_SOCInfo.SOC_LowestVoltGet = 0;
    g_SOCInfo.SOC_HighestVoltGet = 0;
    g_SOCInfo.SOC_ValueRead = 0;
@@ -254,8 +255,8 @@ void EEprom_read(uint16 addr, uint8 addrbase)
    EEprom_Data.Charge_Times =  *(uint16*)(addr + (addrbase%EEprom_Length)*Elem_Num); //充电次数
    g_SysTime.BMS_TotalRun_MiniteTime =  *(uint32*)(addr + (addrbase%EEprom_Length)*Elem_Num +2);
    g_SysTime.BMS_PowerOff_Time = *(uint32*)(addr + (addrbase%EEprom_Length)*Elem_Num + 6); //SOC静置时长（h）
-   EnergyInfo.Energy_Total_Charge = (*(uint32*)(addr + (addrbase%EEprom_Length)*Elem_Num + 10))/100.0;
-   EnergyInfo.Energy_Total_DisCharge =  (*(uint32*)(addr + (addrbase%EEprom_Length)*Elem_Num + 14))/100.0;
+   g_EnergyInfo.Energy_Total_Charge = (*(uint32*)(addr + (addrbase%EEprom_Length)*Elem_Num + 10))/100.0;
+   g_EnergyInfo.Energy_Total_DisCharge =  (*(uint32*)(addr + (addrbase%EEprom_Length)*Elem_Num + 14))/100.0;
    g_SOCInfo.SOC_LowestVoltGet =  (*(uint16*)(addr + (addrbase%EEprom_Length)*Elem_Num + 18))/10000.0;
    g_SOCInfo.SOC_HighestVoltGet = (*(uint16*)(addr + (addrbase%EEprom_Length)*Elem_Num + 20))/10000.0;       
    g_SOCInfo.SOC_ValueRead =   (*(uint16*)(addr + (addrbase%EEprom_Length)*Elem_Num + 22))/10000.0;
@@ -378,9 +379,9 @@ void Task_EEpromWrite(uint16 addr)
    EEEWrite_Delayus(5);
    *(uint32*)(addr + (EEprom_Data.pEErom_base%EEprom_Length)*Elem_Num + 6) = (uint32)g_SysTime.BMS_PowerOff_Time; //SOC静置时间
    EEEWrite_Delayus(5);
-   *(uint32*)(addr + (EEprom_Data.pEErom_base%EEprom_Length)*Elem_Num + 10) = (uint32)(EnergyInfo.Energy_Total_Charge*100);  //累计充电量
+   *(uint32*)(addr + (EEprom_Data.pEErom_base%EEprom_Length)*Elem_Num + 10) = (uint32)(g_EnergyInfo.Energy_Total_Charge*100);  //累计充电量
    EEEWrite_Delayus(5);
-   *(uint32*)(addr + (EEprom_Data.pEErom_base%EEprom_Length)*Elem_Num + 14) = (uint32)(EnergyInfo.Energy_Total_DisCharge*100);    //累计放电量
+   *(uint32*)(addr + (EEprom_Data.pEErom_base%EEprom_Length)*Elem_Num + 14) = (uint32)(g_EnergyInfo.Energy_Total_DisCharge*100);    //累计放电量
    EEEWrite_Delayus(5);
    *(uint16*)(addr + (EEprom_Data.pEErom_base%EEprom_Length)*Elem_Num + 18) = (uint16)(g_SOCInfo.SOC_LowestVoltGet*10000);
    EEEWrite_Delayus(5);
@@ -391,6 +392,8 @@ void Task_EEpromWrite(uint16 addr)
    *(uint16*)(addr + (EEprom_Data.pEErom_base%EEprom_Length)*Elem_Num + 24) = (uint16)(g_SOCInfo.SOC_ValueVoltGet*10000);    //SOC查表值  
    EEEWrite_Delayus(5);
    ptr[(EEprom_Data.pEErom_base+EEprom_Length-1)%16] = 0xFF;//将上次地址标记清零的清为0xFF,不能放在存储之前，以防存储过程中中断。            
+
+   g_Roll_Tick.Roll_EEEWrite++;
 }
    
 

@@ -30,6 +30,8 @@
 #include  "LTC6811_Init.h" 
 #include  "Task_UpMonitor.h"
 #include  "Task_InsulDetect.h"
+#include  "PIT.h"
+//#include  "IIC.h"
 
 // 整个系统的初始化函数  
 LIBDEF_MemPtr  MemPtr;
@@ -52,7 +54,11 @@ void Init_Sys(void)
   //系统初始化状态返回值清零
   MemPtr = memset(&g_SysInitState, 0, sizeof(SysInitState_T));
   
+  //物理层初始化
+  Physic_Init();
   
+  //获取系统时间  
+  Time_Init();
   
   //数据处理数据清零
   Init_TaskDataProcess();
@@ -65,13 +71,9 @@ void Init_Sys(void)
   
   //故障阈值初始化
   Init_UpMonitor();
-  Get_EEprom_Value();
-   
-  //物理层初始化
-  Physic_Init();
   
-  //获取系统时间
-  Time_Init();
+  //读取EEE中的值
+  Get_EEprom_Value();
   
   //SOC初始化功能
   #if(RESET_SOC == 1)
@@ -79,6 +81,8 @@ void Init_Sys(void)
     g_SOCInfo.SOC_Init = 0;    
   }
   #endif
+  
+  
   
   // 初始化创建所有任务,将flag置0 
   Task_Init();                  
@@ -98,24 +102,25 @@ void Physic_Init(void)
 { 
   //底层硬件初始化
   g_SysInitState.PLL = Init_PLL();                //锁相环初始化
-  g_SysInitState.IIC = Init_IIC();                //IIC初始化;在对时间模块进行清零之前先要初始化 
-  #if(Clock_Reset == 1)
+  #if(Clock_Reset == 01)
     DS3231SN_INIT(0b00011000, 1, 1, 1, 0, 0);     //时钟初始化(18/01/01)，while卡死的原因是IIC初始化放在读取数据之前
-  #endif        
+  #endif       
   g_SysInitState.EEPROM = Init_Flash();           //EEPROM初始化
-  g_SysInitState.ADC = Init_ADC();                //AD模块初始化
-  g_SysInitState.CAN1 = CAN_ToChargeInit();       //充电CAN,CAN1 
-  g_SysInitState.CAN2 = CAN_UpMonitorInit();      //内网CAN,CAN2
+  g_SysInitState.IIC    = Init_IIC();                //IIC初始化;在对时间模块进行清零之前先要初始化 
+  g_SysInitState.ADC    = Init_ADC();                //AD模块初始化
+  g_SysInitState.CAN1   = CAN_ToChargeInit();       //充电CAN,CAN1 
+  g_SysInitState.CAN2   = CAN_UpMonitorInit();      //内网CAN,CAN2
   g_SysInitState.Relay_Positvie = Init_Relay();   //主正继电器初始化
-  g_SysInitState.Insul = Insulation_Init();       //绝缘检测
-  g_SysInitState.PIT0 = Init_PIT(0, 10);          //PIT0通道,10ms  
+  g_SysInitState.Insul  = Insulation_Init();       //绝缘检测
   g_SysInitState.Screen = Init_Screen();          //显示屏SCI1初始化
-  g_SysInitState.SPI = LTC6804_Init();            //LTC6811,SPI1初始化
+  g_SysInitState.SPI    = LTC6804_Init();
+  g_SysInitState.PIT0   = PIT0_Init();
+ 
   //所有初始化
   if(g_SysInitState.PLL || g_SysInitState.IIC || g_SysInitState.EEPROM ||\
-      g_SysInitState.ADC || g_SysInitState.CAN1 || g_SysInitState.CAN2 ||\
-      g_SysInitState.Relay_Positvie || g_SysInitState.PIT0 ||\
-      g_SysInitState.Screen || g_SysInitState.SPI||g_SysInitState.Insul)
+     g_SysInitState.ADC || g_SysInitState.CAN1 || g_SysInitState.CAN2 ||\
+     g_SysInitState.Relay_Positvie || g_SysInitState.PIT0 ||\
+     g_SysInitState.Screen || g_SysInitState.SPI||g_SysInitState.Insul)
   {
     g_SysInitState.AllInit_State = 1;
   }
