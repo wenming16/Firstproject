@@ -35,7 +35,8 @@ void DataFromCSSU(pCANFRAME data)
     //电池模组单体电压信息
     case 0x18FF9700:                                      //子板采集的单体电压信息，从第25节开始存储
       j = data->m_data[1];                                //6804采集电压编号
-      for(i=0; i<3&&(3*j+i<(SYS_SERIES_YiDongLi)); i++) 
+
+      for(i=0; i<3&&(3*j+i<(SYS_SERIES_YiDongLi)); i++)   //&&(3*j+i<(SYS_SERIES_YiDongLi))
       {
          g_FromCSSU_Volt.CellVolt[j*3+i] = data->m_data[2+i*2] + (((uint16)data->m_data[3+i*2])<<8);
       }

@@ -93,8 +93,8 @@ void DataProcess_Volt(void)
   }
   else
   {
-     g_VoltInfo.CellVolt_Max = g_FromCSSU_Volt.CellVolt_Max;
-     g_VoltInfo.CellVolt_Max = NUM_Battery + g_FromCSSU_Volt.CellVolt_MaxNode;
+     g_VoltInfo.CellVolt_Max     = g_FromCSSU_Volt.CellVolt_Max;
+     g_VoltInfo.CellVolt_MaxNode = NUM_Battery + g_FromCSSU_Volt.CellVolt_MaxNode;
   }
   //读取最小电压以及所在位置
   if (g_LTC6811_VoltInfo.CellVolt_Min <= g_FromCSSU_Volt.CellVolt_Min) 
@@ -105,7 +105,7 @@ void DataProcess_Volt(void)
   else
   {
      g_VoltInfo.CellVolt_Min = g_FromCSSU_Volt.CellVolt_Min;
-     g_VoltInfo.CellVolt_Min = NUM_Battery + g_FromCSSU_Volt.CellVolt_MinNode;
+     g_VoltInfo.CellVolt_MinNode = NUM_Battery + g_FromCSSU_Volt.CellVolt_MinNode;
   }  
       
   g_VoltInfo.SysVolt_Total = (g_LTC6811_VoltInfo.CellVolt_Total + g_FromCSSU_Volt.CSSUVolt_Total)/2;                                 //系统总压
@@ -138,7 +138,7 @@ void DataProcess_Temp(void)
   }
   
   //读取最大温度及位置
-  if (g_LTC6811_TempInfo.CellTemp_Max >= g_FromCSSU_Volt.CellVolt_Max) 
+  if (g_LTC6811_TempInfo.CellTemp_Max >= g_FromCSSU_Temp.CellTemp_Max) 
   {
     g_TempInfo.CellTemp_Max      = g_LTC6811_TempInfo.CellTemp_Max;
     g_TempInfo.CellTemp_MaxNode  = g_LTC6811_TempInfo.CellTemp_MaxNode;
@@ -150,7 +150,7 @@ void DataProcess_Temp(void)
   }
   
   //读取最小温度及位置
-  if (g_LTC6811_TempInfo.CellTemp_Min <= g_FromCSSU_Volt.CellVolt_Min) 
+  if (g_LTC6811_TempInfo.CellTemp_Min <= g_FromCSSU_Temp.CellTemp_Min) 
   {
     g_TempInfo.CellTemp_Min      = g_LTC6811_TempInfo.CellTemp_Min;
     g_TempInfo.CellTemp_MinNode  = g_LTC6811_TempInfo.CellTemp_MinNode;

@@ -128,24 +128,29 @@ void Charge_Strategy(void)
 ========================================================================*/
 void Task_Charge(void)
 {
+  static uint8 flg;
   switch(g_WorkStateJudge.WorkState)
   {
     case MODE_CHARGE:
       Charge_Strategy();
+      flg = 0;
+      g_Roll_Tick.Roll_Charge++;
     break;
     
     case MODE_DISCHARGE: //清除充电结构体变量
-      memset(&g_BMSCharge, 0x00, sizeof(BMSCharge_T));
-      memset(&BMSCharge_State, 0x00, sizeof(BMSCharge_State_T));
-      memset(&ChargePileBMS, 0x00, sizeof(ChargePileBMS_T));
-      memset(&g_Charge_State, 0x00, sizeof(Charge_State_T));
+      if(flg == 0) //保证只清除1次
+      {
+        flg = 1;
+        memset(&g_BMSCharge, 0x00, sizeof(BMSCharge_T));
+        memset(&BMSCharge_State, 0x00, sizeof(BMSCharge_State_T));
+        memset(&ChargePileBMS, 0x00, sizeof(ChargePileBMS_T));
+        memset(&g_Charge_State, 0x00, sizeof(Charge_State_T));
+      }
     break;
     
     default:
     break;
-  }
-  
-  g_Roll_Tick.Roll_Charge++;
+  }  
 }
 
 

@@ -61,32 +61,32 @@ uint16 Level2_FltCode(Flt_BMSCheckSelf_T*ptr)
 ========================================================================*/
 void BMSCheckself_UpMonitor(SysInitState_T*sysint, Flt_BMSCheckSelf_T*lev2)
 {
-  pCANFRAME BMS_to_Upmonitor;
+  CANFRAME BMS_to_Upmonitor;
   uint8 CANstate;
   uint16 sysfltcode=0,lev2fltcode=0;
   
-  BMS_to_Upmonitor->m_IDE = 1;
-	BMS_to_Upmonitor->m_RTR = 0;
-	BMS_to_Upmonitor->m_dataLen = 6;
-	BMS_to_Upmonitor->m_priority = 6;
+  BMS_to_Upmonitor.m_IDE = 1;
+	BMS_to_Upmonitor.m_RTR = 0;
+	BMS_to_Upmonitor.m_dataLen = 6;
+	BMS_to_Upmonitor.m_priority = 6;
 	//0x1820C0F4 
-  BMS_to_Upmonitor->m_ID = 0x1820C0F4;
+  BMS_to_Upmonitor.m_ID = 0x1820C0F4;
 	
 	sysfltcode  = PhysicInitState_FltCode(sysint);
 	lev2fltcode = Level2_FltCode(lev2);    
   
-  BMS_to_Upmonitor->m_data[0] = 0x02;    //±‡∫≈ 0x02
-  BMS_to_Upmonitor->m_data[1] = 0x00;    //µÁ≥ÿ◊‘ºÏ◊¥Ã¨  00 ◊‘ºÏ÷–£¨01 ≥…π¶£¨02  ß∞‹
+  BMS_to_Upmonitor.m_data[0] = 0x02;    //±‡∫≈ 0x02
+  BMS_to_Upmonitor.m_data[1] = 0x00;    //µÁ≥ÿ◊‘ºÏ◊¥Ã¨  00 ◊‘ºÏ÷–£¨01 ≥…π¶£¨02  ß∞‹
 
-  BMS_to_Upmonitor->m_data[2] = (uint8)(sysfltcode&0xFF);     
-  BMS_to_Upmonitor->m_data[3] = (uint8)(sysfltcode>>8);     
+  BMS_to_Upmonitor.m_data[2] = (uint8)(sysfltcode&0xFF);     
+  BMS_to_Upmonitor.m_data[3] = (uint8)(sysfltcode>>8);     
   
-  BMS_to_Upmonitor->m_data[4] = (uint8)(lev2fltcode&0xFF);     
-  BMS_to_Upmonitor->m_data[5] = (uint8)(lev2fltcode>>8);
-  BMS_to_Upmonitor->m_data[6] = 0xFF;//‘§¡Ù
-  BMS_to_Upmonitor->m_data[7] = 0xFF;//‘§¡Ù
+  BMS_to_Upmonitor.m_data[4] = (uint8)(lev2fltcode&0xFF);     
+  BMS_to_Upmonitor.m_data[5] = (uint8)(lev2fltcode>>8);
+  //BMS_to_Upmonitor.m_data[6] = 0xFF;//‘§¡Ù
+  //BMS_to_Upmonitor.m_data[7] = 0xFF;//‘§¡Ù
    
-  CANstate = CAN_ToUpMonitor(BMS_to_Upmonitor);
+  CANstate = CAN_ToUpMonitor(&BMS_to_Upmonitor);
 }
 
 

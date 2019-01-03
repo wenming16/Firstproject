@@ -95,12 +95,12 @@ void Get_EEprom_Value()
    *(uint16*)0x0CAA = F2_DISCHG_VOLTCL_NT;  //单体电压欠压二级阀值， 单位 0.0001V/Bit
    
    //系统过压 02
-   *(uint16*)0x0CB0 = F1_CHARGE_VOLTSH*10; //电池组过压阀值1级
-   *(uint16*)0x0CB2 = F2_CHARGE_VOLTSH*10; //电池组过压阀值2级
+   *(uint16*)0x0CB0 = F1_CHARGE_VOLTSH*0.001; //电池组过压阀值1级
+   *(uint16*)0x0CB2 = F2_CHARGE_VOLTSH*0.001; //电池组过压阀值2级
    
    //系统欠压 03
-   *(uint16*)0x0CB8 = F1_DISCHG_VOLTSL_NT*10;  //电池组欠压阀值1级
-   *(uint16*)0x0CBA = F2_DISCHG_VOLTSL_NT*10;  //电池组欠压阀值2级
+   *(uint16*)0x0CB8 = F1_DISCHG_VOLTSL_NT*0.001;  //电池组欠压阀值1级
+   *(uint16*)0x0CBA = F2_DISCHG_VOLTSL_NT*0.001;  //电池组欠压阀值2级
    
    //单体压差 04
    *(uint16*)0x0CC0 = F1_DISCHG_VOLTCD;    //单体压差一级阀值， 单位 0.0001V/Bit;
@@ -138,7 +138,7 @@ void Get_EEprom_Value()
    *(uint16*)0x0CFA = (F2_CHARGE_CURRH + 750)*10;      //充电过流阈值2级，0.1A/位      偏移量:-750
    
    //0x1813C0F4 绝缘故障阈值
-   *(uint16*)0x0D0A = F2_DISCHG_INSUL*10;       // 绝缘电阻二级阀值， 单位 0.1KΩ/Bit;
+   *(uint16*)0x0D0A = F2_DISCHG_INSUL*10;              // 绝缘电阻二级阀值， 单位 0.1KΩ/Bit;
    
    //0x1915F4C0 特殊类信息
    *(uint16*)0x0D10 = 0;                          //SOC_init       单位 1%/Bit
@@ -152,10 +152,8 @@ void Get_EEprom_Value()
    //0x1814C0F4 新增报文用于存放低温阈值
    //00
    *(uint16*)0x0D28 = F1_DISCHG_VOLTSL_LT*0.001; 
-   *(uint16*)0x0D2A = F2_DISCHG_VOLTSL_LT*0.001;
    //01
    *(uint16*)0x0D30 = F1_DISCHG_VOLTCL_LT;
-   *(uint16*)0x0D32 = F2_DISCHG_VOLTCL_LT;
    
    
    
@@ -219,9 +217,9 @@ void Get_EEprom_Value()
    
    //1814C0F4 新增报文用于存放低温阈值
    g_BMSMonitor_New_LT.Voll_Sys_Low1_LT = (*(uint16*)0x0D28);
-   g_BMSMonitor_New_LT.Voll_Sys_Low2_LT = (*(uint16*)0x0D2A);
+   
    g_BMSMonitor_New_LT.Volt_Cell_Low1_LT = (*(uint16*)0x0D30);
-   g_BMSMonitor_New_LT.Volt_Cell_Low2_LT = (*(uint16*)0x0D32);
+   
    
    //0x1915F4C0 特殊类的信息标定 
    //00
@@ -356,14 +354,15 @@ void EEEWrite_Delayus(uint16 us)
 }
 
 /*=======================================================================
- *函数名:      Task_EEpromWrite
+ *函数名:      EEprom_Write
  *功能:        在EEprom中写值
  *参数:        addr：存储的起始位置
                addrbase：地址的偏移量
  *返回：       无
  *说明：       根据数据标记的基地址中的数据值，将变量值写入变量存储区
 ========================================================================*/ 
-void Task_EEpromWrite(uint16 addr)
+static
+void EEprom_Write(uint16 addr)
 {
    uint8*ptr = (uint8*)EEprom_Ptr; 
    EEprom_Data.pEErom_base++;
@@ -395,6 +394,18 @@ void Task_EEpromWrite(uint16 addr)
 
    g_Roll_Tick.Roll_EEEWrite++;
 }
-   
 
+
+/*=======================================================================
+ *函数名:      Task_EEpromWrite
+ *功能:        在EEprom中写值
+ *参数:        addr：存储的起始位置
+               addrbase：地址的偏移量
+ *返回：       无
+ *说明：       根据数据标记的基地址中的数据值，将变量值写入变量存储区
+========================================================================*/   
+void Task_EEpromWrite(void)
+{
+   EEprom_Write(EEprom_Baseadrr);
+}
    

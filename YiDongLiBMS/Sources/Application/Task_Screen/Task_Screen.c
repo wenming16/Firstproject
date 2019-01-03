@@ -17,7 +17,10 @@
 #include  "Task_DataProcess.h" 
 #include  "Task_SOCSOH.h"
 #include  "Task_FltLevJudg.h"
+#include  "Task_UpMonitor.h"
+#include  "Task_InsulDetect.h"
 #include  "Task_Init.h"
+
 #include  "SCI.h"
 
 RS485  RS485_Receive; 
@@ -80,33 +83,39 @@ static
 void RS485_DataReceice(void) 
 { 
  /*----------------------------------------双字节接收-----------------------------------*/
-  RS485_Receive.TxData_couple.TX2.BMS_SOH = 0; //无  
-  RS485_Receive.TxData_couple.TX2.RunningTime = (uint16)(g_SysTime.BMS_TotalRun_MiniteTime/60.0);           
-  RS485_Receive.TxData_couple.TX2.BMS_Current = (uint16)(g_DataColletInfo.DataCollet_Current_Filter*10);                  
+  RS485_Receive.TxData_couple.TX2.BMS_SOH = (uint16)g_BMSMonitor_SOH.SOH; 
+  RS485_Receive.TxData_couple.TX2.RunningTime = (uint16)(g_SysTime.BMS_TotalRun_MiniteTime/60);           
+  RS485_Receive.TxData_couple.TX2.BMS_Current = (uint16)((g_DataColletInfo.DataCollet_Current_Filter + 750)*10);                  
   RS485_Receive.TxData_couple.TX2.BMS_SOC = (uint16)(g_SOCInfo.SOC_ValueRead*100);                                                    
-  RS485_Receive.TxData_couple.TX2.Pack_Hightemp = g_TempInfo.CellTemp_Max-20;               
-  RS485_Receive.TxData_couple.TX2.Pack_Lowtemp = g_TempInfo.CellTemp_Min-20;                
-  RS485_Receive.TxData_couple.TX2.Pack_Volt = g_VoltInfo.SysVolt_Total/10;                 
+  RS485_Receive.TxData_couple.TX2.Pack_Hightemp = (uint16)g_TempInfo.CellTemp_Max;               
+  RS485_Receive.TxData_couple.TX2.Pack_Lowtemp = (uint16)g_TempInfo.CellTemp_Min;                
+  RS485_Receive.TxData_couple.TX2.Pack_Volt = (uint16)g_VoltInfo.SysVolt_Total/10.0;                 
   RS485_Receive.TxData_couple.TX2.Single_Maxvolt = (g_VoltInfo.CellVolt_Max +5)/10;      
   RS485_Receive.TxData_couple.TX2.Single_Lowvolt = (g_VoltInfo.CellVolt_Min +5)/10;        
-  RS485_Receive.TxData_couple.TX2.iso_resistance = g_VoltInfo.CellVolt_MaxNode+1;    //最高单体节点号   
-  RS485_Receive.TxData_couple.TX2.Lease_Time = g_VoltInfo.CellVolt_MinNode+1;        //最低单体节点号
-                          
+  RS485_Receive.TxData_couple.TX2.iso_resistance = g_IsoDetect.insulation_resist;    //绝缘电阻
+                       
 /*------------------------------------------单字节接收---------------------------------*/       
-  RS485_Receive.TxData_single.TX1.Alam_Hightemp = (uint8)g_Flt_DisChg.Level_Temp_High;
-  RS485_Receive.TxData_single.TX1.Alam_Lowtemp = (uint8)g_Flt_DisChg.Level_Temp_Low;     
+  RS485_Receive.TxData_single.TX1.Alam_SOC            = 0x00;
+  RS485_Receive.TxData_single.TX1.Alam_VoltSL         = (uint8)g_Flt_DisChg.Level_Volt_Sys_Low;
+  RS485_Receive.TxData_single.TX1.Alam_VoltCL         = (uint8)g_Flt_DisChg.Level_Volt_Cell_Low;
+  RS485_Receive.TxData_single.TX1.Alam_TempH_DisChg   = (uint8)g_Flt_DisChg.Level_Temp_High;
+  RS485_Receive.TxData_single.TX1.Alam_TempL_DisChg   = (uint8)g_Flt_DisChg.Level_Temp_Low;
+  RS485_Receive.TxData_single.TX1.Alam_CurrH_DisChg   = (uint8)g_Flt_DisChg.Level_Current_DisCharge_High;
+  RS485_Receive.TxData_single.TX1.Alam_VoltCD_DisChg  = (uint8)g_Flt_DisChg.Level_Volt_Cell_Diff_High;
+  RS485_Receive.TxData_single.TX1.Alam_TempD_DisChg   = (uint8)g_Flt_DisChg.Level_Temp_Diff_High;
   
-  //RS485_Receive.TxData_single.TX1.Alam_SOC = (uint8)DiscFlt.LowSOC;  
-  RS485_Receive.TxData_single.TX1.Alam_Pack_highvolt =  (uint8)g_Flt_Charge.Level_Volt_Sys_High;                        
-  RS485_Receive.TxData_single.TX1.Alam_Pack_Lowvolt = (uint8)g_Flt_DisChg.Level_Volt_Sys_Low;
-  RS485_Receive.TxData_single.TX1.Alam_single_highvolt =  (uint8)g_Flt_Charge.Level_Volt_Cell_High;                      
-  RS485_Receive.TxData_single.TX1.Alam_single_lowvolt = (uint8)g_Flt_DisChg.Level_Volt_Cell_Low;
-  RS485_Receive.TxData_single.TX1.Alam_Charge_highcurr = (uint8)g_Flt_Charge.Level_Current_Charge_High;                       
-  RS485_Receive.TxData_single.TX1.Alam_Discharge_highcurr = (uint8)g_Flt_DisChg.Level_Current_DisCharge_High;
-  RS485_Receive.TxData_single.TX1.Alam_communi_fail = 0; //导线开路
-  RS485_Receive.TxData_single.TX1.Alam_tenancy = 0;  //未用  
-  RS485_Receive.TxData_single.TX1.Acc_offline = 0;   //未用
- }    
+  RS485_Receive.TxData_single.TX1.Alam_VoltSH         = (uint8)g_Flt_Charge.Level_Volt_Sys_High;
+  RS485_Receive.TxData_single.TX1.Alam_VoltCH         = (uint8)g_Flt_Charge.Level_Volt_Cell_High;
+  RS485_Receive.TxData_single.TX1.Alam_TempH_Charge   = (uint8)g_Flt_Charge.Level_Temp_High;
+  RS485_Receive.TxData_single.TX1.Alam_TempL_Charge   = (uint8)g_Flt_Charge.Level_Temp_Low;
+  RS485_Receive.TxData_single.TX1.Alam_CurrH_Charge   = (uint8)g_Flt_Charge.Level_Current_Charge_High;
+  RS485_Receive.TxData_single.TX1.Alam_VoltCD_Charge  = (uint8)g_Flt_Charge.Level_Volt_Cell_Diff_High;
+  RS485_Receive.TxData_single.TX1.Alam_TempD_Charge   = (uint8)g_Flt_Charge.Level_Temp_Diff_High;
+  
+  RS485_Receive.TxData_single.TX1.Alam_Insul          = (uint8)g_IsoDetect.insulation_grade;
+  RS485_Receive.TxData_single.TX1.Alam_Checkself      = 0x01;
+  
+ }   
 /*=======================================================================
  *函数名:      Screen_delay(uint8)
  *功能:        显示屏的延时函数

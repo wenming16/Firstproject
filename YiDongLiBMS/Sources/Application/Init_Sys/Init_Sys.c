@@ -19,6 +19,7 @@
 #include  "Task_SysTimeGet.h"
 
 #include  "Task_init.h"
+#include  "Task_DataProcess.h"
 #include  "Init_PLL.h"
 #include  "Init_IIC.h"
 #include  "Init_Flash.h"
@@ -29,9 +30,11 @@
 #include  "Task_Screen.h" 
 #include  "LTC6811_Init.h" 
 #include  "Task_UpMonitor.h"
+#include  "Task_CurrLimit.h"
+#include  "Task_FltLevJudg.h"
 #include  "Task_InsulDetect.h"
+#include  "Task_EEEReadWrite.h"
 #include  "PIT.h"
-//#include  "IIC.h"
 
 // 整个系统的初始化函数  
 LIBDEF_MemPtr  MemPtr;
@@ -81,8 +84,6 @@ void Init_Sys(void)
     g_SOCInfo.SOC_Init = 0;    
   }
   #endif
-  
-  
   
   // 初始化创建所有任务,将flag置0 
   Task_Init();                  

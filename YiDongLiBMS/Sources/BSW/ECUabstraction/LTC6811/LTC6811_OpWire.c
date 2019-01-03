@@ -11,6 +11,7 @@
 ========================================================================*/
 #include "LTC6811_OpWire.h"
 
+LTC6811_OpwireInfo_T g_LTC6811_OpwireInfo;
 /*=======================================================================
  *函数名:      LTC6811_OpenwireDetect(void)
  *功能:        导线开路的检查
@@ -18,7 +19,6 @@
  *返回：       无
  *说明：       通过上下拉电阻，压差大于4000则导线开路
 ========================================================================*/
-LTC6811_OpwireInfo_T g_LTC6811_OpwireInfo;
 void LTC6811_OpenwireDetect()
 {   
   uint16 Cell_vol_down[NUM_IC][12];
@@ -66,7 +66,7 @@ void LTC6811_OpenwireDetect()
     switch(j)
     {
       case 0:
-        for(i = 1; i < NUM1_Batper; i++)
+        for(i = 1; i < 12; i++)
         { 
           Cell_vol_dif[j][i] = Cell_vol_down[j][i] - Cell_vol_up[j][i];
           if(Cell_vol_dif[j][i] > 4000)
@@ -79,7 +79,7 @@ void LTC6811_OpenwireDetect()
        break;
      
       case 1:
-        for(i = 1;i < NUM2_Batper ;i++)
+        for(i = 1;i < 12 ;i++)
         { 
           Cell_vol_dif[j][i] = Cell_vol_down[j][i] - Cell_vol_up[j][i];
           if(Cell_vol_dif[j][i] > 4000)
@@ -92,7 +92,7 @@ void LTC6811_OpenwireDetect()
        break;
        
       case 2:
-        for(i = 1;i < NUM3_Batper ;i++)
+        for(i = 1;i < 12 ;i++)
         { 
           Cell_vol_dif[j][i] = Cell_vol_down[j][i] - Cell_vol_up[j][i];
           if(Cell_vol_dif[j][i] > 4000)
@@ -105,7 +105,7 @@ void LTC6811_OpenwireDetect()
        break;
        
       case 3:
-        for(i = 1;i < NUM4_Batper ;i++)
+        for(i = 1;i < 12 ;i++)
         { 
           Cell_vol_dif[j][i] = Cell_vol_down[j][i] - Cell_vol_up[j][i];
           if(Cell_vol_dif[j][i] > 4000)
@@ -118,7 +118,7 @@ void LTC6811_OpenwireDetect()
        break;
         
      case 4:
-        for(i = 1;i < NUM5_Batper ;i++)
+        for(i = 1;i < 12 ;i++)
         { 
           Cell_vol_dif[j][i] = Cell_vol_down[j][i] - Cell_vol_up[j][i];
           if(Cell_vol_dif[j][i] > 4000)

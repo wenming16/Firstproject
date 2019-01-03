@@ -28,15 +28,15 @@
  
   //放电总压低(分辨率:0.0001V)(偏移量:0)
     //常温状态
-  #define         F2_DISCHG_VOLTSL_NT               27000*(SYS_SERIES_YiDongLi)
+  #define         F2_DISCHG_VOLTSL_NT               27000.0*(SYS_SERIES_YiDongLi)
 
-  #define         F1_DISCHG_VOLTSL_NT               28500*(SYS_SERIES_YiDongLi)
-  #define         R1_DISCHG_VOLTSL_NT               30500*(SYS_SERIES_YiDongLi)
+  #define         F1_DISCHG_VOLTSL_NT               28500.0*(SYS_SERIES_YiDongLi)
+  #define         R1_DISCHG_VOLTSL_NT               30500.0*(SYS_SERIES_YiDongLi)
     //低温状态
-  #define         F2_DISCHG_VOLTSL_LT               25000*(SYS_SERIES_YiDongLi)
+  #define         F2_DISCHG_VOLTSL_LT               25000.0*(SYS_SERIES_YiDongLi)
 
-  #define         F1_DISCHG_VOLTSL_LT               27000*(SYS_SERIES_YiDongLi)
-  #define         R1_DISCHG_VOLTSL_LT               28000*(SYS_SERIES_YiDongLi)
+  #define         F1_DISCHG_VOLTSL_LT               27000.0*(SYS_SERIES_YiDongLi)
+  #define         R1_DISCHG_VOLTSL_LT               28000.0*(SYS_SERIES_YiDongLi)
   
   #if (CELL_TYPE==0x03)//磷酸铁锂电池
     //放电单体低压(分辨率:0.0001V)(偏移量:0)
@@ -84,10 +84,10 @@
   
   //------------------充电故障阈值(FaultLevel_Charge)---------------------------
   //充电总压高(分辨率:0.0001V)(偏移量:0)
-  #define         F2_CHARGE_VOLTSH                  37000*(SYS_SERIES_YiDongLi)
+  #define         F2_CHARGE_VOLTSH                  37000.0*(SYS_SERIES_YiDongLi)
 
-  #define         F1_CHARGE_VOLTSH                  36500*(SYS_SERIES_YiDongLi)
-  #define         R1_CHARGE_VOLTSH                  36000*(SYS_SERIES_YiDongLi)
+  #define         F1_CHARGE_VOLTSH                  36500.0*(SYS_SERIES_YiDongLi)
+  #define         R1_CHARGE_VOLTSH                  36000.0*(SYS_SERIES_YiDongLi)
   
   #if (CELL_TYPE==0x03)//磷酸铁锂电池
     //充电单体高压(分辨率:0.0001V)(偏移量:0)
@@ -131,8 +131,8 @@
                       充放电周期时间及延迟时间宏定义
 ========================================================================*/
   //周期时间
-  #define PERIOD_DISCHARGE              100                 // 放电任务周期是100ms
-  #define PERIOD_CHARGE                 100                 // 充电任务周期是100ms
+  #define PERIOD_DISCHARGE              500                 // 放电任务周期是100ms
+  #define PERIOD_CHARGE                 500                 // 充电任务周期是100ms
   //延迟时间
   #define DELAYTIME_UNLOCK              15                   //解锁延迟
   #define DELAYTIME_DANGERLEVEL1        10      

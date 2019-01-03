@@ -34,6 +34,7 @@
     uint8 Roll_BMSUp;
     uint8 Roll_Screen;
     uint8 Roll_Boot;
+    uint8 Roll_OpWire;
     
   }Roll_Tick_T;
   extern Roll_Tick_T g_Roll_Tick;

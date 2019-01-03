@@ -3,7 +3,7 @@
 
   #include "TypeDefinition.h"
   //Boot升级的ID号(首次则用数据帧0x001)
-  #define  Boot_ID            0xF300   //扩展帧
+  #define  Boot_ID        0xF300   //扩展帧
 
   typedef struct
   {

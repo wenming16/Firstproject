@@ -174,7 +174,6 @@ uint8 CAN0_SendMsg(pCANFRAME sendFrame)
 ========================================================================*/ 
 uint8 CAN0_GetMsg(pCANFRAME receiveFrame)
 {
-  
   uint8 i;
 	  
 	if (!(CAN0RFLG_RXF))                         // 检测接收标志位；

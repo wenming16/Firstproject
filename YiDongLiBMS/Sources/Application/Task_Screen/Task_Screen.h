@@ -30,8 +30,6 @@
 
 
   /*======显示屏显示内容双字节======*/
-
-  
   typedef union
   { 
     uint8 SCI_Content2[Array_couple];
@@ -47,7 +45,6 @@
       	uint16 Single_Maxvolt;        //单体最高电压
       	uint16 Single_Lowvolt;        //单体最低电压
       	uint16 iso_resistance;        //绝缘电阻阻值
-      	uint16 Lease_Time;            //租赁时间 
     }TX2;
   }RS485_couple;                  //双字节SCI发送   
   
@@ -58,27 +55,34 @@
     uint8 SCI_Content1[Array_single];
     struct
     {
-      	uint8	Alam_SOC;                //SOC告警
-      	uint8	Alam_Hightemp;           //电阻最高温度告警
-      	uint8	Alam_Lowtemp;            //电池最低温度告警
-      	uint8	Alam_Pack_highvolt;      //电池组过压告警
-      	uint8	Alam_Pack_Lowvolt;       //电池组欠压告警
-      	uint8 Alam_single_highvolt;    //单体过压告警
-      	uint8 Alam_single_lowvolt;     //单体欠压告警
-      	uint8 Alam_Charge_highcurr;    //电池组充电过流告警
-      	uint8 Alam_Discharge_highcurr; //电池组放电过流告警
-      	uint8 Alam_communi_fail;       //充电通信故障
-      	uint8 Alam_tenancy;            //租赁信息管理
-      	uint8 Acc_offline;
+      uint8	Alam_SOC;               //SOC告警
+      uint8 Alam_VoltSL;            //放电总压低
+      uint8 Alam_VoltCL;            //放电单体低
+      uint8 Alam_TempH_DisChg;      //放电高温
+      uint8 Alam_TempL_DisChg;      //放电低温
+      uint8 Alam_CurrH_DisChg;      //放电过流
+      uint8 Alam_VoltCD_DisChg;     //放电单体压差
+      uint8 Alam_TempD_DisChg;      //放电温差
+        
+      uint8 Alam_VoltSH;            //充电总压低
+      uint8 Alam_VoltCH;            //充电单体低
+      uint8 Alam_TempH_Charge;      //充电高温
+      uint8 Alam_TempL_Charge;      //充电低温
+      uint8 Alam_CurrH_Charge;      //充电过流
+      uint8 Alam_VoltCD_Charge;     //充电单体压差
+      uint8 Alam_TempD_Charge;      //充电温差
+      
+      uint8 Alam_Insul;             //绝缘故障
+      uint8 Alam_Checkself;         //自检状态  
+      
     }TX1;     
   }RS485_single;                   //单字节SCI发送
-             
+  
   typedef struct
   {
-      RS485_couple TxData_couple;
-      RS485_single TxData_single;   
+    RS485_couple TxData_couple;
+    RS485_single TxData_single;   
   }RS485;
-  //extern RS485  RS485_Receive; 
       
   uint8 Init_Screen(void); 
   void Task_ScreenTransfer(void);

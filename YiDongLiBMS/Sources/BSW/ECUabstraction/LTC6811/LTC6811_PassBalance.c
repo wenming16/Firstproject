@@ -60,31 +60,31 @@ void LTC6811_BalanceCMDSend( uint8 *CFG,uint8 gpio, uint8 refon,uint8 swtrd, uin
 uint8 LTC6811_BalanceControl(uint8 state1, uint8 state2, uint8 state3, uint8 time) 
 {
   uint16 state[3]={0,0,0};
-  if((state1<1||state1>NUM1_Batper_true)||(state2<1||state2>NUM2_Batper_true)||((state3<1||state3>NUM3_Batper_true)))
+  if((state1<1||state1>NUM1_Batper_true)&&(state2<1||state2>NUM2_Batper_true)&&((state3<1||state3>NUM3_Batper_true)))
   {
     return 1;
   }
-  state[1] = (uint16)1<<(state1-1);
-  if(state[1]>NUM1_Batper_front)
+  state[0] = (uint16)1<<(state1-1);
+  if(state1>NUM1_Batper_front)
   {
-    state[1] = 1<<(state1-1+6-NUM1_Batper_front);
+    state[0] = 1<<(state1+6-NUM1_Batper_front);
   }
-  state[2] = (uint16)1<<(state2-1);
-  if(state[2]>NUM1_Batper_front)
+  state[1] = (uint16)1<<(state2-1);
+  if(state2>NUM2_Batper_front)
   {
-    state[2] = (uint16)1<<(state2-1+6-NUM1_Batper_front); 
+    state[1] = (uint16)1<<(state2+6-NUM2_Batper_front); 
   }
-  state[3] = (uint16)1<<(state3-1);
-  if(state[1]>NUM1_Batper_front)
+  state[2] = (uint16)1<<(state3-1);
+  if(state3>NUM3_Batper_front)
   {
-    state[3] = 1<<(state3-1+6-NUM1_Batper_front); 
+    state[2] = 1<<(state3+6-NUM3_Batper_front); 
   }
   
-  LTC6811_BalanceCMDSend(&Balance_CFGR[0][0], DGPIO, DREFON, DSWTRD, DADCOPT, UNDER_V, OVER_V, state[1], time) ;   /* 配置值赋给结构体,更改最后两个变量值；*/                                           
+  LTC6811_BalanceCMDSend(&Balance_CFGR[0][0], DGPIO, DREFON, DSWTRD, DADCOPT, UNDER_V, OVER_V, state[0], time) ;   /* 配置值赋给结构体,更改最后两个变量值；*/                                           
 
-  LTC6811_BalanceCMDSend(&Balance_CFGR[1][0], DGPIO, DREFON, DSWTRD, DADCOPT, UNDER_V, OVER_V, state[2], time) ;   /* 配置值赋给结构体,更改最后两个变量值；*/  
+  LTC6811_BalanceCMDSend(&Balance_CFGR[1][0], DGPIO, DREFON, DSWTRD, DADCOPT, UNDER_V, OVER_V, state[1], time) ;   /* 配置值赋给结构体,更改最后两个变量值；*/  
 
-  LTC6811_BalanceCMDSend(&Balance_CFGR[2][0], DGPIO, DREFON, DSWTRD, DADCOPT, UNDER_V, OVER_V, state[3], time) ;   /* 配置值赋给结构体,更改最后两个变量值；*/  
+  LTC6811_BalanceCMDSend(&Balance_CFGR[2][0], DGPIO, DREFON, DSWTRD, DADCOPT, UNDER_V, OVER_V, state[2], time) ;   /* 配置值赋给结构体,更改最后两个变量值；*/  
 
   LTC6804_wrcfg(NUM_IC, Balance_CFGR);
   

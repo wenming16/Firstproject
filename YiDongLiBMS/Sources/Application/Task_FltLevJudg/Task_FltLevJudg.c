@@ -27,8 +27,8 @@ State_Offline_T    State_Offline;
 HeartBeat_T        HeartBeat;
 
  //·Åµç¹ÊÕÏÅĞ¶Ï
- static uint8 Fault_DisChg_VoltS(uint32 Volt,uint8 Temp); //·Åµç×ÜÑ¹µÍ
- static uint8 Fault_DisChg_VoltC(uint16 Volt,uint8 Temp); //·Åµçµ¥ÌåµçÑ¹µÍ
+ static uint8 Fault_DisChg_VoltSL(uint32 Volt,uint8 Temp); //·Åµç×ÜÑ¹µÍ
+ static uint8 Fault_DisChg_VoltCL(uint16 Volt,uint8 Temp); //·Åµçµ¥ÌåµçÑ¹µÍ
  static uint8 Fault_DisChg_VoltCD(uint16 V_Diff);         //·ÅµçÑ¹²î
  static uint8 Fault_DisChg_TempH(uint8 Temp);             //·Åµç¸ßÎÂ
  static uint8 Fault_DisChg_TempL(uint8 Temp);             //·ÅµçµÍÎÂ
@@ -36,7 +36,7 @@ HeartBeat_T        HeartBeat;
  static uint8 Fault_DisChg_CurrH(float Current);          //·Åµç¹ıÁ÷
  static uint8 Fault_DisChg_Insul(uint16 Insul);           //¾øÔµ¹ÊÕÏ
  //³äµç¹ÊÕÏÅĞ¶Ï
- static uint8 Fault_Charge_VoltS(uint32 Volt);            //³äµç×ÜÑ¹¸ß
+ static uint8 Fault_Charge_VoltSH(uint32 Volt);            //³äµç×ÜÑ¹¸ß
  static uint8 Fault_Charge_VoltCH(uint16 Volt);           //³äµçµ¥Ìå¸ß
  static uint8 Fault_Charge_VoltCD(uint16 V_Diff);         //³äµçÑ¹²î
  static uint8 Fault_Charge_TempH(uint8 Temp);             //³äµç¸ßÎÂ
@@ -81,12 +81,13 @@ void Task_FltLevJudg(uint8 workstate)
    {
     case MODE_DISCHARGE: //·Åµç×´Ì¬
       //Çå³ı³äµç×´Ì¬¹ÊÕÏ
-      g_Flt_Charge.Level_Charge_SwitchOff_flag = 0; 
+      g_Flt_Charge.Level_Charge_SwitchOff_flag  = 0; 
       g_Flt_Charge.Level_Charge_BalanceOff_Flag = 0;
-      
+      g_Flt_Charge.Level_Volt_Sys_High          = 0;
+      g_Flt_Charge.Level_Volt_Cell_High         = 0;
       //ÅĞ¶Ï·Åµç×´Ì¬¹ÊÕÏ
-      g_Flt_DisChg.Level_Volt_Sys_Low           = Fault_DisChg_VoltS(g_VoltInfo.SysVolt_Total, g_TempInfo.CellTemp_Ave);
-      g_Flt_DisChg.Level_Volt_Cell_Low          = Fault_DisChg_VoltC(g_VoltInfo.CellVolt_Min, g_TempInfo.CellTemp_Ave);
+      g_Flt_DisChg.Level_Volt_Sys_Low           = Fault_DisChg_VoltSL(g_VoltInfo.SysVolt_Total, g_TempInfo.CellTemp_Ave);
+      g_Flt_DisChg.Level_Volt_Cell_Low          = Fault_DisChg_VoltCL(g_VoltInfo.CellVolt_Min, g_TempInfo.CellTemp_Ave);
       g_Flt_DisChg.Level_Volt_Cell_Diff_High    = Fault_DisChg_VoltCD(g_VoltInfo.CellVolt_Diff);
       g_Flt_DisChg.Level_Temp_High              = Fault_DisChg_TempH(g_TempInfo.CellTemp_Max);
       g_Flt_DisChg.Level_Temp_Low               = Fault_DisChg_TempL(g_TempInfo.CellTemp_Min);
@@ -108,12 +109,12 @@ void Task_FltLevJudg(uint8 workstate)
     
     case MODE_CHARGE:   //³äµç×´Ì¬
       //Çå³ı·Åµç×´Ì¬¹ÊÕÏ
-      g_Flt_DisChg.Level_Volt_Sys_Low           = 0;
-      g_Flt_DisChg.Level_Volt_Cell_Low          = 0;
+      g_Flt_DisChg.Level_Volt_Sys_Low             = 0;
+      g_Flt_DisChg.Level_Volt_Cell_Low            = 0;
       g_Flt_DisChg.Level_DisCharge_SwitchOff_flag = 0;
       
       //ÅĞ¶Ï³äµç×´Ì¬¹ÊÕÏ
-      g_Flt_Charge.Level_Volt_Sys_High        = Fault_Charge_VoltS(g_VoltInfo.SysVolt_Total);
+      g_Flt_Charge.Level_Volt_Sys_High        = Fault_Charge_VoltSH(g_VoltInfo.SysVolt_Total);
       g_Flt_Charge.Level_Volt_Cell_High       = Fault_Charge_VoltCH(g_VoltInfo.CellVolt_Max);
       g_Flt_Charge.Level_Volt_Cell_Diff_High  = Fault_Charge_VoltCD(g_VoltInfo.CellVolt_Diff);
       g_Flt_Charge.Level_Temp_High            = Fault_Charge_TempH(g_TempInfo.CellTemp_Max);
@@ -130,7 +131,7 @@ void Task_FltLevJudg(uint8 workstate)
       {
         g_Flt_Charge.Level_Charge_SwitchOff_flag = 1;  
       }
-      //¾ùºâ
+      //¾ùºâ¿ªÆô±ê¼Ç
       if((g_Flt_Charge.Level_Volt_Sys_High!=0) ||\
          (g_Flt_Charge.Level_Volt_Cell_High != 0)|\
          (g_Flt_Charge.Level_Volt_Cell_Diff_High != 0)||\
@@ -145,53 +146,27 @@ void Task_FltLevJudg(uint8 workstate)
       else
       {
         g_Flt_Charge.Level_Charge_BalanceOff_Flag = 0;
-      }
-      
+      }      
     break;
-   }  
-   
+   }   
    g_Roll_Tick.Roll_FltJudg++; 
 }
 /*============================¹ÊÕÏÅĞ¶Ïº¯Êı===============================*/
 
 /*=======================================================================
                               ·Åµç×ÜÑ¹µÍ0x01
- ========================================================================
- *º¯ÊıÃû1:     Fault1_VoltSys_DisCharge(uint8 Temp)
- *¹¦ÄÜ:        ¸ù¾İÎÂ¶ÈÑ¡Ôñ·Åµç×ÜÑ¹1¼¶¹ÊÕÏãĞÖµ
- *²ÎÊı:        Temp (ÊäÈëÎÂ¶È  ÊäÈëÆ«ÒÆÁ¿:-40)       
- *·µ»Ø£º       µÈ¼¶1µçÑ¹ãĞÖµ 
- 
- *º¯ÊıÃû2:     Fault2_VoltSys_DisCharge(uint8 Temp)
- *¹¦ÄÜ:        ¸ù¾İÎÂ¶ÈÑ¡Ôñ·Åµç×ÜÑ¹2¼¶¹ÊÕÏãĞÖµ
- *²ÎÊı:        Temp (ÊäÈëÎÂ¶È  ÊäÈëÆ«ÒÆÁ¿:-40)       
- *·µ»Ø£º       µÈ¼¶2µçÑ¹ãĞÖµ 
- 
- *º¯ÊıÃû3:     Recover1_VoltSys_DisCharge(uint8 Temp)
- *¹¦ÄÜ:        ¸ù¾İÎÂ¶ÈÑ¡Ôñ·Åµç×ÜÑ¹1¼¶»Ö¸´¹ÊÕÏãĞÖµ
- *²ÎÊı:        Temp (ÊäÈëÎÂ¶È  ÊäÈëÆ«ÒÆÁ¿:-40)       
- *·µ»Ø£º       µÈ¼¶1µçÑ¹ãĞÖµ 
- 
- *º¯ÊıÃû4:     Fault_DisChg_VoltS(uint32 Volt,uint8 Temp)
- *¹¦ÄÜ:        ¸ù¾İÏµÍ³µçÑ¹¡¢ÎÂ¶ÈÅĞ¶Ï¹ÊÕÏµÈ¼¶
- *²ÎÊı:        Volt(ÏµÍ³µçÑ¹)
-               Temp (ÊäÈëÎÂ¶È  ÊäÈëÆ«ÒÆÁ¿:-40)       
- *·µ»Ø£º       ·Åµç×ÜÑ¹µÍµÄ¹ÊÕÏµÈ¼¶
- 
- *ËµÃ÷£º       
-========================================================================*/ 
-//-------------------¸ù¾İÎÂ¶ÈÈ·¶¨¹ÊÕÏµÈ¼¶ÒÔ¼°»Ö¸´µÈ¼¶ãĞÖµ-----------------
+ ======================================================================*/
 //1¼¶¹ÊÕÏº¯Êı
 static
 uint32 Fault1_VoltSys_DisCharge(uint8 Temp)
 {
   if(Temp>=NTEMP_BOUNDARY)//³£ÎÂ(>=0¡æ)
   { 
-    return (g_BMSMonitor_Volt.Volt_Sys_Low1*1000);//(28500)*(25)
+    return (g_BMSMonitor_Volt.Volt_Sys_Low1);//(28500)*(25)
   }
   else //µÍÎÂ
   {
-    return (g_BMSMonitor_New_LT.Voll_Sys_Low1_LT*1000);
+    return (g_BMSMonitor_New_LT.Voll_Sys_Low1_LT);
   }
 }
 //2¼¶¹ÊÕÏº¯Êı
@@ -200,11 +175,11 @@ uint32 Fault2_VoltSys_DisCharge(uint8 Temp)
 {
   if(Temp>=NTEMP_BOUNDARY)//³£ÎÂ(>=0¡æ)
   { 
-    return (g_BMSMonitor_Volt.Volt_Sys_Low2*1000);
+    return (g_BMSMonitor_Volt.Volt_Sys_Low2);
   }
   else //µÍÎÂ
   {
-    return (g_BMSMonitor_New_LT.Voll_Sys_Low2_LT*1000);
+    return (g_BMSMonitor_New_LT.Voll_Sys_Low2_LT);
   }
 }
 //1»Ö¸´ÖÁ0
@@ -213,23 +188,22 @@ uint32 Recover1_VoltSys_DisCharge(uint8 Temp)
 {
   if(Temp>=NTEMP_BOUNDARY)//³£ÎÂ(>=0¡æ)
   { 
-    return (g_BMSMonitor_Volt.Volt_Sys_Low1*1000 + 2000*SYS_SERIES_YiDongLi);
+    return (g_BMSMonitor_Volt.Volt_Sys_Low1 + 2*SYS_SERIES_YiDongLi);
   }
   else //µÍÎÂ
   {
-    return (g_BMSMonitor_New_LT.Voll_Sys_Low1_LT*1000 + 1000);//¿É»»³É±ê¶¨±äÁ¿(·Ö±æÂÊ£º0.001V/Î»)
+    return (g_BMSMonitor_New_LT.Voll_Sys_Low1_LT + SYS_SERIES_YiDongLi);//¿É»»³É±ê¶¨±äÁ¿(·Ö±æÂÊ£º0.001V/Î»)
   }
 }
-
-//-----------------¸ù¾İÊäÈëµÄÏµÍ³µçÑ¹ÅĞ¶Ï×îÖÕµÄ¹ÊÕÏµÈ¼¶------------------
-static uint8 Fault_DisChg_VoltS(uint32 Volt,uint8 Temp)  //ÊäÈëÏµÍ³µçÑ¹ºÍ»·¾³ÎÂ¶È
+//¹ÊÕÏÅĞ¶Ï
+static uint8 Fault_DisChg_VoltSL(uint32 Volt,uint8 Temp)  //ÊäÈëÏµÍ³µçÑ¹ºÍ»·¾³ÎÂ¶È
 {
   static uint8 cnt[4];      //Ê±¼ä¼ÆÊı
   static uint8 FltL;
   
   if(FltL==0)           //0¼¶¹ÊÕÏ
   {
-    if(Volt<=Fault1_VoltSys_DisCharge(Temp))  //0±ä1
+    if(Volt/1000.0<=Fault1_VoltSys_DisCharge(Temp))  //0±ä1
     {
       if(++cnt[0]*PERIOD_DISCHARGE/1000>=DELAYTIME_DANGERLEVEL2)
       {
@@ -242,7 +216,7 @@ static uint8 Fault_DisChg_VoltS(uint32 Volt,uint8 Temp)  //ÊäÈëÏµÍ³µçÑ¹ºÍ»·¾³ÎÂ¶
       cnt[0] = 0;
     }
     
-    if(Volt<=Fault2_VoltSys_DisCharge(Temp))  //0±ä2
+    if(Volt/1000.0<=Fault2_VoltSys_DisCharge(Temp))  //0±ä2
     {
       if(++cnt[1]*PERIOD_DISCHARGE/1000>=DELAYTIME_DANGERLEVEL2)
       {
@@ -259,7 +233,7 @@ static uint8 Fault_DisChg_VoltS(uint32 Volt,uint8 Temp)  //ÊäÈëÏµÍ³µçÑ¹ºÍ»·¾³ÎÂ¶
   }
   else if(FltL == 1) //1¼¶¹ÊÕÏ
   {
-    if(Volt <= Fault2_VoltSys_DisCharge(Temp))      //1±ä2
+    if(Volt/1000.0 <= Fault2_VoltSys_DisCharge(Temp))      //1±ä2
     {
       if(++cnt[2]*PERIOD_DISCHARGE/1000>=DELAYTIME_DANGERLEVEL2)
       {
@@ -272,7 +246,7 @@ static uint8 Fault_DisChg_VoltS(uint32 Volt,uint8 Temp)  //ÊäÈëÏµÍ³µçÑ¹ºÍ»·¾³ÎÂ¶
       cnt[2] = 0;
     }
     
-    if(Volt >= Recover1_VoltSys_DisCharge(Temp))    //1±ä0
+    if(Volt/1000.0 >= Recover1_VoltSys_DisCharge(Temp))    //1±ä0
     {
       if(++cnt[3]*PERIOD_DISCHARGE/1000>=DELAYTIME_DANGERLEVEL2)
       {
@@ -296,34 +270,11 @@ static uint8 Fault_DisChg_VoltS(uint32 Volt,uint8 Temp)  //ÊäÈëÏµÍ³µçÑ¹ºÍ»·¾³ÎÂ¶
   }
   return(FltL);
 }
-/*============================·Åµç×ÜÑ¹µÍ===============================*/
 
 /*=======================================================================
                               ·Åµçµ¥ÌåµçÑ¹µÍ0x02
- ========================================================================
- *º¯ÊıÃû1:     Fault1_VoltCell_DisCharge(uint8 Temp)
- *¹¦ÄÜ:        ¸ù¾İÎÂ¶ÈÑ¡Ôñ·Åµçµ¥Ñ¹1¼¶¹ÊÕÏãĞÖµ
- *²ÎÊı:        Temp (ÊäÈëÎÂ¶È  ÊäÈëÆ«ÒÆÁ¿:-40)       
- *·µ»Ø£º       µÈ¼¶1µçÑ¹ãĞÖµ 
- 
- *º¯ÊıÃû2:     Fault2_VoltCell_DisCharge(uint8 Temp)
- *¹¦ÄÜ:        ¸ù¾İÎÂ¶ÈÑ¡Ôñ·Åµçµ¥Ñ¹2¼¶¹ÊÕÏãĞÖµ
- *²ÎÊı:        Temp (ÊäÈëÎÂ¶È  ÊäÈëÆ«ÒÆÁ¿:-40)       
- *·µ»Ø£º       µÈ¼¶2µçÑ¹ãĞÖµ 
- 
- *º¯ÊıÃû3:     Recover1_VoltCell_DisCharge(uint8 Temp)
- *¹¦ÄÜ:        ¸ù¾İÎÂ¶ÈÑ¡Ôñ·Åµçµ¥Ñ¹1¼¶»Ö¸´¹ÊÕÏãĞÖµ
- *²ÎÊı:        Temp (ÊäÈëÎÂ¶È  ÊäÈëÆ«ÒÆÁ¿:-40)       
- *·µ»Ø£º       µÈ¼¶1µçÑ¹ãĞÖµ 
-  
- *º¯ÊıÃû4:     Fault_DisChg_VoltC(uint16 Volt,uint8 Temp)
- *¹¦ÄÜ:        ¸ù¾İµ¥ÌåµçÑ¹¡¢ÎÂ¶ÈÅĞ¶Ï»Ö¸´ºó¹ÊÕÏµÈ¼¶
- *²ÎÊı:        Volt(µ¥ÌåµçÑ¹)
-               Temp (ÊäÈëÎÂ¶È  ÊäÈëÆ«ÒÆÁ¿:-40)       
- *·µ»Ø£º       ·Åµçµ¥Ñ¹µÍµÄ¹ÊÕÏµÈ¼¶
- 
- *ËµÃ÷£º       
-========================================================================*/ 
+ ======================================================================*/
+
 //1¼¶¹ÊÕÏº¯Êı
 static
 uint16 Fault1_VoltCell_DisCharge(uint8 Temp)
@@ -365,7 +316,7 @@ uint16 Recover1_VoltCell_DisCharge(uint8 Temp)
 }
 
 //ÅĞ¶Ï¹ÊÕÏµÈ¼¶
-static uint8 Fault_DisChg_VoltC(uint16 Volt,uint8 Temp)  //ÊäÈëµ¥ÌåµçÑ¹ºÍ»·¾³ÎÂ¶È
+static uint8 Fault_DisChg_VoltCL(uint16 Volt,uint8 Temp)  //ÊäÈëµ¥ÌåµçÑ¹ºÍ»·¾³ÎÂ¶È
 {
   static uint8 cnt[4];      //Ê±¼ä¼ÆÊı
   static uint8 FltL;
@@ -439,20 +390,10 @@ static uint8 Fault_DisChg_VoltC(uint16 Volt,uint8 Temp)  //ÊäÈëµ¥ÌåµçÑ¹ºÍ»·¾³ÎÂ¶
   }
   return(FltL);
 }
-/*============================·Åµçµ¥ÌåµçÑ¹µÍ===========================*/
 
 /*=======================================================================
                               ·Åµçµ¥ÌåÑ¹²î0x03
- ========================================================================
- *º¯ÊıÃû1:     Fault_DisChg_VoltCD(uint16 V_max,uint16 V_min)
- *¹¦ÄÜ:        ¸ù¾İ×î¸ß/µÍµ¥ÌåµçÑ¹ÅĞ¶ÏÑ¹²î¹ÊÕÏµÈ¼¶
- *²ÎÊı:        V_max(µ¥Ìå×î¸ßµçÑ¹)
-               V_min(µ¥Ìå×îµÍµçÑ¹)       
- *·µ»Ø£º       ·ÅµçÑ¹²îµÄ¹ÊÕÏµÈ¼¶
- 
- *ËµÃ÷£º       
-========================================================================*/ 
-//ÅĞ¶Ï¹ÊÕÏµÈ¼¶
+ ======================================================================*/
 static uint8 Fault_DisChg_VoltCD(uint16 V_Diff)  //ÊäÈëµ¥Ìå×î¸ß/µÍµçÑ¹
 {
   static uint8 cnt[2];      //Ê±¼ä¼ÆÊı
@@ -493,19 +434,10 @@ static uint8 Fault_DisChg_VoltCD(uint16 V_Diff)  //ÊäÈëµ¥Ìå×î¸ß/µÍµçÑ¹
   }
   return(FltL);
 }
-/*============================·Åµçµ¥ÌåÑ¹²î============================*/
 
 /*=======================================================================
                                 ·Åµç¸ßÎÂ0x04
- ========================================================================
- *º¯ÊıÃû1:     Fault_DisChg_TempH(uint8 Temp)
- *¹¦ÄÜ:        ¸ù¾İÎÂ¶ÈÅĞ¶Ï¸ßÎÂ¹ÊÕÏµÈ¼¶
- *²ÎÊı:        Temp (ÊäÈëÎÂ¶È  ÊäÈëÆ«ÒÆÁ¿:-40)       
- *·µ»Ø£º       ·Åµçµ¥Ñ¹µÍµÄ¹ÊÕÏµÈ¼¶
- 
- *ËµÃ÷£º       
-========================================================================*/ 
-//ÅĞ¶Ï¹ÊÕÏµÈ¼¶
+ ======================================================================*/
 static uint8 Fault_DisChg_TempH(uint8 Temp)  //ÊäÈëÎÂ¶È
 {
   static uint8 cnt[4];      //Ê±¼ä¼ÆÊı
@@ -580,18 +512,11 @@ static uint8 Fault_DisChg_TempH(uint8 Temp)  //ÊäÈëÎÂ¶È
   }
   return(FltL);
 }
-/*==============================·Åµç¸ßÎÂ==============================*/
 
 /*=======================================================================
                                 ·ÅµçµÍÎÂ0x05
- ========================================================================
- *º¯ÊıÃû1:     Fault_DisChg_TempL(uint8 Temp)
- *¹¦ÄÜ:        ¸ù¾İÎÂ¶ÈÅĞ¶ÏµÍÎÂ¹ÊÕÏµÈ¼¶
- *²ÎÊı:        Temp (ÊäÈëÎÂ¶È  ÊäÈëÆ«ÒÆÁ¿:-40)       
- *·µ»Ø£º       ·Åµçµ¥Ñ¹µÍµÄ¹ÊÕÏµÈ¼¶
- 
- *ËµÃ÷£º       
-========================================================================*/ 
+ ======================================================================*/
+  
 //ÅĞ¶Ï¹ÊÕÏµÈ¼¶
 static uint8 Fault_DisChg_TempL(uint8 Temp)  //ÊäÈëÎÂ¶È
 {
@@ -667,20 +592,10 @@ static uint8 Fault_DisChg_TempL(uint8 Temp)  //ÊäÈëÎÂ¶È
   }
   return(FltL);
 }
-/*==============================·ÅµçµÍÎÂ==============================*/
 
 /*=======================================================================
                               ·ÅµçÎÂ²î0x06
- ========================================================================
- *º¯ÊıÃû1:     Fault_DisChg_TempD(uint8 T_max,uint8 T_min)
- *¹¦ÄÜ:        ¸ù¾İ×î¸ß/µÍÎÂ¶ÈÅĞ¶ÏÎÂ²î¹ÊÕÏµÈ¼¶
- *²ÎÊı:        V_max(µ¥Ìå×î¸ßÎÂ¶È)
-               V_min(µ¥Ìå×îµÍÎÂ¶È)       
- *·µ»Ø£º       ·ÅµçÎÂ²îµÄ¹ÊÕÏµÈ¼¶
- 
- *ËµÃ÷£º       
-========================================================================*/ 
-//ÅĞ¶Ï¹ÊÕÏµÈ¼¶
+ ======================================================================*/
 static uint8 Fault_DisChg_TempD(uint8 T_Diff)  //ÊäÈëµ¥Ìå×î¸ß/µÍµçÑ¹
 {
   static uint8 cnt[2];      //Ê±¼ä¼ÆÊı
@@ -721,19 +636,10 @@ static uint8 Fault_DisChg_TempD(uint8 T_Diff)  //ÊäÈëµ¥Ìå×î¸ß/µÍµçÑ¹
   }
   return(FltL);
 }
-/*============================·Åµçµ¥ÌåÎÂ²î============================*/
 
 /*=======================================================================
                                 ·Åµç¹ıÁ÷0x07
- ========================================================================
- *º¯ÊıÃû1:     Fault_DisChg_CurrH(float Current)
- *¹¦ÄÜ:        ¸ù¾İµçÁ÷ÅĞ¶Ï¹ıÑ¹¹ÊÕÏµÈ¼¶
- *²ÎÊı:        Current (ÊäÈëÎÂ¶È  ÊäÈëÆ«ÒÆÁ¿:-40)       
- *·µ»Ø£º       ·Åµç¹ıÑ¹µÄ¹ÊÕÏµÈ¼¶
- 
- *ËµÃ÷£º       
-========================================================================*/ 
-//ÅĞ¶Ï¹ÊÕÏµÈ¼¶
+ ======================================================================*/
 static uint8 Fault_DisChg_CurrH(float Current)//ÊäÈëµçÁ÷
 {
   static uint8 cnt[4];      //Ê±¼ä¼ÆÊı
@@ -808,19 +714,10 @@ static uint8 Fault_DisChg_CurrH(float Current)//ÊäÈëµçÁ÷
   }
   return(FltL);
 }
-/*================================·Åµç¹ıÁ÷================================*/
 
 /*=======================================================================
                                 ·Åµç¾øÔµ¹ÊÕÏ0x08
- ========================================================================
- *º¯ÊıÃû1:     Fault_DisChg_Insul(uint16 Insul)
- *¹¦ÄÜ:        ¸ù¾İµçÁ÷ÅĞ¶Ï¹ıÑ¹¹ÊÕÏµÈ¼¶
- *²ÎÊı:        Insul (ÊäÈë¾øÔµµç×è)       
- *·µ»Ø£º       ·Åµç¾øÔµ¹ÊÕÏµÈ¼¶
- 
- *ËµÃ÷£º       
-========================================================================*/ 
-//ÅĞ¶Ï¹ÊÕÏµÈ¼¶
+ ======================================================================*/
 static uint8 Fault_DisChg_Insul(uint16 Insul)
 {
   static uint8 cnt[4];      //Ê±¼ä¼ÆÊı
@@ -845,28 +742,18 @@ static uint8 Fault_DisChg_Insul(uint16 Insul)
   return(FltL);
 }
 
-/*================================·Åµç¾øÔµ¹ÊÕÏ================================*/
-
 
 /*=======================================================================
                               ³äµç×ÜÑ¹¸ß0x11
- ========================================================================
- *º¯ÊıÃû1:     Fault_Charge_VoltS(uint32 Volt)
- *¹¦ÄÜ:        ¸ù¾İÏµÍ³µçÑ¹ÅĞ¶Ï¹ÊÕÏµÈ¼¶
- *²ÎÊı:        Volt(ÏµÍ³µçÑ¹)
- *·µ»Ø£º       ³äµç×ÜÑ¹¸ßµÄ¹ÊÕÏµÈ¼¶
- 
- *ËµÃ÷£º       
-========================================================================*/ 
-//ÅĞ¶Ï¹ÊÕÏµÈ¼¶
-static uint8 Fault_Charge_VoltS(uint32 Volt)  //ÊäÈëÏµÍ³µçÑ¹
+ ======================================================================*/
+static uint8 Fault_Charge_VoltSH(uint32 Volt)  //ÊäÈëÏµÍ³µçÑ¹
 {
   static uint8 cnt[4];      //Ê±¼ä¼ÆÊı
   static uint8 FltL;
   
   if(FltL==0)           //0¼¶¹ÊÕÏ
   {
-    if(Volt>=g_BMSMonitor_Volt.Volt_Sys_High1*1000)  //0±ä1
+    if(Volt/1000.0>=g_BMSMonitor_Volt.Volt_Sys_High1)  //0±ä1
     {
       if(++cnt[0]*PERIOD_DISCHARGE/1000>=DELAYTIME_DANGERLEVEL2)
       {
@@ -879,7 +766,7 @@ static uint8 Fault_Charge_VoltS(uint32 Volt)  //ÊäÈëÏµÍ³µçÑ¹
       cnt[0] = 0;
     }
     
-    if(Volt>=g_BMSMonitor_Volt.Volt_Sys_High2*1000)  //0±ä2
+    if(Volt/1000.0>=g_BMSMonitor_Volt.Volt_Sys_High2)  //0±ä2
     {
       if(++cnt[1]*PERIOD_DISCHARGE/1000>=DELAYTIME_DANGERLEVEL2)
       {
@@ -896,7 +783,7 @@ static uint8 Fault_Charge_VoltS(uint32 Volt)  //ÊäÈëÏµÍ³µçÑ¹
   }
   else if(FltL == 1) //1¼¶¹ÊÕÏ
   {
-    if(Volt>=g_BMSMonitor_Volt.Volt_Sys_High2*1000)      //1±ä2
+    if(Volt/1000.0>=g_BMSMonitor_Volt.Volt_Sys_High2)      //1±ä2
     {
       if(++cnt[2]*PERIOD_DISCHARGE/1000>=DELAYTIME_DANGERLEVEL2)
       {
@@ -909,7 +796,7 @@ static uint8 Fault_Charge_VoltS(uint32 Volt)  //ÊäÈëÏµÍ³µçÑ¹
       cnt[2] = 0;
     }
     
-    if(Volt<=(Volt>=g_BMSMonitor_Volt.Volt_Sys_High1*1000 - 500*SYS_SERIES_YiDongLi))    //1±ä0
+    if(Volt/1000.0<=(Volt>=g_BMSMonitor_Volt.Volt_Sys_High1 - 0.5*SYS_SERIES_YiDongLi))    //1±ä0
     {
       if(++cnt[3]*PERIOD_DISCHARGE/1000>=DELAYTIME_DANGERLEVEL2)
       {
@@ -933,19 +820,10 @@ static uint8 Fault_Charge_VoltS(uint32 Volt)  //ÊäÈëÏµÍ³µçÑ¹
   }
   return(FltL);
 }
-/*============================³äµç×ÜÑ¹¸ß===============================*/
 
 /*=======================================================================
                               ³äµçµ¥ÌåµçÑ¹¸ß0x12
- ========================================================================
- *º¯ÊıÃû1:     Fault_Charge_VoltCH(uint16 Volt)
- *¹¦ÄÜ:        ¸ù¾İµ¥ÌåµçÑ¹ÅĞ¶Ï»Ö¸´ºó¹ÊÕÏµÈ¼¶
- *²ÎÊı:        Volt(µ¥ÌåµçÑ¹)
- *·µ»Ø£º       ³äµçµ¥ÌåµçÑ¹¸ßµÄ¹ÊÕÏµÈ¼¶
- 
- *ËµÃ÷£º       
-========================================================================*/ 
-//ÅĞ¶Ï¹ÊÕÏµÈ¼¶
+ ======================================================================*/
 static uint8 Fault_Charge_VoltCH(uint16 Volt)  //ÊäÈëµ¥ÌåµçÑ¹ºÍ»·¾³ÎÂ¶È
 {
   static uint8 cnt[4];      //Ê±¼ä¼ÆÊı
@@ -1020,20 +898,10 @@ static uint8 Fault_Charge_VoltCH(uint16 Volt)  //ÊäÈëµ¥ÌåµçÑ¹ºÍ»·¾³ÎÂ¶È
   }
   return(FltL);
 }
-/*============================³äµçµ¥ÌåµçÑ¹¸ß===========================*/
 
 /*=======================================================================
                               ³äµçµ¥ÌåÑ¹²î0x13
- ========================================================================
- *º¯ÊıÃû1:     Fault_Charge_VoltCD(uint16 V_max,uint16 V_min)
- *¹¦ÄÜ:        ¸ù¾İµ¥ÌåµçÑ¹ÅĞ¶Ï³äµçµ¥ÌåµçÑ¹µÍ¹ÊÕÏµÈ¼¶
- *²ÎÊı:        V_max(µ¥Ìå×î¸ßµçÑ¹)
-               V_min(µ¥Ìå×îµÍµçÑ¹)      
- *·µ»Ø£º       ³äµçµ¥ÌåÑ¹²îµÄ¹ÊÕÏµÈ¼¶
- 
- *ËµÃ÷£º       
-========================================================================*/ 
-//ÅĞ¶Ï¹ÊÕÏµÈ¼¶
+ ======================================================================*/
 static uint8 Fault_Charge_VoltCD(uint16 V_Diff)  //ÊäÈëµ¥Ìå×î¸ß/µÍµçÑ¹
 {
   static uint8 cnt[2];      //Ê±¼ä¼ÆÊı
@@ -1074,18 +942,11 @@ static uint8 Fault_Charge_VoltCD(uint16 V_Diff)  //ÊäÈëµ¥Ìå×î¸ß/µÍµçÑ¹
   }
   return(FltL);
 }
-/*=============================³äµçµ¥ÌåÑ¹²î=============================*/
 
 /*=======================================================================
                                 ³äµç¸ßÎÂ0x14
- ========================================================================
- *º¯ÊıÃû1:     Fault_Charge_TempH(uint8 Temp)
- *¹¦ÄÜ:        ¸ù¾İÎÂ¶ÈÅĞ¶Ï¸ßÎÂ¹ÊÕÏµÈ¼¶
- *²ÎÊı:        Temp (ÊäÈëÎÂ¶È  ÊäÈëÆ«ÒÆÁ¿:-40)       
- *·µ»Ø£º       ³äµç¸ßÎÂµÄ¹ÊÕÏµÈ¼¶
+ ======================================================================*/
 
- *ËµÃ÷£º       
-========================================================================*/ 
 //ÅĞ¶Ï¹ÊÕÏµÈ¼¶
 static uint8 Fault_Charge_TempH(uint8 Temp)  //ÊäÈëÎÂ¶È
 {
@@ -1161,20 +1022,14 @@ static uint8 Fault_Charge_TempH(uint8 Temp)  //ÊäÈëÎÂ¶È
   }
   return(FltL);
 }
-/*==============================³äµç¸ßÎÂ==============================*/
 
 /*=======================================================================
                                 ³äµçµÍÎÂ0x15
- ========================================================================
- *º¯ÊıÃû1:     Fault_Charge_TempL(uint8 Temp)
- *¹¦ÄÜ:        ¸ù¾İÎÂ¶ÈÅĞ¶ÏµÍÎÂ¹ÊÕÏµÈ¼¶
- *²ÎÊı:        Temp (ÊäÈëÎÂ¶È  ÊäÈëÆ«ÒÆÁ¿:-40)       
- *·µ»Ø£º       ³äµçµÍÎÂµÄ¹ÊÕÏµÈ¼¶
+ ======================================================================*/
  
- *ËµÃ÷£º       
-========================================================================*/ 
 //ÅĞ¶Ï¹ÊÕÏµÈ¼¶
-static uint8 Fault_Charge_TempL(uint8 Temp)  //ÊäÈëÎÂ¶È
+static 
+uint8 Fault_Charge_TempL(uint8 Temp)  //ÊäÈëÎÂ¶È
 {
   static uint8 cnt[4];      //Ê±¼ä¼ÆÊı
   static uint8 FltL;
@@ -1248,21 +1103,12 @@ static uint8 Fault_Charge_TempL(uint8 Temp)  //ÊäÈëÎÂ¶È
   }
   return(FltL);
 }
-/*==============================³äµçµÍÎÂ==============================*/
 
 /*=======================================================================
                               ³äµçÎÂ²î0x16
- ========================================================================
- *º¯ÊıÃû1:     Fault_Charge_TempD(uint8 T_max,uint8 T_min)
- *¹¦ÄÜ:        ¸ù¾İ×î¸ß/µÍÎÂ¶ÈÅĞ¶ÏÎÂ²î¹ÊÕÏµÈ¼¶
- *²ÎÊı:        T_max(µ¥Ìå×î¸ßÎÂ¶È)
-               T_min(µ¥Ìå×îµÍÎÂ¶È)       
- *·µ»Ø£º       ³äµçÎÂ²îµÄ¹ÊÕÏµÈ¼¶
- 
- *ËµÃ÷£º       
-========================================================================*/ 
-//ÅĞ¶Ï¹ÊÕÏµÈ¼¶
-static uint8 Fault_Charge_TempD(uint8 T_Diff)  //ÊäÈëµ¥Ìå×î¸ß/µÍµçÑ¹
+ ======================================================================*/
+static 
+uint8 Fault_Charge_TempD(uint8 T_Diff)  //ÊäÈëµ¥Ìå×î¸ß/µÍµçÑ¹
 {
   static uint8 cnt[2];      //Ê±¼ä¼ÆÊı
   static uint8 FltL;
@@ -1302,20 +1148,13 @@ static uint8 Fault_Charge_TempD(uint8 T_Diff)  //ÊäÈëµ¥Ìå×î¸ß/µÍµçÑ¹
   }
   return(FltL);
 }
-/*================================³äµçÎÂ²î==============================*/
 
 /*=======================================================================
                                 ³äµç¹ıÁ÷0x17
- ========================================================================
- *º¯ÊıÃû1:     Fault_Charge_CurrH(float Current)
- *¹¦ÄÜ:        ¸ù¾İµçÁ÷ÅĞ¶Ï³äµç¹ıÁ÷¹ÊÕÏµÈ¼¶
- *²ÎÊı:        Current       
- *·µ»Ø£º       ³äµç¹ıÁ÷µÄ¹ÊÕÏµÈ¼¶
- 
- *ËµÃ÷£º       
-========================================================================*/ 
-//ÅĞ¶Ï¹ÊÕÏµÈ¼¶
-static uint8 Fault_Charge_CurrH(float Current)//ÊäÈëÎÂ¶È
+ ======================================================================*/
+
+static 
+uint8 Fault_Charge_CurrH(float Current)//ÊäÈëÎÂ¶È
 {
   static uint8 cnt[4];      //Ê±¼ä¼ÆÊı
   static uint8 FltL;
@@ -1390,12 +1229,14 @@ static uint8 Fault_Charge_CurrH(float Current)//ÊäÈëÎÂ¶È
   return(FltL);
 }
 
-//CSSUµôÏß¼ì²â
+/*=======================================================================
+                           ×Ó°åµôÏß¹ÊÕÏ¹ÊÕÏ0x18
+ ======================================================================*/
 static 
 uint8 Fault_CSSU_OffLine(void)
 {
   static uint8 cnt;      
-  uint8 state=0;
+  static uint8 state=0;
   if(HeartBeat.HeartBeat_CSSU1 == 1 )
   { 
      HeartBeat.HeartBeat_CSSU1 = 0;
@@ -1412,20 +1253,12 @@ uint8 Fault_CSSU_OffLine(void)
   }
   return state;
 }
-/*================================³äµç¹ıÁ÷================================*/
 
 /*=======================================================================
-                                ³äµç¾øÔµ¹ÊÕÏ0x18
- ========================================================================
- *º¯ÊıÃû1:     Fault_Charge_Insul(uint16 Insul)
- *¹¦ÄÜ:        ¸ù¾İµçÁ÷ÅĞ¶Ï¹ıÑ¹¹ÊÕÏµÈ¼¶
- *²ÎÊı:        Insul (ÊäÈë¾øÔµµç×è)       
- *·µ»Ø£º       ·Åµç¾øÔµ¹ÊÕÏµÈ¼¶
- 
- *ËµÃ÷£º       
-========================================================================*/ 
-//ÅĞ¶Ï¹ÊÕÏµÈ¼¶
-static uint8 Fault_Charge_Insul(uint16 Insul)
+                              ³äµç¾øÔµ¹ÊÕÏ0x19
+ ======================================================================*/
+static 
+uint8 Fault_Charge_Insul(uint16 Insul)
 {
   static uint8 cnt[4];      //Ê±¼ä¼ÆÊı
   static uint8 FltL;
@@ -1433,7 +1266,7 @@ static uint8 Fault_Charge_Insul(uint16 Insul)
   if(FltL==0)           //0¼¶¹ÊÕÏ
   {
     
-    if(Insul<=g_BMSMonitor_Insul.Insulation_Resis2*0.1)  //0±ä2
+    if(Insul <= g_BMSMonitor_Insul.Insulation_Resis2*0.1)  //0±ä2
     {
       if(++cnt[0]*PERIOD_DISCHARGE/1000>=DELAYTIME_DANGERLEVEL2)
       {
@@ -1447,11 +1280,4 @@ static uint8 Fault_Charge_Insul(uint16 Insul)
     }
   }
   return(FltL);
-}
-
-/*================================³äµç¾øÔµ¹ÊÕÏ================================*/
-
-
-//==============================µ¼Ïß¿ªÂ·¹ÊÕÏ===================================
-//Ö±½Óµ÷ÓÃg_OpenWireInfo.OpenWire_Status±äÁ¿½øĞĞÅĞ¶Ï
-//==============================µ¼Ïß¿ªÂ·¹ÊÕÏ===================================
+}  

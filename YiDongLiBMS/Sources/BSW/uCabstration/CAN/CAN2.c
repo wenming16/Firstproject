@@ -123,7 +123,7 @@ uint8 CAN2_Init(uint16 Baud_Rate)
 uint8 CAN2_SendMsg(pCANFRAME sendFrame)
 {
   uint8  send_buf,i;
-  uint8  Cnt=0;
+  uint16  Cnt=0;
   
   // 检查数据长度
   if(sendFrame->m_dataLen > 8)
@@ -141,7 +141,7 @@ uint8 CAN2_SendMsg(pCANFRAME sendFrame)
     CAN2TBSEL=CAN2TFLG;
     send_buf=CAN2TBSEL;
   } 
-  while((!send_buf)&&(Cnt<200)); 
+  while((!send_buf)&&(Cnt<500)); 
   //写入标识符ID
   
   if (sendFrame->m_IDE == 0)  //按标准帧填充ID
@@ -241,7 +241,7 @@ void CAN2_GetMsg_Process(pCANFRAME receiveFrame)
 {
   switch(receiveFrame->m_ID) 
   {
-     case 0x01://Boot_ID:
+     case Boot_ID://0xF300:
        if(receiveFrame->m_data[0] == 2) 
        {
           Boot_Data.OnlineUpdateCheck = 1;
@@ -261,7 +261,7 @@ void CAN2_GetMsg_Process(pCANFRAME receiveFrame)
            DataFromCSSU(receiveFrame); 
            HeartBeat.HeartBeat_CSSU1 = 1;
          }
-         else
+         else 
          {
            UpMonitor_to_Bms(receiveFrame);
          }
@@ -276,7 +276,6 @@ void CAN2_GetMsg_Process(pCANFRAME receiveFrame)
  *返回：       无
  *说明：       CAN2的接收中断函数
 ========================================================================*/
-
 #pragma CODE_SEG __NEAR_SEG NON_BANKED
 //CAN1接收内网数据 
 interrupt void Interrupt_CAN2()            

@@ -97,4 +97,5 @@ void Task_ChipTempCollect(void)
 void Task_OpenWireDetect(void) 
 {
   LTC6811_OpenwireDetect();
+  g_Roll_Tick.Roll_OpWire++;
 }

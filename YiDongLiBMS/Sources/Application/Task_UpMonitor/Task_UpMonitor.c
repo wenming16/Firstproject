@@ -656,51 +656,51 @@ void Task_BMUToUpMonitor(void)
   
   batt=(NUM1_Batper_true+NUM2_Batper_true+NUM3_Batper_true+NUM4_Batper_true+NUM5_Batper_true)/3;
   batt1=(NUM1_Batper_true+NUM2_Batper_true+NUM3_Batper_true+NUM4_Batper_true+NUM5_Batper_true)%3;
-     
-  BMS_to_Upmonitor.m_ID = BMS_Send_Information1;       
-	BMS_to_Upmonitor.m_IDE = 1;
+  
+  BMS_to_Upmonitor.m_IDE = 1;
 	BMS_to_Upmonitor.m_RTR = 0;
 	BMS_to_Upmonitor.m_dataLen = 8;
-	BMS_to_Upmonitor.m_priority = 6;
-
+	BMS_to_Upmonitor.m_priority = 6; 
+    
+  BMS_to_Upmonitor.m_ID = BMS_Send_Information1;       
   for(i = 0; i <batt ; i++) 
   {
     BMS_to_Upmonitor.m_data[0] = (uint8)(i/NUM_IC);            //需要改正-6804的编号 0-3
-    BMS_to_Upmonitor.m_data[1] = (uint8)(i%NUM_IC);            //每个6804采集电压的编号  0-3  
+    BMS_to_Upmonitor.m_data[1] = (uint8)(i);             
     BMS_to_Upmonitor.m_data[2] = (uint8)g_LTC6811_VoltInfo.CellVolt[i*3];
-    BMS_to_Upmonitor.m_data[3] = (g_LTC6811_VoltInfo.CellVolt[i*3]>>8)&0X00FF;
+    BMS_to_Upmonitor.m_data[3] = (g_LTC6811_VoltInfo.CellVolt[i*3]>>8)&0xFF;
     BMS_to_Upmonitor.m_data[4] = (uint8)g_LTC6811_VoltInfo.CellVolt[i*3+1];
-    BMS_to_Upmonitor.m_data[5] = (g_LTC6811_VoltInfo.CellVolt[i*3+1]>>8)&0X00FF;
+    BMS_to_Upmonitor.m_data[5] = (g_LTC6811_VoltInfo.CellVolt[i*3+1]>>8)&0xFF;
     BMS_to_Upmonitor.m_data[6] = (uint8)g_LTC6811_VoltInfo.CellVolt[i*3+2];
-    BMS_to_Upmonitor.m_data[7] = (g_LTC6811_VoltInfo.CellVolt[i*3+2]>>8)&0X00FF;
-    while(CAN_ToUpMonitor(&BMS_to_Upmonitor))
+    BMS_to_Upmonitor.m_data[7] = (g_LTC6811_VoltInfo.CellVolt[i*3+2]>>8)&0xFF;
+    while(CAN_ToUpMonitor(&BMS_to_Upmonitor));
     UpMonitor_DelayTimeus(20);
   }  
   switch(batt1) 
   {
     case 1:
     BMS_to_Upmonitor.m_data[0] = (uint8)(i/NUM_IC);
-    BMS_to_Upmonitor.m_data[1] = (uint8)(i%NUM_IC);                             //每个6804采集电压的编号 
+    BMS_to_Upmonitor.m_data[1] = (uint8)(i);                             //每个6804采集电压的编号 
     BMS_to_Upmonitor.m_data[2] = (uint8)g_LTC6811_VoltInfo.CellVolt[i*3];
-    BMS_to_Upmonitor.m_data[3] = (g_LTC6811_VoltInfo.CellVolt[i*3]>>8)&0X00FF;
+    BMS_to_Upmonitor.m_data[3] = (g_LTC6811_VoltInfo.CellVolt[i*3]>>8)&0xFF;
     BMS_to_Upmonitor.m_data[4] = 0xFF;
     BMS_to_Upmonitor.m_data[5] = 0xFF;
     BMS_to_Upmonitor.m_data[6] = 0xFF;
     BMS_to_Upmonitor.m_data[7] = 0xFF;
-    CAN_ToUpMonitor(&BMS_to_Upmonitor); 
+    while(CAN_ToUpMonitor(&BMS_to_Upmonitor)); 
     UpMonitor_DelayTimeus(20);
     break;
     
     case 2:
     BMS_to_Upmonitor.m_data[0] = (uint8)(i/NUM_IC);
-    BMS_to_Upmonitor.m_data[1] = (uint8)(i%NUM_IC);                             //每个6804采集电压的编号 
+    BMS_to_Upmonitor.m_data[1] = (uint8)(i);                             //每个6804采集电压的编号 
     BMS_to_Upmonitor.m_data[2] = (uint8)g_LTC6811_VoltInfo.CellVolt[i*3];
-    BMS_to_Upmonitor.m_data[3] = (g_LTC6811_VoltInfo.CellVolt[i*3]>>8)&0X00FF;
+    BMS_to_Upmonitor.m_data[3] = (g_LTC6811_VoltInfo.CellVolt[i*3]>>8)&0xFF;
     BMS_to_Upmonitor.m_data[4] = (uint8)g_LTC6811_VoltInfo.CellVolt[i*3+1];
-    BMS_to_Upmonitor.m_data[5] = (g_LTC6811_VoltInfo.CellVolt[i*3+1]>>8)&0X00FF;
+    BMS_to_Upmonitor.m_data[5] = (g_LTC6811_VoltInfo.CellVolt[i*3+1]>>8)&0xFF;
     BMS_to_Upmonitor.m_data[6] = 0xFF;
     BMS_to_Upmonitor.m_data[7] = 0xFF;
-    CAN_ToUpMonitor(&BMS_to_Upmonitor); 
+    while(CAN_ToUpMonitor(&BMS_to_Upmonitor)); 
     UpMonitor_DelayTimeus(20);
     break;
     
@@ -708,7 +708,7 @@ void Task_BMUToUpMonitor(void)
     break; 
   }   
                     
-  BMS_to_Upmonitor.m_ID = BMS_Send_Information2;       
+  BMS_to_Upmonitor.m_ID = BMS_Send_Information2;//0x18FF9711       
 	BMS_to_Upmonitor.m_data[0] = (uint8)g_LTC6811_VoltInfo.CellVolt_Max;
   BMS_to_Upmonitor.m_data[1] = (g_LTC6811_VoltInfo.CellVolt_Max>>8)&0x00FF;
   BMS_to_Upmonitor.m_data[2] = g_LTC6811_VoltInfo.CellVolt_MaxNode;
@@ -717,14 +717,13 @@ void Task_BMUToUpMonitor(void)
   BMS_to_Upmonitor.m_data[5] = g_LTC6811_VoltInfo.CellVolt_MinNode;
   BMS_to_Upmonitor.m_data[6] = 0xFF;  
   BMS_to_Upmonitor.m_data[7] = 0xFF;       
-  CAN_ToUpMonitor(&BMS_to_Upmonitor); 
+  while(CAN_ToUpMonitor(&BMS_to_Upmonitor));
   UpMonitor_DelayTimeus(20);
  
-  BMS_to_Upmonitor.m_ID = BMS_Send_Information3;      
-	for(i=0; i< ((NUM_Tem+6) / 7) ;i++)         //ly 按照协议修改
+  BMS_to_Upmonitor.m_ID = BMS_Send_Information3;//18FF9801      
+	for(i=0; i< ((NUM_Tem+6) / 7) ;i++)         
   {
     BMS_to_Upmonitor.m_data[0] = i;
-    //memset( &pMsgTran.data,0xFF,8 );       //8个data设置为40 
     if( i < 1 )                      //对于扩展可修改此处
     {
       for(j=1; j < NUM_IC*2; j++) 
@@ -739,45 +738,56 @@ void Task_BMUToUpMonitor(void)
         BMS_to_Upmonitor.m_data[j] = g_LTC6811_TempInfo.CellTemp[j-1+i*7]; 
       }
     }
-    CAN_ToUpMonitor(&BMS_to_Upmonitor); 
+    while(CAN_ToUpMonitor(&BMS_to_Upmonitor));
     UpMonitor_DelayTimeus(20); 
   }
   
-  BMS_to_Upmonitor.m_ID = BMS_Send_Information4;       // 电池基本信息1;
-  BMS_to_Upmonitor.m_data[0] = g_LTC6811_TempInfo.CellTemp_Max + 40;
+  BMS_to_Upmonitor.m_ID = BMS_Send_Information4;       // 0x18FF9811
+  BMS_to_Upmonitor.m_data[0] = g_LTC6811_TempInfo.CellTemp_Max;
 	BMS_to_Upmonitor.m_data[1] = g_LTC6811_TempInfo.CellTemp_MaxNode;   
-	BMS_to_Upmonitor.m_data[2] = g_LTC6811_TempInfo.CellTemp_Min + 40;
+	BMS_to_Upmonitor.m_data[2] = g_LTC6811_TempInfo.CellTemp_Min;
 	BMS_to_Upmonitor.m_data[3] = g_LTC6811_TempInfo.CellTemp_MinNode;   
 	BMS_to_Upmonitor.m_data[4] = g_LTC6811_TempInfo.CellTemp_Tatoltemp;
 	BMS_to_Upmonitor.m_data[5] = g_LTC6811_TempInfo.CellTemp_Tatoltemp>>8;   
 	BMS_to_Upmonitor.m_data[6] = 0xFF;
 	BMS_to_Upmonitor.m_data[7] = 0xFF;       	 
-  CAN_ToUpMonitor(&BMS_to_Upmonitor); 
+  while(CAN_ToUpMonitor(&BMS_to_Upmonitor)); 
   UpMonitor_DelayTimeus(20);
   
 
-  BMS_to_Upmonitor.m_ID = BMS_Send_Information5;             //导线开路
+  BMS_to_Upmonitor.m_ID = BMS_Send_Information5;             //0x18FF9901
   BMS_to_Upmonitor.m_data[0] = g_LTC6811_TempInfo.ICTemp_OverState;
 	BMS_to_Upmonitor.m_data[1] = g_LTC6811_OpwireInfo.OpenwireErr;	
 	BMS_to_Upmonitor.m_data[2] = g_LTC6811_VoltInfo.CellVolt_Total;   
 	BMS_to_Upmonitor.m_data[3] = g_LTC6811_VoltInfo.CellVolt_Total>>8;
 	BMS_to_Upmonitor.m_data[4] = g_LTC6811_VoltInfo.CellVolt_Total>>16;
-	BMS_to_Upmonitor.m_data[5] = (uint8)g_IsoDetect.insulation_TotalVolt;
-	BMS_to_Upmonitor.m_data[6] = ((uint16)g_IsoDetect.insulation_TotalVolt)>>8;
-	BMS_to_Upmonitor.m_data[7] = ((uint32)g_IsoDetect.insulation_TotalVolt)>>16;       
-  CAN_ToUpMonitor(&BMS_to_Upmonitor);
+	BMS_to_Upmonitor.m_data[5] = (uint8)g_VoltInfo.SysVolt_Total;
+	BMS_to_Upmonitor.m_data[6] = (uint8)(g_VoltInfo.SysVolt_Total>>8);
+	BMS_to_Upmonitor.m_data[7] = (uint8)(g_VoltInfo.SysVolt_Total>>16);       
+  while(CAN_ToUpMonitor(&BMS_to_Upmonitor));
   UpMonitor_DelayTimeus(20); 
    
-  BMS_to_Upmonitor.m_ID = BMS_Send_Information6;             //导线开路
+  BMS_to_Upmonitor.m_ID = BMS_Send_Information6;             
 	for(i = 0; i < NUM_IC ; i++)
 	{
     BMS_to_Upmonitor.m_data[i*2] = g_LTC6811_OpwireInfo.OpenwireLocation[i];                   // 导线开路
   	BMS_to_Upmonitor.m_data[i*2 + 1] = (uint8)((g_LTC6811_OpwireInfo.OpenwireLocation[i]>>8)&0x00FF);	       
 	}
-  CAN_ToUpMonitor(&BMS_to_Upmonitor); 
+  while(CAN_ToUpMonitor(&BMS_to_Upmonitor)); 
+  UpMonitor_DelayTimeus(20);
+  
+  BMS_to_Upmonitor.m_ID = BMS_Send_Information7;//让上位机判断每个电池包的电压采集数目
+	BMS_to_Upmonitor.m_data[0] = NUM1_Batper_true;
+  BMS_to_Upmonitor.m_data[1] = NUM2_Batper_true;
+  BMS_to_Upmonitor.m_data[2] = NUM3_Batper_true;
+  BMS_to_Upmonitor.m_data[3] = 0xFF;
+  BMS_to_Upmonitor.m_data[4] = 0xFF;
+  BMS_to_Upmonitor.m_data[5] = 0xFF;
+  BMS_to_Upmonitor.m_data[6] = 0xFF;  
+  BMS_to_Upmonitor.m_data[7] = 0xFF;   
+  while(CAN_ToUpMonitor(&BMS_to_Upmonitor)); 
   
   g_Roll_Tick.Roll_BMUUp++;
-      
 }
 /*=======================================================================
  *函数名:      Task_BMSToUpMonitor(void) 

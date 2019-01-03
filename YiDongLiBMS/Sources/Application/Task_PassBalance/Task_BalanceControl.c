@@ -52,6 +52,7 @@ uint8 BalanceControl_Strategy(float curr, uint8 faultflg, uint16 voltmax, uint32
     {
        if(++cnt*BALANCEPERIO/1000>2)//持续2s,连续发命令是否会出错?
        {
+         cnt=2000/BALANCEPERIO;
          if(balacenod <= NUM1_Batper_true)
          {
             tskstate   = LTC6811_BalanceControl(balacenod, 0x00, 0x00, 1); 
@@ -73,11 +74,15 @@ uint8 BalanceControl_Strategy(float curr, uint8 faultflg, uint16 voltmax, uint32
          //balanceflag = 1;
        }
     }
+    else
+    {
+      cnt = 0;
+    }
   }
   else
   {
      //balanceflag = 0;
-     tskstate = LTC6811_BalanceControl(0x00, 0x00, 0x00, 1); //未满足条件不进行均衡 
+     tskstate = LTC6811_BalanceControl(0x00, 0x00, 0x00, 0); //未满足条件不进行均衡 
      return 2;
   }
   return tskstate;

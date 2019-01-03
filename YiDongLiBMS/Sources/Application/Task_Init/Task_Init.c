@@ -121,7 +121,7 @@ void Task_Roll(void)
   switch(PIT_TimePeriod.T500ms)//500ms的周期
   {
     case 1:
-      //tasks[0].flags = 1;//Task_PowerOnOff
+      tasks[0].flags = 1;//Task_PowerOnOff
     break;
       
     case 3:        //SOCSOH的计算周期为100ms
@@ -153,50 +153,50 @@ void Task_Roll(void)
     break;
     
     case 17:
-      //tasks[7].flags = 1;//Task_InsulationDetect
-    break;
-    
-    case 19:
-      tasks[8].flags = 1;//Task_DataProcess
+      tasks[7].flags = 1;//Task_InsulationDetect
     break;
     
     case 21:
-      //tasks[9].flags = 1;//Task_BalanceControl_ON
+      tasks[8].flags = 1;//Task_DataProcess
     break;
     
     case 25:
-      //tasks[10].flags = 1;//Task_CurrLimit
-    break;
-      
-    case 27:
-      //tasks[11].flags = 1;//Task_SysTimeGet
+      //tasks[9].flags = 1;//Task_BalanceControl_ON
     break;
     
+    case 27:
+      tasks[10].flags = 1;//Task_CurrLimit
+    break;
+      
     case 29:
-      tasks[12].flags = 1;//Task_FltLevJudg
+      tasks[11].flags = 1;//Task_SysTimeGet
     break;
     
     case 31:
-     // tasks[13].flags = 1;//Task_Charge
+      tasks[12].flags = 1;//Task_FltLevJudg
     break;
     
     case 35:
-     // tasks[14].flags = 1;//Task_FltCodeStore
+      tasks[13].flags = 1;//Task_Charge
+    break;
+    
+    case 37:
+      tasks[14].flags = 1;//Task_FltCodeStore
     break;
 
-    case 37:
-      //tasks[16].flags = 1;//Task_FltCodeProcess
+    case 39:
+      tasks[16].flags = 1;//Task_FltCodeProcess
     break;
       
-    case 39:
-      //tasks[20].flags = 1;//Task_BootLoader
+    case 40:
+      tasks[20].flags = 1;//Task_BootLoader
     break;
 
     case 41:
-      if(cnt[0]%20 == 0)//20*0.5S任务 
+      if(cnt[0]%40 == 0)//40*0.5S任务 
       {
         cnt[0] = 0;
-        //tasks[15].flags = 1;//Task_EEpromWrite
+        tasks[15].flags = 1;//Task_EEpromWrite
       }
       cnt[0]++;
     break;

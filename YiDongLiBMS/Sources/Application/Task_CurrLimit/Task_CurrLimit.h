@@ -21,6 +21,7 @@
   }CurrLimit_T;
   extern CurrLimit_T CurrLimit;   
     
+  void Init_TaskCurrLimit(void);
   void Task_CurrLimit(void);  
     
    

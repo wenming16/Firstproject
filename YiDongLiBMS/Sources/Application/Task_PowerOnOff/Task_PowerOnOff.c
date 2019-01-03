@@ -141,12 +141,11 @@ static
 void PowerOnOff_Control(uint8 FltLevel, uint8 FltSeconds, uint8 StaticCurrSet, uint8 StaticTimeSet)
 {
    static uint16 cnt;
-   BMS_WorkModeCheckself(); //自检为死循环,自检成功之后才能进行上下电
-   
-   PositiveRelay_Control(Relay_ON);      //上下电只进行1次
-   
+   BMS_WorkModeCheckself();            //自检为死循环,自检成功之后才能进行上下电
+   PositiveRelay_Control(Relay_ON);    //上下电只进行1次
+  
    if(FltLevel == 1)//到达二级故障
-   {
+   {  
       if((++cnt)*PEWERONOFF_PERIO/1000.0>FltSeconds) //延时Times秒之后断开继电器
       {
         cnt = 0;
@@ -154,7 +153,7 @@ void PowerOnOff_Control(uint8 FltLevel, uint8 FltSeconds, uint8 StaticCurrSet, u
       }
    }
    else//非2级故障,只要满足电流小于2A就任务其即将进入休眠状态
-   {
+   {  
       cnt = 0;
       //当连续静态(电流小于2A时)进入继电器关闭的状态
       if(Sleep_StaticTime(Read_IIC_Time.IIC_Read_Hour, Read_IIC_Time.IIC_Read_Minute,\

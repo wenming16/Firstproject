@@ -18,9 +18,9 @@
   
   //各个6804的具体配置
   //导线开路的配置数
-  #define NUM1_Batper            12
-  #define NUM2_Batper            12  
-  #define NUM3_Batper            12
+  #define NUM1_Batper            8
+  #define NUM2_Batper            8  
+  #define NUM3_Batper            9
   #define NUM4_Batper            0
   #define NUM5_Batper            0
   //第1个6811的电压采集连接方式

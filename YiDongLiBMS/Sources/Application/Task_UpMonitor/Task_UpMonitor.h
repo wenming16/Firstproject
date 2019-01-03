@@ -19,10 +19,11 @@
 
   #define    BMS_Send_Information1   (0x18FF9700+NUM_pack)
   #define    BMS_Send_Information2   (0x18FF9710+NUM_pack)
-  #define    BMS_Send_Information3   (0x18FF9700+NUM_pack)
+  #define    BMS_Send_Information3   (0x18FF9800+NUM_pack)
   #define    BMS_Send_Information4   (0x18FF9810+NUM_pack)
   #define    BMS_Send_Information5   (0x18FF9900+NUM_pack)
   #define    BMS_Send_Information6   (0x19FF9900+NUM_pack)
+  #define    BMS_Send_Information7   (0x18FF9600+NUM_pack)
 
  //上位机数据标定
  //电池阀值标定
