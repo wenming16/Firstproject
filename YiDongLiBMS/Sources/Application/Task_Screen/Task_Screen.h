@@ -22,8 +22,8 @@
 
 /*构建头文件及宏定义*/
   
-  #define Array_couple              22 //宏定义发送双字节数组个数为22
-  #define Array_single              12  //宏定义发送单字节数组个数为11
+  #define Array_couple              20  //宏定义发送双字节数组个数为20
+  #define Array_single              17  //宏定义发送单字节数组个数为17
 
   #define RS485_Enable       PORTA_PA6
   #define RS485_EnableDir    DDRA_DDRA6

@@ -80,7 +80,7 @@ Entry point: 0xC000 (_Startup)
 _startupData is allocated at 0xC00F and uses 6 Bytes
 extern struct _tagStartup {
   unsigned nofZeroOut     1
-  _Range   pZeroOut       0x2200     3180
+  _Range   pZeroOut       0x2200     3178
   _Copy    *toCopyDownBeg 0xC6FC
 } _startupData;
 
@@ -836,7 +836,7 @@ NON_BANKED                      1195     R     0xC251     0xC6FB   ROM_C000
 .abs_section_3f2                   2   N/I      0x3F2      0x3F3   .absSeg737
 .bss                             155   R/W     0x22A9     0x2343   RAM
 HEAP_SEGMENT                    2000   R/W     0x2344     0x2B13   RAM
-.common                          856   R/W     0x2B14     0x2E6B   RAM
+.common                          854   R/W     0x2B14     0x2E69   RAM
 PAGE_FC_738                    12834     R   0xFC8000   0xFCB221   PAGE_FC
 .vectSeg739_vect                   2     R     0x7F7A     0x7F7B   .vectSeg739
 .vectSeg740_vect                   2     R     0x7FA2     0x7FA3   .vectSeg740
@@ -845,7 +845,7 @@ PAGE_FC_738                    12834     R   0xFC8000   0xFCB221   PAGE_FC
 
 Summary of section sizes per section type:
 READ_ONLY (R):        792D (dec:    31021)
-READ_WRITE (R/W):      E6C (dec:     3692)
+READ_WRITE (R/W):      E6A (dec:     3690)
 NO_INIT (N/I):         383 (dec:      899)
 
 *********************************************************************************************
@@ -2023,7 +2023,7 @@ MODULE:                 -- Task_Screen.c.o --
      Screen_delay                            FC91A2       B      11       2   PAGE_FC_738 
      Task_ScreenTransfer                     FC91AD      25      37       3   PAGE_FC_738 
 - VARIABLES:
-     RS485_Receive                             2D69      27      39      30   .common     
+     RS485_Receive                             2D69      25      37      30   .common     
 MODULE:                 -- Task_BalanceControl.c.o --
 - PROCEDURES:
      BalanceControl_Strategy                 FC91D2     103     259       2   PAGE_FC_738 
@@ -2031,7 +2031,7 @@ MODULE:                 -- Task_BalanceControl.c.o --
      Task_BalanceControl_OFF                 FC930E      1A      26       3   PAGE_FC_738 
 - VARIABLES:
      cnt.1                                     2342       2       2       4   .bss        
-     dd                                        2D90       2       2       2   .common     
+     dd                                        2D8E       2       2       2   .common     
 MODULE:                 -- Init_ADC.c.o --
 - PROCEDURES:
      Init_ADC                                FC9328       5       5       2   PAGE_FC_738 
@@ -2050,7 +2050,7 @@ MODULE:                 -- DS3231_TimeGet.c.o --
      DS3231_DelayTimeus                      FC9362      13      19       2   PAGE_FC_738 
      DS3231_Read_Time                        FC9375      66     102       4   PAGE_FC_738 
 - VARIABLES:
-     Read_IIC_Time                             2D92       5       5      99   .common     
+     Read_IIC_Time                             2D90       5       5      99   .common     
 MODULE:                 -- LTC6811_CMD.c.o --
 - PROCEDURES:
      Spi_LTC6811Init                         FC93DB       D      13       2   PAGE_FC_738 
@@ -2073,42 +2073,42 @@ MODULE:                 -- LTC6811_CMD.c.o --
      HXYA_Gpio_Search                        FC9A57     434    1076       2   PAGE_FC_738 
 - VARIABLES:
      crc15Table                                C051     200     512       2   .rodata     
-     ADCV                                      2D97       2       2       6   .common     
-     ADSTAT                                    2D99       2       2       2   .common     
-     ADOW                                      2D9B       2       2       5   .common     
-     ADAX                                      2D9D       2       2       5   .common     
-     bb                                        2D9F       1       1       1   .common     
+     ADCV                                      2D95       2       2       6   .common     
+     ADSTAT                                    2D97       2       2       2   .common     
+     ADOW                                      2D99       2       2       5   .common     
+     ADAX                                      2D9B       2       2       5   .common     
+     bb                                        2D9D       1       1       1   .common     
 MODULE:                 -- LTC6811_Init.c.o --
 - PROCEDURES:
      Config_Fun                              FC9E8B      C6     198       3   PAGE_FC_738 
      LTC6804_Init                            FC9F51      45      69       2   PAGE_FC_738 
 - VARIABLES:
-     CFG1                                      2DA0      12      18       9   .common     
+     CFG1                                      2D9E      12      18       9   .common     
 MODULE:                 -- LTC6811_OpWire.c.o --
 - PROCEDURES:
      LTC6811_OpenwireDetect                  FC9F96     251     593      38   PAGE_FC_738 
 - VARIABLES:
-     g_LTC6811_OpwireInfo                      2DB2       7       7       9   .common     
+     g_LTC6811_OpwireInfo                      2DB0       7       7       9   .common     
 MODULE:                 -- LTC6811_PassBalance.c.o --
 - PROCEDURES:
      LTC6811_BalanceCMDSend                  FCA1E7      AE     174       6   PAGE_FC_738 
      LTC6811_BalanceControl                  FCA295     110     272       7   PAGE_FC_738 
 - VARIABLES:
-     Balance_CFGR                              2DB9      12      18       4   .common     
-     aa                                        2DCB       6       6       7   .common     
+     Balance_CFGR                              2DB7      12      18       4   .common     
+     aa                                        2DC9       6       6       7   .common     
 MODULE:                 -- LTC6811_TempCollect.c.o --
 - PROCEDURES:
      LTC6811_TempCMDSend                     FCA3A5      14      20       2   PAGE_FC_738 
      LTC6811_TempCollect                     FCA3B9     178     376       7   PAGE_FC_738 
 - VARIABLES:
-     g_LTC6811_TempInfo                        2DD1      12      18      39   .common     
+     g_LTC6811_TempInfo                        2DCF      12      18      39   .common     
 MODULE:                 -- LTC6811_VoltCollect.c.o --
 - PROCEDURES:
      LTC6811_VoltCMDSend                     FCA531       9       9       2   PAGE_FC_738 
      LTC6811_VoltCollect                     FCA53A     219     537      17   PAGE_FC_738 
 - VARIABLES:
-     g_LTC6811_VoltInfo                        2DE3      3C      60      44   .common     
-     cell_vol                                  2E1F      48      72       2   .common     
+     g_LTC6811_VoltInfo                        2DE1      3C      60      44   .common     
+     cell_vol                                  2E1D      48      72       2   .common     
 MODULE:                 -- ADC.c.o --
 - PROCEDURES:
      ADC_init                                FCA753      1A      26       2   PAGE_FC_738 
@@ -2137,7 +2137,7 @@ MODULE:                 -- Flash.c.o --
      ErrorCheck                              FCAD5A      13      19       4   PAGE_FC_738 
      LaunchFlashCommand                      FCAD6D      B9     185       7   PAGE_FC_738 
 - VARIABLES:
-     FlashErr                                  2E67       3       3      15   .common     
+     FlashErr                                  2E65       3       3      15   .common     
 MODULE:                 -- Init_Flash.c.o --
 - PROCEDURES:
      Init_Flash                              FCAE26      A5     165       2   PAGE_FC_738 
@@ -2168,7 +2168,7 @@ MODULE:                 -- PIT.c.o --
      PIT0_Init                               FCB0ED      1E      30       2   PAGE_FC_738 
      Interrupt_PIT0                            C6DE      1E      30       0   NON_BANKED  
 - VARIABLES:
-     PIT_TimePeriod                            2E6A       2       2       5   .common     
+     PIT_TimePeriod                            2E68       2       2       5   .common     
 MODULE:                 -- PLL.c.o --
 - PROCEDURES:
      PLL_Init                                FCB10B      1E      30       2   PAGE_FC_738 
@@ -2229,7 +2229,7 @@ MODULE STATISTIC
   Task_EEEReadWrite.c.o                        4   1331      0
   Task_FltSave.c.o                            18   2261      0
   Task_SysTimeGet.c.o                         21    292      0
-  Task_Screen.c.o                             39    358      0
+  Task_Screen.c.o                             37    358      0
   Task_BalanceControl.c.o                      4    342      0
   Init_ADC.c.o                                 0      5      0
   Init_PLL.c.o                                 0      5      0
@@ -4697,23 +4697,23 @@ OBJECT LIST SORTED BY ADDRESS
      EEprom_Data                               2D51       4       4      18   .common     
      g_FltCodeSave                             2D55       2       2       4   .common     
      g_SysTime                                 2D57      12      18      38   .common     
-     RS485_Receive                             2D69      27      39      30   .common     
-     dd                                        2D90       2       2       2   .common     
-     Read_IIC_Time                             2D92       5       5      99   .common     
-     ADCV                                      2D97       2       2       6   .common     
-     ADSTAT                                    2D99       2       2       2   .common     
-     ADOW                                      2D9B       2       2       5   .common     
-     ADAX                                      2D9D       2       2       5   .common     
-     bb                                        2D9F       1       1       1   .common     
-     CFG1                                      2DA0      12      18       9   .common     
-     g_LTC6811_OpwireInfo                      2DB2       7       7       9   .common     
-     Balance_CFGR                              2DB9      12      18       4   .common     
-     aa                                        2DCB       6       6       7   .common     
-     g_LTC6811_TempInfo                        2DD1      12      18      39   .common     
-     g_LTC6811_VoltInfo                        2DE3      3C      60      44   .common     
-     cell_vol                                  2E1F      48      72       2   .common     
-     FlashErr                                  2E67       3       3      15   .common     
-     PIT_TimePeriod                            2E6A       2       2       5   .common     
+     RS485_Receive                             2D69      25      37      30   .common     
+     dd                                        2D8E       2       2       2   .common     
+     Read_IIC_Time                             2D90       5       5      99   .common     
+     ADCV                                      2D95       2       2       6   .common     
+     ADSTAT                                    2D97       2       2       2   .common     
+     ADOW                                      2D99       2       2       5   .common     
+     ADAX                                      2D9B       2       2       5   .common     
+     bb                                        2D9D       1       1       1   .common     
+     CFG1                                      2D9E      12      18       9   .common     
+     g_LTC6811_OpwireInfo                      2DB0       7       7       9   .common     
+     Balance_CFGR                              2DB7      12      18       4   .common     
+     aa                                        2DC9       6       6       7   .common     
+     g_LTC6811_TempInfo                        2DCF      12      18      39   .common     
+     g_LTC6811_VoltInfo                        2DE1      3C      60      44   .common     
+     cell_vol                                  2E1D      48      72       2   .common     
+     FlashErr                                  2E65       3       3      15   .common     
+     PIT_TimePeriod                            2E68       2       2       5   .common     
      _Startup                                  C000       F      15       0   .init       
      crc15Table                                C051     200     512       2   .rodata     
      F_ADDKL                                   C251      5E      94       1   NON_BANKED  
