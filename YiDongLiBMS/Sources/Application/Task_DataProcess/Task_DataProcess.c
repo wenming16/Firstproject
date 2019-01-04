@@ -9,15 +9,7 @@
       Author:
       Modification:  
 ========================================================================*/
-
-#include  "Task_DataProcess.h"
-#include  "DataFromCSSU.h"
-#include  "LTC6811_ConnectType.h"
-#include  "LTC6811_VoltCollect.h"
-#include  "LTC6811_TempCollect.h"
-#include  "LTC6811_OpWire.h" 
-#include  "Task_Init.h" 
-  
+#include  "includes.h"
 VoltInfo_T        g_VoltInfo;
 TempInfo_T        g_TempInfo;
 DataColletInfo_T  g_DataColletInfo; 

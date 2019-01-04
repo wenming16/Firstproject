@@ -11,11 +11,7 @@
       Author:
       Modification:
 ========================================================================*/
-
-  #include  "Init_Flash.h"
- // #include  "Task_EEEReadWrite.h"
-  #include  "Flash.h"
-
+#include  "includes.h"
 /*=======================================================================
  *函数名:      Init_Flash(void)
  *功能:        

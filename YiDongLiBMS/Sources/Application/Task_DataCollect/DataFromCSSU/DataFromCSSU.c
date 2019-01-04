@@ -11,10 +11,7 @@
       Author:
       Modification:
 ========================================================================*/
-  #include  "DataFromCSSU.h"
-  #include  "BattInfoConfig.h"
-  #include  "Task_DataProcess.h"     
-  #include  "LTC6811_ConnectType.h"
+  #include  "includes.h"
   
   FromCSSU_Volt_T g_FromCSSU_Volt;
   FromCSSU_Temp_T g_FromCSSU_Temp;

@@ -9,18 +9,7 @@
       Author:
       Modification:  
 ========================================================================*/
-
-#include  "Task_SOCSOH.h"
-#include  "Task_DataProcess.h"
-#include  "ADC_cfg.h"
-#include  "Task_SysTimeGet.h"
-#include  "WorkModeJudge.h"
-#include  "Task_EEEReadWrite.h"
-#include  "Task_UpMonitor.h"
-#include  "Task_Init.h"
-
-#include  "Filter_Function.h"
-#include  "ADC.h"
+#include  "includes.h"
 
 SOCInfo_T     g_SOCInfo;
 EnergyInfo_T  g_EnergyInfo;

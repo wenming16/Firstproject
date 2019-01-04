@@ -48,30 +48,30 @@
   void  Spi_LTC6811WriteRead(uint8 tx_Data[],uint8 tx_len,uint8 *rx_data,uint8 rx_len);
 
   //2、导线开路检测相关命令
-  void LTC6804_adow();
+  void LTC6804_adow(void);
 
   //3、电压系列函数
-  void Ltc6804_Clrcell();
-  void LTC6804_adcv(); 
+  void Ltc6804_Clrcell(void);
+  void LTC6804_adcv(void); 
   void LTC6804_rdcv_reg(uint8 reg, uint8 total_ic,  uint8 *data ) ;
   void LTC6804_rdcv(uint8 reg, uint8 total_ic, uint16 cell_codes[][12],uint8 *);
 
   //4、状态系列函数
-  void  Ltc6804_Clrstat();
-  void  LTC6804_adstat();
+  void  Ltc6804_Clrstat(void);
+  void  LTC6804_adstat(void);
   void  LTC6804_rdstat_reg(uint8 reg,uint8 total_ic, uint8 *data); 
   uint8 LTC6804_rdstat(uint8 reg,  uint8 total_ic,uint16 state_codes[][6],uint8 *);
 
   //5、温度系列函数
-  void Ltc6804_clraux();
-  void LTC6804_adax();
+  void Ltc6804_clraux(void);
+  void LTC6804_adax(void);
   void LTC6804_rdaux_reg(uint8 reg,uint8 total_ic, uint8 *data);
   void LTC6804_rdaux(uint8 reg, uint8 total_ic, uint16 aux_codes[][6],uint8 *);
   int8 HXYA_Gpio_Search(uint16); //GPIO测量的ADC温度函数
 
   //6、读写配置寄存器组
   void set_adc(uint8 MD,uint8 DCP,uint8 CH,uint8 CHST,uint8 PUP, uint8 CHG);
-  void LTC6804_wrcfg(uint8 total_ic, uint8 config[][6]  );
+  void LTC6804_wrcfg(uint8 total_ic, uint8 config[][6]);
 
   //7、pec计算函数
   uint16 pec15_calc(uint8 len, uint8 *data);

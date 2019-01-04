@@ -12,17 +12,7 @@
       Modification:  
       
 ========================================================================*/
-
-#include  "Task_BalanceControl.h"
-#include  "WorkModeJudge.h" 
-#include  "LTC6811_ConnectType.h"
-#include  "Task_DataProcess.h"
-#include  "Task_FltLevJudg.h"
-#include  "LTC6811_VoltCollect.h"
-#include  "Task_Init.h"
-
-#include  "LTC6811_PassBalance.h"
-
+#include  "includes.h"
 /*=======================================================================
  *函数名:      BalanceControl_Strategy(flaot, uint8, uint16, uint32, uint8, float)
  *功能:        对电池组进行被动均衡
@@ -38,6 +28,7 @@
                           2表示未达到均衡条件不进行均衡
  *说明：       被动均衡函数
 ========================================================================*/
+uint8 dd[2];
 static
 uint8 BalanceControl_Strategy(float curr, uint8 faultflg, uint16 voltmax, uint32 totalvolt, uint8 balacenod, uint16 balancevolt)
 {
@@ -52,17 +43,19 @@ uint8 BalanceControl_Strategy(float curr, uint8 faultflg, uint16 voltmax, uint32
     {
        if(++cnt*BALANCEPERIO/1000>2)//持续2s,连续发命令是否会出错?
        {
+         dd[0]++;
+         dd[1] = balacenod;
          cnt=2000/BALANCEPERIO;
-         if(balacenod <= NUM1_Batper_true)
+         if(balacenod <= NUM1_Batper_true)//8
          {
             tskstate   = LTC6811_BalanceControl(balacenod, 0x00, 0x00, 1); 
          }
-         else if(balacenod <= (NUM1_Batper_true+NUM2_Batper_true))
+         else if(balacenod <= (NUM1_Batper_true+NUM2_Batper_true)) //8+8
          {
             balanceNum = balacenod-NUM1_Batper_true;
             tskstate   = LTC6811_BalanceControl(0x00, balanceNum, 0x00, 1);
          }
-         else if(balacenod <= (NUM1_Batper_true+NUM2_Batper_true+NUM3_Batper_true))
+         else if(balacenod <= (NUM1_Batper_true+NUM2_Batper_true+NUM3_Batper_true))//8+8+9
          {
             balanceNum = balacenod-NUM1_Batper_true-NUM2_Batper_true;
             tskstate   = LTC6811_BalanceControl(0x00, 0x00, balanceNum, 1);
@@ -98,10 +91,15 @@ uint8 BalanceControl_Strategy(float curr, uint8 faultflg, uint16 voltmax, uint32
 void Task_BalanceControl_ON(void)
 {
    uint8 balancestate;
+   
    balancestate = BalanceControl_Strategy(g_DataColletInfo.DataCollet_Current_Filter, g_Flt_Charge.Level_Charge_BalanceOff_Flag,\
-                                          g_LTC6811_VoltInfo.CellVolt_Max, g_LTC6811_VoltInfo.CellVolt_Total, g_LTC6811_VoltInfo.CellVolt_MaxNode, 500);
+                                          g_LTC6811_VoltInfo.CellVolt_Max, g_LTC6811_VoltInfo.CellVolt_Total, (g_LTC6811_VoltInfo.CellVolt_MaxNode+1), 500);
 
-  g_Roll_Tick.Roll_BalanOn++;
+   if(balancestate == 0)
+   {
+      Light_Control(LED1_PORT, LED1_pin, Light_ON);
+   }
+   g_Roll_Tick.Roll_BalanOn++;
 }
 /*=======================================================================
  *函数名:      Task_BalanceControl_OFF(void)
@@ -112,7 +110,7 @@ void Task_BalanceControl_ON(void)
 ========================================================================*/
 void Task_BalanceControl_OFF(void)
 {
-   LTC6811_BalanceControl(0x00, 0x00, 0x00, 0);//关闭均衡功能
-   
+   LTC6811_BalanceControl(0, 0x00, 0x00, 0);//关闭均衡功能
+   Light_Control(LED1_PORT, LED1_pin, Light_OFF);
    g_Roll_Tick.Roll_BalanOff++;
 }

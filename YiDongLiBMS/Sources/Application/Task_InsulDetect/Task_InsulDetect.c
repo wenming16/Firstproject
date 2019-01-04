@@ -18,14 +18,7 @@
       Author:  
       Modification:
 ===============================================================================*/
-
-#include  "Task_InsulDetect.h"
-#include  "ADC_cfg.h" 
-#include  "Task_Init.h" 
-
-#include  "ADC.h" 
-
-
+#include  "includes.h"
 IsoResist g_IsoDetect;        //定义绝缘检测结构体
 /*=======================================================================
  *函数名:      Insulation_Init
@@ -50,14 +43,13 @@ uint8  Insulation_Init(void)
 
 /*=======================================================================
  *函数名:      ADC_Insul_HVPOSITIVE(void)
- *功能:        电池包霍尔传感器电流的检测
+ *功能:        正对地电压检测
  *参数:        无         
-                      
- *返回：       Current:霍尔传感器通道的转换结果
+ *返回：       uint16:检测的ADC数字量
  *说明：       ADC 时钟频率：2MHz
 ========================================================================*/
 static
-float ADC_Insul_HVPositive(void) 
+uint16 ADC_Insul_HVPositive(void) 
 {
   uint16 insulp;
   insulp = ADC_Value(HVPositiveChannel); 
@@ -66,14 +58,13 @@ float ADC_Insul_HVPositive(void)
 
 /*=======================================================================
  *函数名:      ADC_Insul_HVPOSITIVE(void)
- *功能:        电池包霍尔传感器电流的检测
+ *功能:        负对地电压检测
  *参数:        无         
-                      
- *返回：       Current:霍尔传感器通道的转换结果
+ *返回：       uint16:检测的ADC数字量
  *说明：       ADC 时钟频率：2MHz
 ========================================================================*/
 static
-float ADC_Insul_HVNegative(void) 
+uint16 ADC_Insul_HVNegative(void) 
 {
   uint16 insuln;
   insuln = ADC_Value(HVNegtiveChannel); 
@@ -89,18 +80,21 @@ float ADC_Insul_HVNegative(void)
  *说明：       ADC 时钟频率：2MHz
 ========================================================================*/
 
-uint32  SumVpositive,SumVnegtive,total_VOL,total_VOL1;
-float   Vpositive_1,Vnegtive_1;
-uint16  VposBuff[12],VnegBuff[12],VposBuff1[12],VnegBuff1[12],VposBuff2[12],VnegBuff2[12];
-uint16  Max_Volt,Max_Volt1,Min_Volt,Min_Volt1;
+//uint32  SumVpositive,SumVnegtive,total_VOL,total_VOL1;
+//float   Vpositive_1,Vnegtive_1;
+//uint16  VposBuff[12],VnegBuff[12],VposBuff1[12],VnegBuff1[12],VposBuff2[12],VnegBuff2[12];
+//uint16  Max_Volt,Max_Volt1,Min_Volt,Min_Volt1;
 //uint16 QWE,QWE1;
 
-void    Task_InsulationDetect(void) 
+void Task_InsulationDetect(void) 
 {
   uint8 count,i;
   static uint8 Time_Flag,Time_Cnt;
-  
-  Insulation_Init();
+  uint32  SumVpositive,SumVnegtive,total_VOL,total_VOL1;
+  float   Vpositive_1,Vnegtive_1;
+  uint16  VposBuff[12],VnegBuff[12],VposBuff1[12],VnegBuff1[12],VposBuff2[12],VnegBuff2[12];
+  uint16  Max_Volt,Max_Volt1,Min_Volt,Min_Volt1;
+  //Insulation_Init();
 
   if(Time_Flag == 0) 
   { 
@@ -110,7 +104,6 @@ void    Task_InsulationDetect(void)
       VposBuff[count] = ADC_Insul_HVPositive();   //正对底盘：PAD1
       
       VnegBuff[count] = ADC_Insul_HVNegative();    //负对底盘：PAD8
-
     }    
     
     Max_Volt = 0;                 

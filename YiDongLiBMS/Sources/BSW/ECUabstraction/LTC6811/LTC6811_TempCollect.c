@@ -9,9 +9,7 @@
       Author:  ZWB
       Modification:增加了SS的赋值，为了先唤醒LTC6804的SPI。
 ========================================================================*/
-#include  "LTC6811_TempCollect.h"
-#include  "LTC6811_CMD.h"
-
+#include  "includes.h"
 LTC6811_TempInfo_T g_LTC6811_TempInfo; //LTC6811温度采集全局变量(GPIO温度、芯片温度)
 /*=======================================================================
  *函数名:      Task_Pack_Temp_Collect(void)
@@ -25,6 +23,8 @@ void LTC6811_TempCMDSend(void)
    Ltc6804_clraux();                             /* 清除辅助寄存器 */ 
                                     
    LTC6804_adax();                               /* 启动GPIO ADC转换 */
+   
+   LTC6804_wrcfg(NUM_IC, CFG1);
 }
 
 /*=======================================================================
@@ -41,7 +41,6 @@ void LTC6811_TempCollect(void)
    uint16 Cell_temp[NUM_IC][6];      // 温度寄存器
    uint8  PEC_error_t[NUM_IC];
    uint8  maxtemp,mintemp;           // maxtemp=0x8000,mintemp=0X7FFF 32767 = (15个1);
-   uint16 totaltemp;
    int16  Temperature[NUM_IC][5];    // PACK温度 
    
    for(k = 0; k < NUM_IC; k++)
@@ -56,7 +55,9 @@ void LTC6811_TempCollect(void)
       }
    }
 
-   LTC6811_Wakeup();//唤醒
+   //LTC6811_Wakeup();//唤醒
+   LTC6811_Enable = 0;
+   LTC6811_Enable = 1;
        
    LTC6804_rdaux(0, NUM_IC, cell_temp, PEC_error_t);
           

@@ -9,11 +9,7 @@
       Author:
       Modification:
 ========================================================================*/
-#include  "Task_SysTimeGet.h"
-#include  "DS3231_TimeGet.h"
-#include  "Task_PowerOnOff.h"
-#include  "stdtypes.h"
-#include  "Task_Init.h"
+#include  "includes.h"
 
 SysTime_T g_SysTime;
 /*=======================================================================

@@ -9,10 +9,7 @@
       Author:
       Modification:
 ========================================================================*/
-#include  "LTC6811_VoltCollect.h"
-#include  "LTC6811_TempCollect.h"
-#include  "LTC6811_OpWire.h"
-#include  "Task_Init.h"
+#include  "includes.h"
           
 /*=======================================================================
  *º¯ÊýÃû:      Task_VoltCMDSend(void)

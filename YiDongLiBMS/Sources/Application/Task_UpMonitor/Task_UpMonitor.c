@@ -11,27 +11,7 @@
       Author:
       Modification:
 ========================================================================*/
-
-#include  "Task_UpMonitor.h"
-#include  "BattInfoConfig.h"
-#include  "Task_Init.h"
-#include  "FltLevcfg.h"
-#include  "DS3231_TimeGet.h"
-#include  "WorkModeJudge.h"
-#include  "Task_SysTimeGet.h"
-#include  "Task_DataProcess.h"
-#include  "Task_CurrLimit.h"
-#include  "Task_SOCSOH.h"
-#include  "Task_PowerOnOff.h"
-#include  "GPIO.h"
-#include  "Task_FltLevJudg.h"
-#include  "LTC6811_ConnectType.h"
-#include  "LTC6811_VoltCollect.h"
-#include  "LTC6811_TempCollect.h"
-#include  "LTC6811_OpWire.h"
-#include  "Task_InsulDetect.h"
-#include  "stddef.h"
-#include  "Port_Control.h"
+#include  "includes.h"
 
 BMSMonitor_Volt_T g_BMSMonitor_Volt;
 BMSMonitor_Temp_T g_BMSMonitor_Temp;
@@ -434,7 +414,7 @@ void CAN_ToUpMonitorMsg(void)
     switch(i)
     {
       case 0 :     //系统实时时间
-      	BMS_to_Upmonitor.m_data[0] = i;     //编号 0x00
+      	BMS_to_Upmonitor.m_data[0] = 0;     //编号 0x00
       	BMS_to_Upmonitor.m_data[1] = Read_IIC_Time.IIC_Read_Year;     //系统实时时间:年 
       	BMS_to_Upmonitor.m_data[2] = Read_IIC_Time.IIC_Read_Month;    //系统实时时间:月         
       	BMS_to_Upmonitor.m_data[3] = Read_IIC_Time.IIC_Read_Day;      //系统实时时间:日
@@ -447,7 +427,7 @@ void CAN_ToUpMonitorMsg(void)
       break;
       
       case 1:    //系统运行状态及时长
-        BMS_to_Upmonitor.m_data[0] = i;     //编号 0x01
+        BMS_to_Upmonitor.m_data[0] = 1;     //编号 0x01
         BMS_to_Upmonitor.m_data[1] = g_WorkStateJudge.WorkState;    //系统运行状态：00 放电，01 快充，02慢充  
         BMS_to_Upmonitor.m_data[2] = (uint8)(g_SysTime.BMS_TotalRun_MiniteTime/60);    //BMS系统运行时间（小时）       
         BMS_to_Upmonitor.m_data[3] = (uint16)(g_SysTime.BMS_TotalRun_MiniteTime/60) >> 8;    
@@ -461,7 +441,7 @@ void CAN_ToUpMonitorMsg(void)
       
       case 2:      //电池自检状态及自检失败原因
       
-        BMS_to_Upmonitor.m_data[0] = i;     //编号 0x02
+        BMS_to_Upmonitor.m_data[0] = 2;     //编号 0x02
         BMS_to_Upmonitor.m_data[1] = 0x01;   //电池自检状态  00 自检中，01 成功，02 失败
         BMS_to_Upmonitor.m_data[2] = 0x00;       
         BMS_to_Upmonitor.m_data[3] = 0x00;    
@@ -665,7 +645,7 @@ void Task_BMUToUpMonitor(void)
   BMS_to_Upmonitor.m_ID = BMS_Send_Information1;       
   for(i = 0; i <batt ; i++) 
   {
-    BMS_to_Upmonitor.m_data[0] = (uint8)(i/NUM_IC);            //需要改正-6804的编号 0-3
+    BMS_to_Upmonitor.m_data[0] = g_WorkStateJudge.WorkState;  //BMS的工作状态     
     BMS_to_Upmonitor.m_data[1] = (uint8)(i);             
     BMS_to_Upmonitor.m_data[2] = (uint8)g_LTC6811_VoltInfo.CellVolt[i*3];
     BMS_to_Upmonitor.m_data[3] = (g_LTC6811_VoltInfo.CellVolt[i*3]>>8)&0xFF;

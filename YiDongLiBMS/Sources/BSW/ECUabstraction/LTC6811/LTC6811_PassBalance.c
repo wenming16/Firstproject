@@ -12,8 +12,7 @@
       Modification:  
       
 ========================================================================*/
-#include  "LTC6811_PassBalance.h"               
-
+#include  "includes.h"
 uint8 Balance_CFGR[NUM_IC][6];
 /*=======================================================================
  *函数名:      Balance_Config();
@@ -26,6 +25,8 @@ void LTC6811_BalanceCMDSend( uint8 *CFG,uint8 gpio, uint8 refon,uint8 swtrd, uin
                  float  vuv,float   vov,uint16 ddc,uint8 dcto) 
 {           
   uint8 char1,char2,char3;
+  
+  
 
   *CFG++=(gpio<<3)+(refon<<2)+(swtrd<<1)+adcopt;
   
@@ -46,6 +47,9 @@ void LTC6811_BalanceCMDSend( uint8 *CFG,uint8 gpio, uint8 refon,uint8 swtrd, uin
   char3 = char3 &0x0f; 
  
   *CFG++=(dcto<<4)+ char3; 
+  
+  LTC6804_wrcfg(NUM_IC, CFG1);   
+  
 }
 /*=======================================================================
  *函数名:      Passive_Balance（void）
@@ -57,6 +61,7 @@ void LTC6811_BalanceCMDSend( uint8 *CFG,uint8 gpio, uint8 refon,uint8 swtrd, uin
  *返回：       无
  *说明：       被动均衡函数
 ========================================================================*/
+uint8 aa[6];
 uint8 LTC6811_BalanceControl(uint8 state1, uint8 state2, uint8 state3, uint8 time) 
 {
   uint16 state[3]={0,0,0};
@@ -64,21 +69,25 @@ uint8 LTC6811_BalanceControl(uint8 state1, uint8 state2, uint8 state3, uint8 tim
   {
     return 1;
   }
-  state[0] = (uint16)1<<(state1-1);
-  if(state1>NUM1_Batper_front)
+  aa[3] =  state1;
+  state[0] = ((uint16)1)<<(uint8)(state1-1);
+  aa[4] =state[0];
+  aa[5] = time;
+  if(state1>NUM1_Batper_front)//4
   {
-    state[0] = 1<<(state1+6-NUM1_Batper_front);
+    state[0] = ((uint16)1)<<(uint8)(state1+6-NUM1_Batper_front);
+     aa[0]++ ;
   }
-  state[1] = (uint16)1<<(state2-1);
-  if(state2>NUM2_Batper_front)
+  state[1] = ((uint16)1)<<(uint8)(state2-1);
+  if(state2>NUM2_Batper_front)//4
   {
-    state[1] = (uint16)1<<(state2+6-NUM2_Batper_front); 
+    state[1] = ((uint16)1)<<(uint8)(state2+6-NUM2_Batper_front); aa[1]++ ;
   }
-  state[2] = (uint16)1<<(state3-1);
-  if(state3>NUM3_Batper_front)
+  state[2] = ((uint16)1)<<(uint8)(state3-1);
+  if(state3>NUM3_Batper_front) //5
   {
-    state[2] = 1<<(state3+6-NUM3_Batper_front); 
-  }
+    state[2] = ((uint16)1)<<(uint8)(state3+6-NUM3_Batper_front);  aa[2]++ ;
+  }   
   
   LTC6811_BalanceCMDSend(&Balance_CFGR[0][0], DGPIO, DREFON, DSWTRD, DADCOPT, UNDER_V, OVER_V, state[0], time) ;   /* 配置值赋给结构体,更改最后两个变量值；*/                                           
 

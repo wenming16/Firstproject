@@ -10,7 +10,7 @@
       Modification:
 ========================================================================*/
 
-#include  "LTC6811_CMD.h"             
+#include  "includes.h"           
 
 //Ltc6811数据寄存器的全局变量
 uint8 ADCV[2];                         // Cell Voltage conversion command.
@@ -50,7 +50,7 @@ void Spi_LTC6811Write(uint8 len,uint8 data[])
   uint8 i;
   for (i = 0; i < len; i++)
   {
-    SPI1_Write(data[i]);
+    SPI1_Write((uint8)data[i]);
   }
 }
 /*=======================================================================
@@ -126,6 +126,7 @@ void LTC6811_DelayTime(uint16 t)
 void LTC6811_Wakeup(void)
 {
   LTC6811_Enable = 0;
+  LTC6811_DelayTime(5);
   LTC6811_Enable = 1;
 } 
 
@@ -136,7 +137,8 @@ void LTC6811_Wakeup(void)
                config:写配置寄存器组的6个字节(配置寄存器组)
  *返回：       无
  *说明：       控制从器件的相关命令
-========================================================================*/ 
+========================================================================*/
+uint8 bb ; 
 void LTC6804_wrcfg(uint8 total_ic, uint8 config[][6])
 {
   const uint8 BYTES_IN_REG = 6;          //CFG数据为6个字节
@@ -149,6 +151,7 @@ void LTC6804_wrcfg(uint8 total_ic, uint8 config[][6])
   
   cmd = (uint8 *)malloc(CMD_LEN*sizeof(uint8)); //入堆
   
+  bb =  total_ic;
   //1
   cmd[0] = 0x00;
   cmd[1] = 0x01;
@@ -226,7 +229,7 @@ void set_adc(uint8 MD,uint8 DCP,uint8 CH,uint8 CHST,uint8 PUP, uint8 CHG)
  *返回：       无
  *说明：       LTC6811设置导线开路的相关命令
 ========================================================================*/
-void LTC6804_adow() 
+void LTC6804_adow(void) 
 {
   uint8  cmd[4];
   uint16 cmd_pec;

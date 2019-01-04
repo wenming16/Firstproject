@@ -23,13 +23,13 @@
     #define Light_OFF       1    //灯暗(对应高电平)
     
     //2.灯控制引脚宏定义
-    #define LED1_PORT      PT    //
+    #define LED1_PORT      PT    //均衡警示灯
     #define LED1_pin        0    //
     
-    #define LED2_PORT      PT    //
+    #define LED2_PORT      PT    //自检成功灯
     #define LED2_pin        1    // 
     
-    #define LED3_PORT      PB    //
+    #define LED3_PORT      PB    //备用
     #define LED3_pin        4    //   
       
 //构件函数声明区

@@ -1,10 +1,4 @@
-#include  "Task_Charge.h"
-#include  "BattInfoConfig.h"
-#include  "Task_CurrLimit.h"
-#include  "Task_DataProcess.h"
-#include  "Task_SOCSOH.h"
-#include  "Task_FltLevJudg.h"
-
+#include  "includes.h"
 static float Charge_CurrInit(float currlimt, float chargeInit);
 static float ChargeEnd_CurrentOut(uint16 cellvoltmax, float curr); 
 static uint8 ChargeEndJudge(float soc,float curr_end,uint16 cellvoltmax,uint8 temph,uint8 templ, uint8 BMSFlt, uint8 chargeFlt);
@@ -24,7 +18,7 @@ void Charge_VoltCurrRequest(void)
   g_BMSCharge.Volt_Max_ChargePile = CELL_VOLT_NOMINAL * SYS_SERIES_YiDongLi + 5;
   //最大电流请求
   curr = Charge_CurrInit(CurrLimit.Curr_Charge_Cons, g_BMSCharge.Curr_Max_ChargePile);
-  g_BMSCharge.Curr_Max_ChargePile = ChargeEnd_CurrentOut(g_VoltInfo.CellVolt_Max, curr);
+  g_BMSCharge.Curr_Max_ChargePile = ChargeEnd_CurrentOut(g_VoltInfo.CellVolt_Max, curr) * 10.0;//先进行处理 分辨率0.1A
   
   g_BMSCharge.Control_ChargePile = ChargeEndJudge(g_SOCInfo.SOC_ValueRead, g_DataColletInfo.DataCollet_Current_Filter, \
                                                     g_VoltInfo.CellVolt_Max, g_TempInfo.CellTemp_Max, g_TempInfo.CellTemp_Min,\
@@ -32,9 +26,9 @@ void Charge_VoltCurrRequest(void)
   
   g_BMSCharge.VoltC_Max           = g_VoltInfo.CellVolt_Max ;
   g_BMSCharge.VoltC_Min           = g_VoltInfo.CellVolt_Min;
-  g_BMSCharge.SOC                 = g_SOCInfo.SOC_ValueRead;
+  g_BMSCharge.SOC                 = g_SOCInfo.SOC_ValueRead*250.0; //先进行处理 分辨率:0.4%
   g_BMSCharge.Temp_Max            = g_TempInfo.CellTemp_Max;
-  g_BMSCharge.VoltS               = g_VoltInfo.SysVolt_Total;
+  g_BMSCharge.VoltS               = g_VoltInfo.SysVolt_Total * 0.001; //将g_VoltInfo.SysVolt_Total单位:0.1mV->0.1V
   
   //充电过温
   if(g_Flt_Charge.Level_Temp_High == 2)

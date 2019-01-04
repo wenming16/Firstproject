@@ -25,7 +25,7 @@
   #define           MODE_STOP_OR_SLEEP                              1       //1:单片机进入伪休眠(低功耗状态),0:任务停止的模式单片机不进入模式
   #define           MODE_THERMISTOR                                 0x01    //0x00:10K的热敏电阻；0x01:100K的热敏电阻
   #define           MODE_VCU_WORK                                   1       //1:充电时VCU断电;0:充电时VCU不断电
-  //初始化配置
+  //初始化配置                                  
   #define           RESET_EEPROM                                    0       //EEprom内存清零(1:EEprom初始化)
   #define           RESET_SOC                                       0       //SOC初始化(1:初始化)
   #define           RESET_CLOCK                                     0       //1:时钟初始化,0:不初始化

@@ -11,24 +11,7 @@
       Author:
       Modification:
 ========================================================================*/
-#include  "Task_Init.h"
-#include  "Task_PowerOnOff.h"
-#include  "Task_SOCSOH.h"
-#include  "Task_BalanceControl.h"
-#include  "Task_VoltTempCollect.h"
-#include  "Task_CurrLimit.h"   
-#include  "Task_SysTimeGet.h"
-#include  "Task_Charge.h"
-#include  "Task_FltSave.h" 
-#include  "Task_EEEReadWrite.h"
-#include  "Task_Screen.h"
-#include  "Task_BootLoader.h"
-#include  "PIT.h"
-#include  "Task_InsulDetect.h"
-#include  "Task_UpMonitor.h"
-#include  "Task_BalanceControl.h"
-#include  "Task_DataProcess.h"
-#include  "Task_FltLevJudg.h"
+#include  "includes.h"
 
 TASK tasks[ARRAY_SIZE];            //任务堆栈设计  
 
@@ -77,11 +60,11 @@ void Task_Handle(void)                               // 任务执行函数，按任务的创
  *说明：       创建任务数组函数，便于轮询执行任务
 ========================================================================*/  
 void Task_Init()                                      
-{  
+{                   
   //BMS数据接收及处理任务     
-  tasks[0] = Task_Register(0, Task_PowerOnOff);           //BMS自检及上下电的控制
-  tasks[1] = Task_Register(0, Task_SOCSOH);               //SOCSOH计算函数
-  tasks[2] = Task_Register(0, Task_BalanceControl_OFF);   //关闭均衡控制
+  tasks[0] = Task_Register(0, Task_BalanceControl_OFF);   //关闭均衡控制       
+  tasks[1] = Task_Register(0, Task_PowerOnOff);           //BMS自检及上下电的控制    
+  tasks[2] = Task_Register(0, Task_SOCSOH);               //SOCSOH计算函数
   tasks[3] = Task_Register(0, Task_VoltCMDSend);          //采集电压前发送的命令
   tasks[4] = Task_Register(0, Task_VoltCollect);          //电压采集
   tasks[5] = Task_Register(0, Task_TempCMDSend);          //采集温度前发送的命令
@@ -121,19 +104,19 @@ void Task_Roll(void)
   switch(PIT_TimePeriod.T500ms)//500ms的周期
   {
     case 1:
-      tasks[0].flags = 1;//Task_PowerOnOff
+      tasks[0].flags = 1;//Task_BalanceControl_OFF
     break;
       
-    case 3:        //SOCSOH的计算周期为100ms
-    case 13:
-    case 23:
-    case 33:
-    case 43:
-      tasks[1].flags = 1;//Task_SOCSOH
+    case 3:   
+      tasks[1].flags = 1;//Task_PowerOnOff
     break;
     
-    case 5:
-      //tasks[2].flags = 1;//Task_BalanceControl_OFF
+    case 5: //SOCSOH的计算周期为100ms
+    case 15:
+    case 25:
+    case 35:
+    case 45:
+      tasks[2].flags = 1;//Task_SOCSOH
     break;
     
     case 7:
@@ -147,27 +130,28 @@ void Task_Roll(void)
     case 11:
       tasks[5].flags = 1;//Task_TempCMDSend
     break;
-      
-    case 15:
+    
+    case 13:
       tasks[6].flags = 1;//Task_TempCollect
     break;
-    
+      
     case 17:
       tasks[7].flags = 1;//Task_InsulationDetect
     break;
     
     case 21:
+      
       tasks[8].flags = 1;//Task_DataProcess
     break;
     
-    case 25:
-      //tasks[9].flags = 1;//Task_BalanceControl_ON
+    case 23:
+      tasks[9].flags = 1;//Task_BalanceControl_ON
     break;
     
     case 27:
       tasks[10].flags = 1;//Task_CurrLimit
-    break;
-      
+    break; 
+    
     case 29:
       tasks[11].flags = 1;//Task_SysTimeGet
     break;
@@ -176,7 +160,7 @@ void Task_Roll(void)
       tasks[12].flags = 1;//Task_FltLevJudg
     break;
     
-    case 35:
+    case 33:
       tasks[13].flags = 1;//Task_Charge
     break;
     
@@ -201,7 +185,7 @@ void Task_Roll(void)
       cnt[0]++;
     break;
     
-    case 45:
+    case 43:
       if(cnt[1]%2 == 0)//2*0.5S任务 
       {
         cnt[1] = 0;
@@ -232,4 +216,4 @@ void Task_Roll(void)
     break;
   }   
 }
-
+ 

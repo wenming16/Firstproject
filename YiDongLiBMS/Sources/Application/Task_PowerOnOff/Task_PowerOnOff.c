@@ -9,17 +9,7 @@
       Author:
       Modification:  
 ========================================================================*/
-#include  "Task_PowerOnOff.h"
-#include  "WorkModeJudge.h"
-#include  "BMSCheckSelf.h"
-#include  "GPIO.h"
-#include  "DS3231_TimeGet.h"
-#include  "Task_DataProcess.h"
-#include  "Task_FltLevJudg.h"
-#include  "Port_Control.h"
-#include  "Task_SysTimeGet.h"
-#include  "Task_Init.h"
-
+#include  "includes.h"
 /*=======================================================================
  *函数名:      PositiveRelay_Init
                CSSUPowerRelay_Init
@@ -43,6 +33,8 @@ uint8 Init_Relay(void)//主正继电器
   state = Port_Init(Relay_Positive_PORT, Relay_Positive_pin, Relay_ON);
   state = state | Port_Init(Relay_CSSUPower_PORT, Relay_CSSUPower_pin, Relay_ON);
   state = state | Port_Init(Relay_ScreenPower_PORT, Relay_ScreenPower_pin, Relay_ON);
+  state = state | Light_Init(LED1_PORT, LED1_pin, Light_OFF);//作均衡警示灯
+  state = state | Light_Init(LED2_PORT, LED2_pin, Light_OFF);//自检成功灯
   return state;
 }
 /*=======================================================================

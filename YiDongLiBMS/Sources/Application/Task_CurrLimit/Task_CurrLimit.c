@@ -11,10 +11,7 @@
       Author:
       Modification:
 ========================================================================*/
-  #include"Task_CurrLimit.h"
-  #include"Task_DataProcess.h"
-  #include"Task_Init.h"
- 
+#include  "includes.h"
  CurrLimit_T CurrLimit;
 
  static float ChagCurrLimit_Cons(uint8 Temp);

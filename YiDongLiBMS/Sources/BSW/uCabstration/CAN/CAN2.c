@@ -11,13 +11,7 @@
       Author:
       Modification:
 ========================================================================*/
-  //内部固有
-  #include  "CAN.h"
-  
-  #include  "MC9S12XEP100.h"
-  #include  "Task_Bootloader.h" 
-  #include  "stdtypes.h"   
-  #include  "Task_FltLevJudg.h"
+#include  "includes.h"
   
 /*=======================================================================
  *函数名:      CAN2_Init(void)
@@ -30,7 +24,7 @@
 ========================================================================*/
 uint8 CAN2_Init(uint16 Baud_Rate) 
 {
-  uint8 CAN2cnt[3] = {0,0,0};
+  uint16 CAN2cnt[3] = {0,0,0};
   
   if((Baud_Rate != 125)&&(Baud_Rate != 250)&&(Baud_Rate != 500))
   {
@@ -44,7 +38,7 @@ uint8 CAN2_Init(uint16 Baud_Rate)
   
   do
   {
-    if(++CAN2cnt[0]>200)
+    if(++CAN2cnt[0]>3000)
     {
       return(Init_Fault_CAN_Unready1);
     }
@@ -88,7 +82,7 @@ uint8 CAN2_Init(uint16 Baud_Rate)
   
   do
   {
-    if(++CAN2cnt[1]>200)
+    if(++CAN2cnt[1]>3000)
     {
       return(Init_Fault_CAN_Unready2);
     }
@@ -98,7 +92,7 @@ uint8 CAN2_Init(uint16 Baud_Rate)
   
   do
   {
-    if(++CAN2cnt[2]>200)
+    if(++CAN2cnt[2]>3000)
     {
       return(Init_Fault_CAN_Synchr);
     }
@@ -141,7 +135,7 @@ uint8 CAN2_SendMsg(pCANFRAME sendFrame)
     CAN2TBSEL=CAN2TFLG;
     send_buf=CAN2TBSEL;
   } 
-  while((!send_buf)&&(Cnt<500)); 
+  while((!send_buf)&&(Cnt<1000)); 
   //写入标识符ID
   
   if (sendFrame->m_IDE == 0)  //按标准帧填充ID

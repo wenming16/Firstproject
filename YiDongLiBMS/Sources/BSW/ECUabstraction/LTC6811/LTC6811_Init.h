@@ -7,6 +7,8 @@
 
   //温度采集(用于多路复用器)
   //void messagedata_temp();
+  
+  extern uint8 CFG1[NUM_IC][6];
 
   //LTC6811初始化函数
   void  Config_Fun(uint8,uint8, uint8,uint8, uint8,\

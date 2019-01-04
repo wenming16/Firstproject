@@ -12,17 +12,7 @@
       Author:         
       Modification:   
 ========================================================================*/
-#include  "Task_Screen.h"  
-#include  "Task_SysTimeGet.h"
-#include  "Task_DataProcess.h" 
-#include  "Task_SOCSOH.h"
-#include  "Task_FltLevJudg.h"
-#include  "Task_UpMonitor.h"
-#include  "Task_InsulDetect.h"
-#include  "Task_Init.h"
-
-#include  "SCI.h"
-
+#include  "includes.h"
 RS485  RS485_Receive; 
 
 static uint8 RS485_Init(void);        

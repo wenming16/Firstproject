@@ -12,9 +12,7 @@
       Modification:
 ========================================================================*/
 
-#include  "BMSCheckself_UpMonitor.h"
-#include  "CAN.h"
-#include  "Task_UpMonitor.h"
+#include  "includes.h"
 
 /*=======================================================================
  *º¯ÊýÃû:      PhysicInitState_FltCode(SysInitState_T*) 
@@ -27,6 +25,7 @@ static
 uint16 PhysicInitState_FltCode(SysInitState_T*ptr)
 {
   uint16 fltcode=0;
+  
   fltcode = (ptr->ADC)|(ptr->IIC<<1)|(ptr->PIT0<<2)|(ptr->PLL<<3)|(ptr->Relay_Positvie<<4)|\
             (ptr->EEPROM<<5)|(ptr->CAN1<<6)|(ptr->CAN2<<7)|(ptr->Screen<<8)|(ptr->SPI<<9)|\
             (ptr->Insul<<10);  

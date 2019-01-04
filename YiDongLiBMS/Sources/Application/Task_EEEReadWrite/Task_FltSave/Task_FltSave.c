@@ -12,18 +12,7 @@
 ========================================================================*/
 #define Eeprom_Communication_ID  0x1610C0F4  
 
-#include  "Task_FltSave.h"
-#include  "MC9S12XEP100.h"
-#include  "stddef.h"
-#include  "CAN.h" 
-#include  "hidef.h"
-#include  "Task_FltLevJudg.h" 
-#include  "DS3231_TimeGet.h"
-#include  "Task_InsulDetect.h"
-#include  "Task_DataProcess.h"
-#include  "Task_Init.h"
-#include  "Task_UpMonitor.h"
-
+#include  "includes.h"
 FltCodeSave_T  g_FltCodeSave;
 
 
@@ -958,8 +947,8 @@ void Task_FltCodeProcess(void)
 void Task_FltCodeStore(void)
 {
    
-    uint8 readfault[17];
-    uint8 read_flag,clear_flag;
+    uint8 readfault[16];
+    //uint8 read_flag,clear_flag;
 
     readfault[0] = VoltSH(g_Flt_Charge.Level_Volt_Sys_High, Read_IIC_Time.IIC_Read_Year, Read_IIC_Time.IIC_Read_Month, Read_IIC_Time.IIC_Read_Day, Read_IIC_Time.IIC_Read_Hour, Read_IIC_Time.IIC_Read_Minute); 
     
@@ -993,7 +982,7 @@ void Task_FltCodeStore(void)
     
     readfault[15] = OpenWire_Fault(g_OpenWireInfo.OpenWire_Status, Read_IIC_Time.IIC_Read_Year, Read_IIC_Time.IIC_Read_Month, Read_IIC_Time.IIC_Read_Day,Read_IIC_Time.IIC_Read_Hour,Read_IIC_Time.IIC_Read_Minute); 
     
-    readfault[16] = ReadFltCodeFromEEE(read_flag,clear_flag);
+    //readfault[16] = ReadFltCodeFromEEE(read_flag,clear_flag);
 
   g_Roll_Tick.Roll_FltCodeS++;
 }

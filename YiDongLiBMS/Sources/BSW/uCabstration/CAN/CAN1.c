@@ -11,10 +11,7 @@
       Author:
       Modification:
 ========================================================================*/
-#include  "CAN.h"
-#include  "MC9S12XEP100.h"
-#include  "Task_Charge.h"
- 
+#include  "includes.h"
 static void CAN1_GetMsg_Process(pCANFRAME receiveFrame);   
 /*=======================================================================
  *函数名:      CAN1_Init(void)
@@ -27,7 +24,7 @@ static void CAN1_GetMsg_Process(pCANFRAME receiveFrame);
 ========================================================================*/
 uint8 CAN1_Init(uint16 Baud_Rate) 
 {
-  uint8 CAN1cnt[3] = {0,0,0};
+  uint16 CAN1cnt[3] = {0,0,0};
   
   if((Baud_Rate != 125)&&(Baud_Rate != 250)&&(Baud_Rate != 500))
   {
@@ -41,7 +38,7 @@ uint8 CAN1_Init(uint16 Baud_Rate)
 
   do
   {
-    if(++CAN1cnt[0]>200)
+    if(++CAN1cnt[0]>3000)
     {
       return(Init_Fault_CAN_Unready1);
     }
@@ -85,7 +82,7 @@ uint8 CAN1_Init(uint16 Baud_Rate)
                //返回一般模式运行
   do
   {
-    if(++CAN1cnt[1]>200)
+    if(++CAN1cnt[1]>3000)
     {
       return(Init_Fault_CAN_Unready2);
     }
@@ -95,7 +92,7 @@ uint8 CAN1_Init(uint16 Baud_Rate)
   
   do
   {
-    if(++CAN1cnt[2]>200)
+    if(++CAN1cnt[2]>3000)
     {
       return(Init_Fault_CAN_Synchr);
     }
@@ -138,7 +135,7 @@ uint8 CAN1_SendMsg(pCANFRAME sendFrame)
     send_buf=CAN1TBSEL;
     Cnt++;
   } 
-  while((!send_buf)&&(Cnt<500)); 
+  while((!send_buf)&&(Cnt<1000)); 
   //写入标识符ID
   
   if (sendFrame->m_IDE == 0)  //按标准帧填充ID

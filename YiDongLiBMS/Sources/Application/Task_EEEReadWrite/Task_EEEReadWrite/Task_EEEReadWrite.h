@@ -32,6 +32,6 @@
 
   void Get_EEprom_Value(void);
   void EEprom_DateMemset(void);
-  void Task_EEpromWrite(uint16); 
+  void Task_EEpromWrite(void); 
 
 #endif

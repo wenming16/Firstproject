@@ -11,8 +11,7 @@
       Author:
       Modification:
 ========================================================================*/
-
-#include  "Task_Charge.h"
+#include  "includes.h"
                                               
 ChargePileBMS_T         ChargePileBMS;
 Charge_State_T   g_Charge_State;

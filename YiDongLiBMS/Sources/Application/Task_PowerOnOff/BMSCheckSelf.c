@@ -6,25 +6,13 @@
                接口：
                波特率：
                只有自检成功后才能闭合响应的开关
-/* ========================================================================
+ * ========================================================================
  * History:    修改历史记录列表；
  * 1. Date:    
       Author:  
       Modification: 
 ========================================================================*/
-#include  "BMSCheckSelf.h"  
-#include  "BMSCheckself_UpMonitor.h"
-#include  "WorkModeJudge.h"
-#include  "BattInfoConfig.h"
-#include  "FltLevcfg.h"
-#include  "Task_DataProcess.h"
-#include  "Task_InsulDetect.h"
-#include  "Task_UpMonitor.h"
-#include  "Init_Sys.h"
-#include  "Task_Init.h"
-#include  "PIT.h"
-#include  "Task_VoltTempCollect.h"
-#include  "hidef.h"
+#include  "includes.h"
 
 Flt_BMSCheckSelf_T  g_Flt_BMSCheckSelf;
 /*=======================================================================
@@ -444,6 +432,9 @@ void Checkself_BattState()
 
   Task_TempCollect();             //温度采集函数
   CheckSelf_DelayTime(5000);
+  
+  Task_InsulationDetect();        //均衡检测
+  CheckSelf_DelayTime(1000);
 
   Task_DataProcess();             //数据处理
 }
@@ -495,6 +486,7 @@ void BMS_WorkModeCheckself(void)
    {
       workmode = g_WorkStateJudge.WorkState; 
       memset(&g_Roll_Tick, 0x00, sizeof(Roll_Tick_T)); 
+      Light_Control(LED2_PORT, LED2_pin, Light_OFF);//关闭自检成功显示灯
       PITINTE_PINTE0 = 0;//关时间中断(只进行自检)
       
       while(CheckSelf_Process(g_WorkStateJudge.WorkState, g_SysInitState.AllInit_State)!=0)//自检轮询直到成功跳出While
@@ -507,6 +499,7 @@ void BMS_WorkModeCheckself(void)
          }
       }
       //while之后代表自检成功,将重新计时,并消除自检故障
+      Light_Control(LED2_PORT, LED2_pin, Light_ON);
       memset(&PIT_TimePeriod, 0x00, sizeof(PIT_TimePeriod_T));
       memset(&g_Flt_BMSCheckSelf, 0x00, sizeof(Flt_BMSCheckSelf_T));
       PITINTE_PINTE0 = 1;//自检成功之后打开中断

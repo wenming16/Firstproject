@@ -11,30 +11,7 @@
       Author:
       Modification:
 ========================================================================*/
-#include  "TypeDefinition.h"
-#include  "Init_Sys.h"  
-#include  "libdefs.h"
-#include  "MC9S12XEP100.h"
-#include  "DS3231_TimeGet.h"
-#include  "Task_SysTimeGet.h"
-
-#include  "Task_init.h"
-#include  "Task_DataProcess.h"
-#include  "Init_PLL.h"
-#include  "Init_IIC.h"
-#include  "Init_Flash.h"
-#include  "Init_ADC.h"
-#include  "Task_Charge.h"
-#include  "Task_PowerOnOff.h"
-#include  "Init_PIT.h" 
-#include  "Task_Screen.h" 
-#include  "LTC6811_Init.h" 
-#include  "Task_UpMonitor.h"
-#include  "Task_CurrLimit.h"
-#include  "Task_FltLevJudg.h"
-#include  "Task_InsulDetect.h"
-#include  "Task_EEEReadWrite.h"
-#include  "PIT.h"
+#include  "includes.h"  
 
 // 整个系统的初始化函数  
 LIBDEF_MemPtr  MemPtr;
@@ -103,7 +80,7 @@ void Physic_Init(void)
 { 
   //底层硬件初始化
   g_SysInitState.PLL = Init_PLL();                //锁相环初始化
-  #if(Clock_Reset == 01)
+  #if(RESET_CLOCK == 1)
     DS3231SN_INIT(0b00011000, 1, 1, 1, 0, 0);     //时钟初始化(18/01/01)，while卡死的原因是IIC初始化放在读取数据之前
   #endif       
   g_SysInitState.EEPROM = Init_Flash();           //EEPROM初始化
@@ -112,8 +89,9 @@ void Physic_Init(void)
   g_SysInitState.CAN1   = CAN_ToChargeInit();       //充电CAN,CAN1 
   g_SysInitState.CAN2   = CAN_UpMonitorInit();      //内网CAN,CAN2
   g_SysInitState.Relay_Positvie = Init_Relay();   //主正继电器初始化
+  
   g_SysInitState.Insul  = Insulation_Init();       //绝缘检测
-  g_SysInitState.Screen = Init_Screen();          //显示屏SCI1初始化
+  g_SysInitState.Screen = Init_Screen();          //显示屏SCI1初始化  
   g_SysInitState.SPI    = LTC6804_Init();
   g_SysInitState.PIT0   = PIT0_Init();
  

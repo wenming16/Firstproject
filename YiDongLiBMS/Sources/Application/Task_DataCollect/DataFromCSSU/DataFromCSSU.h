@@ -28,7 +28,7 @@
     uint16  CellVolt_Diff;          //子板压差
     uint16  CellVolt_Ave;           //只会用于均衡控制
     uint32  CSSUVolt_Total;         //子板总压
-    uint16  InsulVolt_Total;        //绝缘总压
+    uint32  InsulVolt_Total;        //绝缘总压
   }FromCSSU_Volt_T;
   extern FromCSSU_Volt_T g_FromCSSU_Volt;
   

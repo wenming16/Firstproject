@@ -10,15 +10,7 @@
       Author:  Wenm
       Modification: 
 ========================================================================*/
-
-#include  "Task_EEEReadWrite.h" 
-#include  "Task_SysTimeGet.h"
-#include  "Task_SOCSOH.h"
-#include  "FltLevcfg.h"
-#include  "ADC_cfg.h"
-#include  "Task_UpMonitor.h"
-#include  "Task_Init.h"
-  
+#include  "includes.h"
 EEprom_Data_T EEprom_Data; 
 
 static void EEprom_read(uint16 addr, uint8 addrbase);
@@ -43,7 +35,7 @@ void Get_EEprom_Value()
          EEprom_Data.pEErom_base = ptr[j];  
       }            
     } 
-    #if(EEprom_Reset==1)   //此处决定是否需要进行数值初始化
+    #if(RESET_EEPROM==1)   //此处决定是否需要进行数值初始化
        addrError = 0;
     #endif         
             

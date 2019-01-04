@@ -11,8 +11,9 @@
            
 ========================================================================*/
 
-#include  "LTC6811_Init.h"                           
-
+#include  "includes.h" 
+                         
+uint8  CFG1[NUM_IC][6];                   // 配置寄存器数组 
 /*=======================================================================
  *函数名:      Config_Fun();
  *功能:        对LTC6804的配置
@@ -20,7 +21,6 @@
  *返回：       无
  *说明：       IC=3;GPIO=0XFF; REFON=1; SWTEN=0;  ADCOPT=0;  VUV=3.2; VOV=4.2; DCTO=0;
 ========================================================================*/
-static uint8  CFG1[NUM_IC][6];                   // 配置寄存器数组 
 void Config_Fun( uint8 total_ic,uint8 gpio, uint8 refon,uint8 swtrd, uint8 adcopt,
                  float vuv, float vov, uint16 ddc, uint8 dcto) 
 {           

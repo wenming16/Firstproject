@@ -83,6 +83,7 @@
     uint8 HVU;
     
     uint8 CSSU1;
+    uint8 RelayFlt_Positive;
     /*#if(SYS_NUMBER_MODULE>=2)
       uint8 CSSU2;
     #endif
@@ -123,9 +124,9 @@
       uint8 HeartBeat_CSSU6;
     #endif*/
     //VCU
-    uint8 HeartBeat_VCU;
+    //uint8 HeartBeat_VCU;
     //HVU
-    uint8 HeartBeat_HVU;
+    //uint8 HeartBeat_HVU;
   }HeartBeat_T;
   extern HeartBeat_T HeartBeat;              //ĞÄÌøĞÅºÅ
   

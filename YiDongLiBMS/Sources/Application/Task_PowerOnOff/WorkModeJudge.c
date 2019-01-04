@@ -12,7 +12,7 @@
       Author:  
       Modification: 
 ========================================================================*/
-#include "WorkModeJudge.h"  
+#include  "includes.h"  
 
 WorkStateJudge_T  g_WorkStateJudge;
 

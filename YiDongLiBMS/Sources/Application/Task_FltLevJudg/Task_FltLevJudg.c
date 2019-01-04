@@ -9,14 +9,7 @@
       Author:
       Modification:
 ========================================================================*/
-
-#include  "Task_FltLevJudg.h"
-#include  "WorkModeJudge.h"
-#include  "Task_DataProcess.h"
-#include  "Task_InsulDetect.h"
-#include  "FltLevcfg.h"
-#include  "Task_UpMonitor.h"
-#include  "Task_Init.h"
+#include  "includes.h"
 
 /*=======================================================================
                                   声明
@@ -46,6 +39,7 @@ HeartBeat_T        HeartBeat;
  static uint8 Fault_Charge_Insul(uint16 Insul);           //绝缘故障
  //通信掉线
  static uint8 Fault_CSSU_OffLine(void);                   //从板掉线
+ static uint8 Fault_Relay_BreakDown(void);                //继电器粘连故障
  /*=======================================================================
                               故障判断函数0x00
  ========================================================================
@@ -76,7 +70,8 @@ void Init_TaskFltLevJudg(void)
 ========================================================================*/ 
 void Task_FltLevJudg(uint8 workstate)
 {
-   State_Offline.CSSU1 = Fault_CSSU_OffLine();
+   State_Offline.CSSU1 = Fault_CSSU_OffLine();//子板掉线
+   State_Offline.RelayFlt_Positive = Fault_Relay_BreakDown();//继电器粘连故障
    switch(workstate)
    {
     case MODE_DISCHARGE: //放电状态
@@ -95,7 +90,7 @@ void Task_FltLevJudg(uint8 workstate)
       g_Flt_DisChg.Level_Current_DisCharge_High = Fault_DisChg_CurrH(g_DataColletInfo.DataCollet_Current_Filter);
       g_Flt_DisChg.Level_Insul                  = Fault_DisChg_Insul(g_IsoDetect.insulation_resist);
       //断开继电器的二级故障标记
-      if((g_Flt_DisChg.Level_Volt_Sys_Low==2) || \
+      if((g_Flt_DisChg.Level_Volt_Sys_Low==2) ||\
          (g_Flt_DisChg.Level_Volt_Cell_Low == 2)||\
          (g_Flt_DisChg.Level_Temp_High == 2)||\
          (g_Flt_DisChg.Level_Temp_Low == 2) ||\
@@ -127,9 +122,10 @@ void Task_FltLevJudg(uint8 workstate)
          (g_Flt_Charge.Level_Volt_Cell_High==2) ||\
          (g_Flt_Charge.Level_Temp_High == 2)||\
          (g_Flt_Charge.Level_Temp_Low == 2)||\
-         (g_Flt_Charge.Level_Insul == 2)||(State_Offline.CSSU1 == 1))
+         (g_Flt_Charge.Level_Insul == 2)||(State_Offline.CSSU1 == 1)||\
+         (State_Offline.RelayFlt_Positive == 1))
       {
-        g_Flt_Charge.Level_Charge_SwitchOff_flag = 1;  
+        g_Flt_Charge.Level_Charge_SwitchOff_flag = 1;//2级故障闭合继电器  
       }
       //均衡开启标记
       if((g_Flt_Charge.Level_Volt_Sys_High!=0) ||\
@@ -139,9 +135,10 @@ void Task_FltLevJudg(uint8 workstate)
          (g_Flt_Charge.Level_Temp_Low != 0) ||\
          (g_Flt_Charge.Level_Temp_Diff_High != 0) ||\
          (g_Flt_Charge.Level_Current_Charge_High != 0) ||\
-         (g_Flt_Charge.Level_Insul != 0)||(State_Offline.CSSU1 != 0))
+         (g_Flt_Charge.Level_Insul != 0)||(State_Offline.CSSU1 != 0)||\
+         (State_Offline.RelayFlt_Positive != 0))
       {
-        g_Flt_Charge.Level_Charge_BalanceOff_Flag = 1;  
+        g_Flt_Charge.Level_Charge_BalanceOff_Flag = 1;//只要出现故障则不启动均衡  
       }
       else
       {
@@ -1277,7 +1274,52 @@ uint8 Fault_Charge_Insul(uint16 Insul)
     else
     {
       cnt[0] = 0;
+      //FltL = 0;
     }
   }
   return(FltL);
-}  
+} 
+
+
+/*=======================================================================
+                            继电器粘连故障0x19
+ ======================================================================*/ 
+static 
+uint8 Fault_Relay_BreakDown(void)
+{
+   static uint8 cnt;
+   static uint8 flt; 
+   if(Port_StateGet(Relay_Positive_PORT, Relay_Positive_pin) == Relay_ON)
+   {
+      if(abs(g_VoltInfo.SysVolt_Total-g_FromCSSU_Volt.InsulVolt_Total)>0.5*CELL_VOLT_NOMINAL*SYS_SERIES_YiDongLi)
+      {
+          if(++cnt*PERIOD_DISCHARGE/1000>=2)
+          {
+             cnt = 0;
+             flt = 1;
+          }
+      }
+      else
+      {
+         cnt = 0;
+         flt = 0;
+      }
+   }
+   else
+   {
+      if(abs(g_VoltInfo.SysVolt_Total-g_FromCSSU_Volt.InsulVolt_Total)<0.5*CELL_VOLT_NOMINAL*SYS_SERIES_YiDongLi)
+      {
+          if(++cnt*PERIOD_DISCHARGE/1000>=2)
+          {
+             cnt = 0;
+             flt = 1;
+          }
+      }
+      else
+      {
+         cnt = 0;
+         flt = 0;
+      }
+   }
+   return flt;
+}

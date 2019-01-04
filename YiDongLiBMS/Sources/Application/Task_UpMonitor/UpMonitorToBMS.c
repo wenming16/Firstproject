@@ -11,15 +11,7 @@
       Author:
       Modification:
 ========================================================================*/
-
-#include  "Task_UpMonitor.h"
-#include  "Task_SOCSOH.h"
-#include  "MC9S12XEP100.h"
-#include  "derivative.h"
-#include  "Task_FltSave.h" 
-#include  "Task_PowerOnOff.h"  
-#include  "Task_EEEReadWrite.h" 
-#include  "Task_SysTimeGet.h"
+#include  "includes.h"
 
 MonitorBMS_SOC_T    g_MonitorBMS_SOC;
 MonitorBMS_Start_T  g_MonitorBMS_Start;
