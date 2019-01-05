@@ -106,7 +106,7 @@
   //发送至上位机的SOH值
   typedef struct 
   { 
-    uint8   SOH; //放在发送至上位机的头文件中  
+    float  SOH; //放在发送至上位机的头文件中  
   
   }BMSMonitor_SOH_T;
   extern BMSMonitor_SOH_T g_BMSMonitor_SOH; 

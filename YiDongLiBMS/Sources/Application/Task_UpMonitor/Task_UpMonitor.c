@@ -544,9 +544,9 @@ void CAN_ToUpMonitorMsg(void)
     {
       case 0:     //SOC,SOC,单次充/放电量
       	BMS_to_Upmonitor.m_data[0] = i;     //编号 0x00
-      	BMS_to_Upmonitor.m_data[1] = (uint8)(g_SOCInfo.SOC_ValueRead*100);      //SOC_Read      1%分辨率
+      	BMS_to_Upmonitor.m_data[1] = (uint8)((g_SOCInfo.SOC_ValueRead+0.005)*100);      //SOC_Read      1%分辨率
       	BMS_to_Upmonitor.m_data[2] = (uint8)(g_SOCInfo.SOC_ValueVoltGet*100);      //SOC_Volt      1℃分辨率             
-      	BMS_to_Upmonitor.m_data[3] = (uint8)(g_BMSMonitor_SOH.SOH*100);     //SOH           1%分辨率
+      	BMS_to_Upmonitor.m_data[3] = (uint8)((g_BMSMonitor_SOH.SOH+0.005)*100);     //SOH           1%分辨率
       	BMS_to_Upmonitor.m_data[4] = 0xFF;                                     //单次充电量
       	BMS_to_Upmonitor.m_data[5] = 0xFF;  
       	BMS_to_Upmonitor.m_data[6] = 0xFF;//(uint8)(g_EnergyInfo.Energy_Once_DisCharge*10);    //单次放电量

@@ -113,7 +113,10 @@ void Task_SysTimeGet(void)
    }
    g_SysTime.BMS_StartRun_Time = Read_IIC_Time.IIC_Read_Minute;
    g_SysTime.BMS_TotalRun_MiniteTime = g_SysTime.BMS_TotalRun_MiniteTime + timediff; //系统的总运行时间
-
+   
+   g_SysTime.BMS_PowerOff_Time = ((uint32)Read_IIC_Time.IIC_Read_Year<<24) + ((uint32)Read_IIC_Time.IIC_Read_Month<<16)\
+                                  + ((uint32)Read_IIC_Time.IIC_Read_Day<<8) + ((uint32)(Read_IIC_Time.IIC_Read_Hour));
+   
    g_Roll_Tick.Roll_SysTime++;
 
 }

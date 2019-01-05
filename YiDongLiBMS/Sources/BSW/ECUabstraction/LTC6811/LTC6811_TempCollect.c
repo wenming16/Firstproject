@@ -55,9 +55,7 @@ void LTC6811_TempCollect(void)
       }
    }
 
-   //LTC6811_Wakeup();//»½ÐÑ
-   LTC6811_Enable = 0;
-   LTC6811_Enable = 1;
+   LTC6811_Wakeup();//»½ÐÑ
        
    LTC6804_rdaux(0, NUM_IC, cell_temp, PEC_error_t);
           

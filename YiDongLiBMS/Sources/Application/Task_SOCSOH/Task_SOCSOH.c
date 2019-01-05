@@ -384,45 +384,12 @@ float Energy_TotalCal(uint8 mode,float ah1,uint32 Total_V,float Total_E,float cu
  *返回：       无
  *说明：       按满充的充电次数来计算电池的使用寿命衰减
 ========================================================================*/  
+float aaa[5];
 static
 void SOH_Cal(void) 
 {
-   uint32 Bms_Life_Count;
-     
-   Bms_Life_Count = CELL_LIFE_CYCLE*SYS_CAPACITY;  //充电次数(2000)*单体额定容量
    g_BMSMonitor_SOH.SOH = 1 - (g_EnergyInfo.Energy_Total_Charge/SYS_VOLT_NOMINAL/1000.0/CELL_LIFE_CYCLE*0.2);   //初始SOH-计算值(标定值：Bms_Life_Count)
-
+   aaa[1] = g_EnergyInfo.Energy_Total_Charge/SYS_VOLT_NOMINAL/1000.0/CELL_LIFE_CYCLE*0.2;
 }
-
-//=======================================================================
-//=============================未配置函数================================
-//=======================================================================
-   
-   //SOH_Cal();              //计算SOH值      
-   /*
-   if(TimeCount%300 == 0)  //按一定时间存储数据（30s存储速度）
-   { 
-       TimeCount = 0;
-        //BMS运行时间的计算 
-       DS3231_Read_Time();  //读取计时(精确到分钟)                                                                          
-       EEprom_Data.BMS_PowerOff_Time = ((uint32)Read_IIC_Time.IIC_Read_Year<<24) +((uint32)Read_IIC_Time.IIC_Read_Month<<16)+ ((uint32)Read_IIC_Time.IIC_Read_Day<<8) + (uint32)(Read_IIC_Time.IIC_Read_Hour);
-       
-       Time_Interval = Read_IIC_Time.IIC_Read_Minute;       //此时BMS读取的时间(小时)
-       if(Time_Interval - SOC_DATA.Start_Run_Time >= 0)
-       {
-          Value = Time_Interval - SOC_DATA.Start_Run_Time;  //从上电到掉电BMS运行时间间隔；
-       }
-       else
-       {
-          Value = 60 - SOC_DATA.Start_Run_Time + Time_Interval;
-       }
-       SOC_DATA.Start_Run_Time = Time_Interval; 
-      
-       SOC_DATA.Bms_Run_Time_min = Value + SOC_DATA.Bms_Run_Time_min;  //上电到掉电BMS运行时间间隔的累加
-       
-       EEprom_write(EEprom_Baseadrr);          
-   }*/
-       
-  
 
 

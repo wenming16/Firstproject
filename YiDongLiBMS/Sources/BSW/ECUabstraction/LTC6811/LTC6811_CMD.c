@@ -276,7 +276,7 @@ void LTC6804_adcv()
   //4
   LTC6811_Enable = 0;//∆¨—° πƒ‹
   Spi_LTC6811Write(4,cmd);
-  LTC6811_DelayTime(70);
+  LTC6811_DelayTime(100);
   LTC6811_Enable = 1;
 }
 
@@ -303,7 +303,7 @@ void LTC6804_adax()
   
   LTC6811_Enable = 0;
   Spi_LTC6811Write(4,cmd);
-  LTC6811_DelayTime(70);
+  LTC6811_DelayTime(100);
   LTC6811_Enable = 1;
 }
 
@@ -330,7 +330,7 @@ void LTC6804_adstat()
     
     LTC6811_Enable = 0;
     Spi_LTC6811Write(4,cmd);
-    LTC6811_DelayTime(70);       
+    LTC6811_DelayTime(100);       
     LTC6811_Enable = 1;
 }
 /*=======================================================================
@@ -381,7 +381,7 @@ void LTC6804_rdcv_reg(uint8 reg, uint8 total_ic, uint8 *data )
   //4
   LTC6811_Enable = 0;
   Spi_LTC6811WriteRead(cmd,4,data,(REG_LEN*total_ic)); //6∏ˆµÁ—πºƒ¥Ê∆˜ ˝æ›+2ŒªµƒPEC ˝æ›
-  LTC6811_DelayTime(70);
+  LTC6811_DelayTime(100);
   LTC6811_Enable = 1;
 }
 
@@ -512,7 +512,7 @@ void LTC6804_rdaux_reg(uint8 reg, uint8 total_ic,uint8 *data)
   //4
   LTC6811_Enable = 0;
   Spi_LTC6811WriteRead(cmd,4,data,(REG_LEN*total_ic));
-  LTC6811_DelayTime(60);
+  LTC6811_DelayTime(100);
   LTC6811_Enable = 1;
 }
 
@@ -638,7 +638,7 @@ void LTC6804_rdstat_reg(uint8 reg, uint8 total_ic, uint8 *data )
     //4
     LTC6811_Enable = 0;
     Spi_LTC6811WriteRead(cmd,4,data,(REG_LEN*total_ic));
-    LTC6811_DelayTime(60);
+    LTC6811_DelayTime(100);
     LTC6811_Enable = 1;
 } 
  
@@ -754,13 +754,12 @@ void Ltc6804_Clrcell()
   
   //3
   LTC6811_Wakeup ();                      // ªΩ–—SPIÕ®–≈£ª
-  //LTC6811_DelayTime(100);
+
   //4
   LTC6811_Enable = 0;                               // ∞—CSB¿≠µΩµÕµÁ∆Ω£ª
   Spi_LTC6811WriteRead(cmd,4,0,0);           // ∑¢ÀÕ√¸¡ÓµΩSPI£ª
-  LTC6811_DelayTime(70);                      // æﬂÃÂµƒ ±º‰º∆À„«Îø¥LTC6804–æ∆¨ ÷≤·53“≥                   
+  LTC6811_DelayTime(100);                      // æﬂÃÂµƒ ±º‰º∆À„«Îø¥LTC6804–æ∆¨ ÷≤·53“≥                   
   LTC6811_Enable = 1;                               // ∞—CSB¿≠µΩ∏ﬂµÁ∆Ω£
-  //LTC6811_DelayTime(100);
 }
 
 /*=======================================================================
@@ -786,14 +785,12 @@ void Ltc6804_clraux()
   
   //3
   LTC6811_Wakeup ();                      // ªΩ–—SPIÕ®–≈£ª
-  //LTC6811_DelayTime(100);                   // DYZ+ 4.25
+
   //4
   LTC6811_Enable = 0;                               // ∞—CSB¿≠µΩµÕµÁ∆Ω£ª
   Spi_LTC6811WriteRead(cmd,4,0,0);           // ∑¢ÀÕ√¸¡ÓµΩSPI£ª
-  LTC6811_DelayTime(70);                      // æﬂÃÂµƒ ±º‰º∆À„«Îø¥LTC6804–æ∆¨ ÷≤·53“≥                   
+  LTC6811_DelayTime(100);                      // æﬂÃÂµƒ ±º‰º∆À„«Îø¥LTC6804–æ∆¨ ÷≤·53“≥                   
   LTC6811_Enable = 1;                               // ∞—CSB¿≠µΩ∏ﬂµÁ∆Ω£ª
-  //LTC6811_DelayTime(100);                   // DYZ+ 4.25
-
 }
 
 /*=======================================================================
@@ -823,7 +820,7 @@ void Ltc6804_Clrstat()
   //4
   LTC6811_Enable = 0;                               // ∞—CSB¿≠µΩµÕµÁ∆Ω£ª
   Spi_LTC6811WriteRead(cmd,4,0,0);           // ∑¢ÀÕ√¸¡ÓµΩSPI£ª
-  LTC6811_DelayTime(70);              // æﬂÃÂµƒ ±º‰º∆À„«Îø¥LTC6804–æ∆¨ ÷≤·53“≥                   
+  LTC6811_DelayTime(100);              // æﬂÃÂµƒ ±º‰º∆À„«Îø¥LTC6804–æ∆¨ ÷≤·53“≥                   
   LTC6811_Enable = 1;                               // ∞—CSB¿≠µΩ∏ﬂµÁ∆Ω£ª
 }
 /*=======================================================================

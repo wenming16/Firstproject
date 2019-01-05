@@ -32,74 +32,29 @@ uint8 IIC_Init(void)
 }
 
 /* IIC器件的写函数 */
-uint8 IIC_write(uint8 addr,uint8 writeaddr,uint8 data) 
+void IIC_write(uint8 addr,uint8 writeaddr,uint8 data) 
 {   
-  uint8 cnt[6];
   
   IIC0_IBCR_TXAK = 0;               // 接收到数据后有应答
   IIC0_IBCR_TX_RX = 1;              // 设置单片机为发送模式
   IIC0_IBCR_MS_SL = 1;              // 设置单片机为主机模式，产生开始信号
 
   IIC0_IBDR = addr;
-  do
-  {
-    if(++cnt[0]>100)
-    {
-      return(Fault_IICWrite_IBIF1);
-    }
-  }
   while(IIC0_IBSR_IBIF == 0); 
   IIC0_IBSR_IBIF = 1;
-  do
-  {
-    if(++cnt[1]>100)
-    {
-      return(Fault_IICWrite_RXAK1);
-    }
-  }
   while(IIC0_IBSR_RXAK);
   
   IIC0_IBDR = writeaddr;
-  do
-  {
-    if(++cnt[2]>100)
-    {
-      return(Fault_IICWrite_IBIF2);
-    }
-  }
   while(IIC0_IBSR_IBIF == 0); 
   IIC0_IBSR_IBIF = 1;
-  do
-  {
-    if(++cnt[3]>100)
-    {
-      return(Fault_IICWrite_RXAK2);
-    }
-  }
   while(IIC0_IBSR_RXAK);
   
-  IIC0_IBDR =data;
-  do
-  {
-    if(++cnt[4]>100)
-    {
-      return(Fault_IICWrite_IBIF3);
-    }
-  }
+  IIC0_IBDR = data;
   while(IIC0_IBSR_IBIF == 0);
   IIC0_IBSR_IBIF = 1;
-  do
-  {
-    if(++cnt[5]>100)
-    {
-      return(Fault_IICWrite_RXAK3);
-    }
-  }
   while(IIC0_IBSR_RXAK);
 
   IIC0_IBCR_MS_SL = 0;
-
-  return(Normal_IICWrite);
 }
 
 /*IIC器件的读函数*/

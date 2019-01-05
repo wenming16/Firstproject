@@ -46,14 +46,14 @@ uint8 SCI1_Init(void)
 static
 uint8 SCI1_Send_Byte(uint8 data) 
 { 
-    uint8 cnt[1];
-    do
+    uint8 cnt;
+    /*do
     {
       if(++cnt[0] == 200)
       {
         return (SendMsg_Fault_SCI_SCI1SR1_TDRE);
       }
-    }
+    }*/
     while(!SCI1SR1_TDRE);             // 等待发送数据寄存器（缓冲器）为空    
     SCI1DRL = data;  
     return(SendMsg_SCI);   

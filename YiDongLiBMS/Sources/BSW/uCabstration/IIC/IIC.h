@@ -35,7 +35,7 @@
   };
   
   uint8 IIC_Init(void);
-  uint8 IIC_write(uint8 addr,uint8 writeaddr,uint8 data);
+  void IIC_write(uint8 addr,uint8 writeaddr,uint8 data);
   uint8 IIC_read(uint8 addr,uint8 readaddr); 
 
 #endif                                                                           

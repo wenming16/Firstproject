@@ -37,6 +37,13 @@ void Init_Sys(void)
   //物理层初始化
   Physic_Init();
   
+  
+  //DS3231时间初始化
+  #if(RESET_CLOCK == 1)
+  {
+    DS3231SN_INIT(0b00011000, 1, 1, 1, 0, 0b01011001); //时钟初始化(18/01/01)，while卡死的原因是IIC初始化放在读取数据之前
+  }//此处用到BCD码,高4位为十进制的十位,低4位为十进制的个位
+  #endif
   //获取系统时间  
   Time_Init();
   
@@ -61,6 +68,7 @@ void Init_Sys(void)
     g_SOCInfo.SOC_Init = 0;    
   }
   #endif
+   
   
   // 初始化创建所有任务,将flag置0 
   Task_Init();                  
@@ -79,19 +87,16 @@ static
 void Physic_Init(void)
 { 
   //底层硬件初始化
-  g_SysInitState.PLL = Init_PLL();                //锁相环初始化
-  #if(RESET_CLOCK == 1)
-    DS3231SN_INIT(0b00011000, 1, 1, 1, 0, 0);     //时钟初始化(18/01/01)，while卡死的原因是IIC初始化放在读取数据之前
-  #endif       
-  g_SysInitState.EEPROM = Init_Flash();           //EEPROM初始化
-  g_SysInitState.IIC    = Init_IIC();                //IIC初始化;在对时间模块进行清零之前先要初始化 
-  g_SysInitState.ADC    = Init_ADC();                //AD模块初始化
-  g_SysInitState.CAN1   = CAN_ToChargeInit();       //充电CAN,CAN1 
-  g_SysInitState.CAN2   = CAN_UpMonitorInit();      //内网CAN,CAN2
-  g_SysInitState.Relay_Positvie = Init_Relay();   //主正继电器初始化
+  g_SysInitState.PLL    = Init_PLL();              //锁相环初始化
+  g_SysInitState.EEPROM = Init_Flash();            //EEPROM初始化
+  g_SysInitState.IIC    = Init_IIC();              //IIC初始化;在对时间模块进行清零之前先要初始化 
+  g_SysInitState.ADC    = Init_ADC();              //AD模块初始化
+  g_SysInitState.CAN1   = CAN_ToChargeInit();      //充电CAN,CAN1 
+  g_SysInitState.CAN2   = CAN_UpMonitorInit();     //内网CAN,CAN2
+  g_SysInitState.Relay_Positvie = Init_Relay();    //主正继电器初始化
   
   g_SysInitState.Insul  = Insulation_Init();       //绝缘检测
-  g_SysInitState.Screen = Init_Screen();          //显示屏SCI1初始化  
+  g_SysInitState.Screen = Init_Screen();           //显示屏SCI1初始化  
   g_SysInitState.SPI    = LTC6804_Init();
   g_SysInitState.PIT0   = PIT0_Init();
  

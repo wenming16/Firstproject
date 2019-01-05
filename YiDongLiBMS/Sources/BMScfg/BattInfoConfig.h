@@ -28,7 +28,7 @@
   //初始化配置                                  
   #define           RESET_EEPROM                                    0       //EEprom内存清零(1:EEprom初始化)
   #define           RESET_SOC                                       0       //SOC初始化(1:初始化)
-  #define           RESET_CLOCK                                     0       //1:时钟初始化,0:不初始化
+  #define           RESET_CLOCK                                     1       //1:时钟初始化,0:不初始化
   
   /*==============================================================
                               参数配置

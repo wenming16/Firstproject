@@ -35,11 +35,10 @@ void LTC6811_VoltCMDSend(void)
  *返回：       无
  *说明：       对LTC6804中四个电压寄存器组。
 ========================================================================*/
- uint16 cell_vol[NUM_IC][12];
 void LTC6811_VoltCollect(void) 
 {
   uint8  i,j;   
-  //uint16 cell_vol[NUM_IC][12]; 
+  uint16 cell_vol[NUM_IC][12]; 
   uint16 cell_vvol[NUM_IC][12];
   uint16 Cell_vol[NUM_IC][12];
   uint16 maxvol=0x0000,minvol=0xffff;
@@ -47,10 +46,8 @@ void LTC6811_VoltCollect(void)
   uint16 PEC_error_v[NUM_IC*4];
   uint8  pecv_error_ce=0;          
 
-  //LTC6811_Wakeup();
-  LTC6811_Enable = 0;//唤醒
-  LTC6811_Enable = 1;
-  
+  LTC6811_Wakeup();//唤醒
+
   for(i = 0;i < NUM_IC*4; i++)
   {
      PEC_error_v[i]=0;                              //当PEC出错可以重新回来

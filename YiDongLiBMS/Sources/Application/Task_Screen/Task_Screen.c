@@ -73,13 +73,13 @@ static
 void RS485_DataReceice(void) 
 { 
  /*----------------------------------------双字节接收-----------------------------------*/
-  RS485_Receive.TxData_couple.TX2.BMS_SOH             = (uint16)g_BMSMonitor_SOH.SOH; 
+  RS485_Receive.TxData_couple.TX2.BMS_SOH             = (uint16)((g_BMSMonitor_SOH.SOH+0.005)*100); 
   RS485_Receive.TxData_couple.TX2.RunningTime         = (uint16)(g_SysTime.BMS_TotalRun_MiniteTime/60);           
   RS485_Receive.TxData_couple.TX2.BMS_Current         = (uint16)((g_DataColletInfo.DataCollet_Current_Filter + 750)*10);                  
-  RS485_Receive.TxData_couple.TX2.BMS_SOC             = (uint16)(g_SOCInfo.SOC_ValueRead*100);                                                    
+  RS485_Receive.TxData_couple.TX2.BMS_SOC             = (uint16)((g_SOCInfo.SOC_ValueRead+0.005)*100);                                                    
   RS485_Receive.TxData_couple.TX2.Pack_Hightemp       = (uint16)g_TempInfo.CellTemp_Max;               
   RS485_Receive.TxData_couple.TX2.Pack_Lowtemp        = (uint16)g_TempInfo.CellTemp_Min;                
-  RS485_Receive.TxData_couple.TX2.Pack_Volt           = (uint16)g_VoltInfo.SysVolt_Total/10.0;                 
+  RS485_Receive.TxData_couple.TX2.Pack_Volt           = (uint16)(g_VoltInfo.SysVolt_Total/1000.0);                 
   RS485_Receive.TxData_couple.TX2.Single_Maxvolt      = (g_VoltInfo.CellVolt_Max +5)/10;      
   RS485_Receive.TxData_couple.TX2.Single_Lowvolt      = (g_VoltInfo.CellVolt_Min +5)/10;        
   RS485_Receive.TxData_couple.TX2.iso_resistance      = g_IsoDetect.insulation_resist;    //绝缘电阻

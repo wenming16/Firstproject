@@ -601,7 +601,7 @@ static uint8 Fault_DisChg_TempD(uint8 T_Diff)  //输入单体最高/低电压
   //判断故障等级
   if(FltL==0)           //0级故障
   {
-    if(T_Diff>=(g_BMSMonitor_Temp.Temp_DisCharge_Diff1-40))  //0变1
+    if(T_Diff>=(g_BMSMonitor_Temp.Temp_DisCharge_Diff1))  //0变1
     {
       if(++cnt[0]*PERIOD_DISCHARGE/1000>=DELAYTIME_DANGERLEVEL2)
       {
@@ -617,7 +617,7 @@ static uint8 Fault_DisChg_TempD(uint8 T_Diff)  //输入单体最高/低电压
   }
   else     //1级故障
   {
-    if(T_Diff<=(g_BMSMonitor_Temp.Temp_DisCharge_Diff1-40 - 2))    //1变0
+    if(T_Diff<=(g_BMSMonitor_Temp.Temp_DisCharge_Diff1-2))    //1变0
     {
       if(++cnt[1]*PERIOD_DISCHARGE/1000>=DELAYTIME_DANGERLEVEL2)
       {
@@ -1113,7 +1113,7 @@ uint8 Fault_Charge_TempD(uint8 T_Diff)  //输入单体最高/低电压
   //判断故障等级
   if(FltL==0)           //0级故障
   {
-    if(T_Diff>=g_BMSMonitor_Temp.Temp_Charge_Diff1-40)  //0变1
+    if(T_Diff>=g_BMSMonitor_Temp.Temp_Charge_Diff1)  //0变1
     {
       if(++cnt[0]*PERIOD_DISCHARGE/1000>=DELAYTIME_DANGERLEVEL2)
       {
@@ -1129,7 +1129,7 @@ uint8 Fault_Charge_TempD(uint8 T_Diff)  //输入单体最高/低电压
   }
   else     //1级故障
   {
-    if(T_Diff<=(g_BMSMonitor_Temp.Temp_Charge_Diff1-40 - 2))    //1变0
+    if(T_Diff<=(g_BMSMonitor_Temp.Temp_Charge_Diff1-2))    //1变0
     {
       if(++cnt[1]*PERIOD_DISCHARGE/1000>=DELAYTIME_DANGERLEVEL2)
       {

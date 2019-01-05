@@ -71,23 +71,24 @@ void DS3231_DelayTimeus(uint16 us)
  *功能:        对IIC模块进行清零
  *参数:        year:年,month:月,day:日       
  *返回：       无
- *说明：       对所有时间单位清零，延迟时间长了，可改。
+ *说明：       此处用到BCD码,高4位为十进制的十位,低4位为十进制的个位
 ========================================================================*/
 void DS3231SN_INIT(uint8 year, uint8 month, uint8 week, uint8 day, uint8 hour, uint8 min) // 这个函数第一次下载时可以使用一次
 {
    IIC_write(0xd0,0x00,0x00);    /*将秒数初始化为0*/
    DS3231_DelayTimeus(10);
-   IIC_write(0xd0,0x01,min);    /*将分钟初始化为0*/
+   IIC_write(0xd0,0x01,min);     /*将分钟初始化为0*/
    DS3231_DelayTimeus(10);
    IIC_write(0xd0,0x02,hour);    /*将小时数初始化为0*/
    DS3231_DelayTimeus(10);
    IIC_write(0xd0,0x03,day);     /*将周数初始化为0*/
    DS3231_DelayTimeus(10);
-   IIC_write(0xd0,0x04,week);     /*将天初始化为0*/
+   IIC_write(0xd0,0x04,week);    /*将天初始化为0*/
    DS3231_DelayTimeus(10);
    IIC_write(0xd0,0x05,month);   /*将月数初始化为0*/
    DS3231_DelayTimeus(10);
    IIC_write(0xd0,0x06,year);    /*将年数初始化为0*/
+   DS3231_DelayTimeus(100);      //写时间和读时间时间需要有时间间隔
 }
 
 /*=======================================================================
@@ -219,7 +220,6 @@ uint8 DS3231_Read_Year(void)
     receivedata=IIC_read(0xd0,0x06);
     receivedata=BCD2HEX(receivedata);
     Read_IIC_Time.IIC_Read_Year = receivedata;
-    //DS3231_DelayTimeus(10);
  }
 
  
