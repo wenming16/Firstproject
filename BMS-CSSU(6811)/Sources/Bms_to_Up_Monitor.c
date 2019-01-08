@@ -207,15 +207,15 @@ void Bms_to_Up_Monitor(void)
   	BMS_to_Upmonitor.m_RTR = 0;
   	BMS_to_Upmonitor.m_dataLen = 8;
   	BMS_to_Upmonitor.m_priority = 6;
-        BMS_to_Upmonitor.m_data[0] = TempInfo.CellTemp_over_ic;
-      	BMS_to_Upmonitor.m_data[1] = VoltInfo.Openwire_error;	
-      	BMS_to_Upmonitor.m_data[2] = VoltInfo.CellVolt_Total;   
-      	BMS_to_Upmonitor.m_data[3] = VoltInfo.CellVolt_Total>>8;
-      	BMS_to_Upmonitor.m_data[4] = VoltInfo.CellVolt_Total>>16;
-      	BMS_to_Upmonitor.m_data[5] = IsoDetect.insulation_TotalVolt;
-      	BMS_to_Upmonitor.m_data[6] = IsoDetect.insulation_TotalVolt>>8;
-      	BMS_to_Upmonitor.m_data[7] = IsoDetect.insulation_TotalVolt>>16;       
-        Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor); 
+    BMS_to_Upmonitor.m_data[0] = TempInfo.CellTemp_over_ic;
+  	BMS_to_Upmonitor.m_data[1] = VoltInfo.Openwire_error;	
+  	BMS_to_Upmonitor.m_data[2] = VoltInfo.CellVolt_Total;   
+  	BMS_to_Upmonitor.m_data[3] = VoltInfo.CellVolt_Total>>8;
+  	BMS_to_Upmonitor.m_data[4] = VoltInfo.CellVolt_Total>>16;
+  	BMS_to_Upmonitor.m_data[5] = IsoDetect.insulation_TotalVolt;
+  	BMS_to_Upmonitor.m_data[6] = IsoDetect.insulation_TotalVolt>>8;
+  	BMS_to_Upmonitor.m_data[7] = IsoDetect.insulation_TotalVolt>>16;       
+    Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor); 
      
     BMS_to_Upmonitor.m_ID = BMS_Send_Information6+NUM_pack;             //导线开路
   	BMS_to_Upmonitor.m_IDE = 1;
