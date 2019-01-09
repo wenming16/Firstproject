@@ -1,5 +1,5 @@
 
-PROGRAM "C:\Users\hxya-005\Desktop\易动力裸机代码\Firstproject\6811 子板(均衡+绝缘）\bin\Project.abs"
+PROGRAM "C:\Users\hxya-005\Desktop\易动力裸机代码\Firstproject\BMS-CSSU(6811)\bin\Project.abs"
 
 *********************************************************************************************
 TARGET SECTION
@@ -65,7 +65,7 @@ Section Name                    Size  Type     From       To       Segment
 .rodata                          512     R     0xC051     0xC250   ROM_C000
 NON_BANKED                       916     R     0xC251     0xC5E4   ROM_C000
 .copy                              2     R     0xC5E5     0xC5E6   ROM_C000
-.text                           9450     R   0xFE8000   0xFEA4E9   PAGE_FE
+.text                           9449     R   0xFE8000   0xFEA4E8   PAGE_FE
 .stack                           256   R/W     0x2000     0x20FF   RAM1
 .abs_section_8                     1   N/I        0x8        0x8   .absSeg0
 .abs_section_9                     1   N/I        0x9        0x9   .absSeg1
@@ -813,7 +813,7 @@ HEAP_SEGMENT                    2000   R/W     0x226C     0x2A3B   RAM1
 .vectSeg740_vect                   2     R     0xFFFE     0xFFFF   .vectSeg740
 
 Summary of section sizes per section type:
-READ_ONLY (R):        2AD7 (dec:    10967)
+READ_ONLY (R):        2AD6 (dec:    10966)
 READ_WRITE (R/W):      A3C (dec:     2620)
 NO_INIT (N/I):         383 (dec:      899)
 
@@ -1739,62 +1739,62 @@ MODULE:                 -- SPI.c.o --
 - VARIABLES:
 MODULE:                 -- Bms_to_Up_Monitor.c.o --
 - PROCEDURES:
-     Bms_to_Up_Monitor                       FE9965     252     594      22   .text       
+     Bms_to_Up_Monitor                       FE9965     251     593      22   .text       
 - VARIABLES:
 MODULE:                 -- PLL.c.o --
 - PROCEDURES:
-     PLL_Init                                FE9BB7      20      32       2   .text       
+     PLL_Init                                FE9BB6      20      32       2   .text       
 - VARIABLES:
 MODULE:                 -- CAN.c.o --
 - PROCEDURES:
-     INIT_CAN2                               FE9BD7      51      81       2   .text       
-     MSCAN2SendMsg                           FE9C28      DF     223      11   .text       
-     MSCAN2GetMsg                            FE9D07     16D     365       5   .text       
+     INIT_CAN2                               FE9BD6      51      81       2   .text       
+     MSCAN2SendMsg                           FE9C27      DF     223      11   .text       
+     MSCAN2GetMsg                            FE9D06     16D     365       5   .text       
 - VARIABLES:
 MODULE:                 -- Task_Insulation.c.o --
 - PROCEDURES:
-     VoltageDetectInit                       FE9E74       D      13       2   .text       
-     InsulationDetect                        FE9E81     18C     396       9   .text       
+     VoltageDetectInit                       FE9E73       D      13       2   .text       
+     InsulationDetect                        FE9E80     18C     396       9   .text       
 - VARIABLES:
      Time_Flag.1                               210B       1       1       1   .bss        
      Time_Cnt.2                                210C       1       1       2   .bss        
      IsoDetect                                 2234      15      21      11   .common     
 MODULE:                 -- ADC.c.o --
 - PROCEDURES:
-     ADC_init                                FEA00D      19      25       2   .text       
-     ADCValue                                FEA026       C      12       4   .text       
+     ADC_init                                FEA00C      19      25       2   .text       
+     ADCValue                                FEA025       C      12       4   .text       
 - VARIABLES:
 MODULE:                 -- LTC6811_PassBalance.c.o --
 - PROCEDURES:
-     LTC6811_BalanceCMDSend                  FEA032      AE     174       6   .text       
-     LTC6811_BalanceControl                  FEA0E0      F4     244       7   .text       
+     LTC6811_BalanceCMDSend                  FEA031      AE     174       6   .text       
+     LTC6811_BalanceControl                  FEA0DF      F4     244       7   .text       
 - VARIABLES:
      Balance_CFGR                              2249      12      18       4   .common     
 MODULE:                 -- Task_BalanceControl.c.o --
 - PROCEDURES:
-     BalanceControl_Strategy                 FEA1D4      CB     203       2   .text       
-     Task_BalanceControl_ON                  FEA29F      4C      76       3   .text       
-     Task_BalanceControl_OFF                 FEA2EB      13      19       3   .text       
+     BalanceControl_Strategy                 FEA1D3      CB     203       2   .text       
+     Task_BalanceControl_ON                  FEA29E      4C      76       3   .text       
+     Task_BalanceControl_OFF                 FEA2EA      13      19       3   .text       
 - VARIABLES:
      cnt.1                                     210D       2       2       4   .bss        
      balance_receive                           225B       B      11      15   .common     
 MODULE:                 -- Task_Bootloader.c.o --
 - PROCEDURES:
-     Boot_DelayTime                          FEA2FE      13      19       2   .text       
-     Task_BootLoader                         FEA311      2D      45       3   .text       
+     Boot_DelayTime                          FEA2FD      13      19       2   .text       
+     Task_BootLoader                         FEA310      2D      45       3   .text       
 - VARIABLES:
      Boot_Data                                 2266       3       3       5   .common     
 MODULE:                 -- Flash.c.o --
 - PROCEDURES:
-     Init_Eeprom                             FEA33E      1C      28       2   .text       
-     ChecPartErr                             FEA35A      23      35       2   .text       
-     ErrorCheck                              FEA37D      13      19       4   .text       
-     LaunchFlashCommand                      FEA390      B9     185       7   .text       
+     Init_Eeprom                             FEA33D      1C      28       2   .text       
+     ChecPartErr                             FEA359      23      35       2   .text       
+     ErrorCheck                              FEA37C      13      19       4   .text       
+     LaunchFlashCommand                      FEA38F      B9     185       7   .text       
 - VARIABLES:
      FlashErr                                  2269       3       3      15   .common     
 MODULE:                 -- Init_Flash.c.o --
 - PROCEDURES:
-     Init_Flash                              FEA449      A1     161       2   .text       
+     Init_Flash                              FEA448      A1     161       2   .text       
 - VARIABLES:
 
 *********************************************************************************************
@@ -1823,7 +1823,7 @@ MODULE STATISTIC
   Task_Temp_Process.c.o                       58    600      0
   Task_Volt_Process.c.o                      133    557      0
   SPI.c.o                                      0     38      0
-  Bms_to_Up_Monitor.c.o                        0    594      0
+  Bms_to_Up_Monitor.c.o                        0    593      0
   PLL.c.o                                      0     32      0
   CAN.c.o                                      0    669      0
   Task_Insulation.c.o                         23    409      0
@@ -4199,27 +4199,27 @@ OBJECT LIST SORTED BY ADDRESS
      SPI1_Init                               FE993F      13      19       2   .text       
      SPI1_Write                              FE9952       9       9       8   .text       
      SPI1_read                               FE995B       A      10       4   .text       
-     Bms_to_Up_Monitor                       FE9965     252     594      22   .text       
-     PLL_Init                                FE9BB7      20      32       2   .text       
-     INIT_CAN2                               FE9BD7      51      81       2   .text       
-     MSCAN2SendMsg                           FE9C28      DF     223      11   .text       
-     MSCAN2GetMsg                            FE9D07     16D     365       5   .text       
-     VoltageDetectInit                       FE9E74       D      13       2   .text       
-     InsulationDetect                        FE9E81     18C     396       9   .text       
-     ADC_init                                FEA00D      19      25       2   .text       
-     ADCValue                                FEA026       C      12       4   .text       
-     LTC6811_BalanceCMDSend                  FEA032      AE     174       6   .text       
-     LTC6811_BalanceControl                  FEA0E0      F4     244       7   .text       
-     BalanceControl_Strategy                 FEA1D4      CB     203       2   .text       
-     Task_BalanceControl_ON                  FEA29F      4C      76       3   .text       
-     Task_BalanceControl_OFF                 FEA2EB      13      19       3   .text       
-     Boot_DelayTime                          FEA2FE      13      19       2   .text       
-     Task_BootLoader                         FEA311      2D      45       3   .text       
-     Init_Eeprom                             FEA33E      1C      28       2   .text       
-     ChecPartErr                             FEA35A      23      35       2   .text       
-     ErrorCheck                              FEA37D      13      19       4   .text       
-     LaunchFlashCommand                      FEA390      B9     185       7   .text       
-     Init_Flash                              FEA449      A1     161       2   .text       
+     Bms_to_Up_Monitor                       FE9965     251     593      22   .text       
+     PLL_Init                                FE9BB6      20      32       2   .text       
+     INIT_CAN2                               FE9BD6      51      81       2   .text       
+     MSCAN2SendMsg                           FE9C27      DF     223      11   .text       
+     MSCAN2GetMsg                            FE9D06     16D     365       5   .text       
+     VoltageDetectInit                       FE9E73       D      13       2   .text       
+     InsulationDetect                        FE9E80     18C     396       9   .text       
+     ADC_init                                FEA00C      19      25       2   .text       
+     ADCValue                                FEA025       C      12       4   .text       
+     LTC6811_BalanceCMDSend                  FEA031      AE     174       6   .text       
+     LTC6811_BalanceControl                  FEA0DF      F4     244       7   .text       
+     BalanceControl_Strategy                 FEA1D3      CB     203       2   .text       
+     Task_BalanceControl_ON                  FEA29E      4C      76       3   .text       
+     Task_BalanceControl_OFF                 FEA2EA      13      19       3   .text       
+     Boot_DelayTime                          FEA2FD      13      19       2   .text       
+     Task_BootLoader                         FEA310      2D      45       3   .text       
+     Init_Eeprom                             FEA33D      1C      28       2   .text       
+     ChecPartErr                             FEA359      23      35       2   .text       
+     ErrorCheck                              FEA37C      13      19       4   .text       
+     LaunchFlashCommand                      FEA38F      B9     185       7   .text       
+     Init_Flash                              FEA448      A1     161       2   .text       
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
@@ -4819,5 +4819,5 @@ STATISTIC SECTION
 ExeFile:
 --------
 Number of blocks to be downloaded: 7
-Total size of all blocks to be downloaded: 10967
+Total size of all blocks to be downloaded: 10966
 

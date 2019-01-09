@@ -1310,7 +1310,7 @@ uint8 Fault_Relay_BreakDown(void)
    static uint8 flt; 
    if(Port_StateGet(Relay_Positive_PORT, Relay_Positive_pin) == Relay_ON)
    {
-      if(abs(g_VoltInfo.SysVolt_Total-g_FromCSSU_Volt.InsulVolt_Total)>0.5*CELL_VOLT_NOMINAL*SYS_SERIES_YiDongLi)
+      if(abs(g_VoltInfo.SysVolt_Total-g_FromCSSU_Volt.InsulVolt_Total)<0.5*CELL_VOLT_NOMINAL*SYS_SERIES_YiDongLi)
       {
           if(++cnt*PERIOD_DISCHARGE/1000>=2)
           {
@@ -1326,7 +1326,7 @@ uint8 Fault_Relay_BreakDown(void)
    }
    else
    {
-      if(abs(g_VoltInfo.SysVolt_Total-g_FromCSSU_Volt.InsulVolt_Total)<0.5*CELL_VOLT_NOMINAL*SYS_SERIES_YiDongLi)
+      if(abs(g_VoltInfo.SysVolt_Total-g_FromCSSU_Volt.InsulVolt_Total)>0.5*CELL_VOLT_NOMINAL*SYS_SERIES_YiDongLi)
       {
           if(++cnt*PERIOD_DISCHARGE/1000>=2)
           {

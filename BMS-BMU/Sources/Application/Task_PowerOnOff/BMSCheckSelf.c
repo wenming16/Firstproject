@@ -493,7 +493,7 @@ void BMS_WorkModeCheckself(void)
       DisablePIT(0);//关PIT0时间中断(只进行自检)
       
       while((CheckSelf_Process(workmode, g_SysInitState.AllInit_State)!=0)\
-              &&(Boot_Data.OnlineUpdateCheck == 0))//自检轮询直到成功跳出While,也可以直接进行升级
+             &&(Boot_Data.OnlineUpdateCheck == 0))//自检轮询直到成功跳出While,也可以直接进行升级
       {  
          BMSCheckself_UpMonitor(&g_SysInitState, &g_Flt_BMSCheckSelf);
          CheckSelf_DelayTime(100);

@@ -24,10 +24,33 @@
 ========================================================================*/
 void Bms_to_Up_Monitor(void) 
 {
-       uint8  i,j,Return_Value;
-      uint16  BalanceVolt;
+    uint8  i,j,Return_Value;
+    uint16  BalanceVolt;
     CANFRAME  BMS_to_Upmonitor;
     uint8 batt,batt1; 
+    
+    /*
+    for(i=0; i<25; i++)
+    {
+      VoltInfo.CellVolt[i] = 34500+i;
+      VoltInfo.CellVolt_Total = VoltInfo.CellVolt_Total+VoltInfo.CellVolt[i];
+    }
+     VoltInfo.CellVolt_Max = 34524; 
+     VoltInfo.CellVolt_Min = 34500;
+     VoltInfo.CellVolt_MaxNode = 24;
+     VoltInfo.CellVolt_MinNode =0;            
+    
+    for(i=0; i<5; i++)
+    {
+      TempInfo.CellTemp[i] = 22+i;
+      TempInfo.CellTemp_tatoltemp = TempInfo.CellTemp_tatoltemp+TempInfo.CellTemp[i];
+    }
+     TempInfo.CellTemp_Max = 22;
+     TempInfo.CellTemp_Min = 22;
+     TempInfo.CellTemp_MaxNode = 4;
+     TempInfo.CellTemp_MinNode = 0;
+    */ 
+    
     
     batt=(NUM1_Batper_true+NUM2_Batper_true+NUM3_Batper_true+NUM4_Batper_true+NUM5_Batper_true)/3;
     batt1=(NUM1_Batper_true+NUM2_Batper_true+NUM3_Batper_true+NUM4_Batper_true+NUM5_Batper_true)%3;
@@ -38,47 +61,47 @@ void Bms_to_Up_Monitor(void)
   	BMS_to_Upmonitor.m_dataLen = 8;
   	BMS_to_Upmonitor.m_priority = 6;
     for(i = 0; i <batt ; i++) 
-      {
-        BMS_to_Upmonitor.m_data[0] = (uint8)(i/NUM_IC);            //需要改正-6804的编号 0-3
-        BMS_to_Upmonitor.m_data[1] = (uint8)(i);            //每个6804采集电压的编号  0-3  
-        BMS_to_Upmonitor.m_data[2] = (uint8)VoltInfo.CellVolt[i*3];
-        BMS_to_Upmonitor.m_data[3] = (VoltInfo.CellVolt[i*3]>>8)&0X00FF;
-        BMS_to_Upmonitor.m_data[4] = (uint8)VoltInfo.CellVolt[i*3+1];
-        BMS_to_Upmonitor.m_data[5] = (VoltInfo.CellVolt[i*3+1]>>8)&0X00FF;
-        BMS_to_Upmonitor.m_data[6] = (uint8)VoltInfo.CellVolt[i*3+2];
-        BMS_to_Upmonitor.m_data[7] = (VoltInfo.CellVolt[i*3+2]>>8)&0X00FF;
-         Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor);
-         delay_time(100);
-      }  
-        switch(batt1) 
-        {
-          case 1:
-          BMS_to_Upmonitor.m_data[0] = (uint8)(i/NUM_IC);
-          BMS_to_Upmonitor.m_data[1] = (uint8)(i);                             //每个6804采集电压的编号 
-          BMS_to_Upmonitor.m_data[2] = (uint8)VoltInfo.CellVolt[i*3];
-          BMS_to_Upmonitor.m_data[3] = (VoltInfo.CellVolt[i*3]>>8)&0X00FF;
-          BMS_to_Upmonitor.m_data[4] = 0xFF;
-          BMS_to_Upmonitor.m_data[5] = 0xFF;
-          BMS_to_Upmonitor.m_data[6] = 0xFF;
-          BMS_to_Upmonitor.m_data[7] = 0xFF;
-           Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor);
-          break;
-          
-          case 2:
-          BMS_to_Upmonitor.m_data[0] = (uint8)(i/NUM_IC);
-          BMS_to_Upmonitor.m_data[1] = (uint8)(i);                             //每个6804采集电压的编号 
-          BMS_to_Upmonitor.m_data[2] = (uint8)VoltInfo.CellVolt[i*3];
-          BMS_to_Upmonitor.m_data[3] = (VoltInfo.CellVolt[i*3]>>8)&0X00FF;
-          BMS_to_Upmonitor.m_data[4] = (uint8)VoltInfo.CellVolt[i*3+1];
-          BMS_to_Upmonitor.m_data[5] = (VoltInfo.CellVolt[i*3+1]>>8)&0X00FF;
-          BMS_to_Upmonitor.m_data[6] = 0xFF;
-          BMS_to_Upmonitor.m_data[7] = 0xFF;
-           Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor);
-          break;
-          
-        default:
-          break; 
-        }      
+    {
+      BMS_to_Upmonitor.m_data[0] = (uint8)(i/NUM_IC);            //需要改正-6804的编号 0-3
+      BMS_to_Upmonitor.m_data[1] = (uint8)(i);            //每个6804采集电压的编号  0-3  
+      BMS_to_Upmonitor.m_data[2] = (uint8)VoltInfo.CellVolt[i*3];
+      BMS_to_Upmonitor.m_data[3] = (VoltInfo.CellVolt[i*3]>>8)&0X00FF;
+      BMS_to_Upmonitor.m_data[4] = (uint8)VoltInfo.CellVolt[i*3+1];
+      BMS_to_Upmonitor.m_data[5] = (VoltInfo.CellVolt[i*3+1]>>8)&0X00FF;
+      BMS_to_Upmonitor.m_data[6] = (uint8)VoltInfo.CellVolt[i*3+2];
+      BMS_to_Upmonitor.m_data[7] = (VoltInfo.CellVolt[i*3+2]>>8)&0X00FF;
+      Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor);
+      delay_time(100);
+    }  
+    switch(batt1) 
+    {
+      case 1:
+      BMS_to_Upmonitor.m_data[0] = (uint8)(i/NUM_IC);
+      BMS_to_Upmonitor.m_data[1] = (uint8)(i);                             //每个6804采集电压的编号 
+      BMS_to_Upmonitor.m_data[2] = (uint8)VoltInfo.CellVolt[i*3];
+      BMS_to_Upmonitor.m_data[3] = (VoltInfo.CellVolt[i*3]>>8)&0X00FF;
+      BMS_to_Upmonitor.m_data[4] = 0xFF;
+      BMS_to_Upmonitor.m_data[5] = 0xFF;
+      BMS_to_Upmonitor.m_data[6] = 0xFF;
+      BMS_to_Upmonitor.m_data[7] = 0xFF;
+       Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor);
+      break;
+      
+      case 2:
+      BMS_to_Upmonitor.m_data[0] = (uint8)(i/NUM_IC);
+      BMS_to_Upmonitor.m_data[1] = (uint8)(i);                             //每个6804采集电压的编号 
+      BMS_to_Upmonitor.m_data[2] = (uint8)VoltInfo.CellVolt[i*3];
+      BMS_to_Upmonitor.m_data[3] = (VoltInfo.CellVolt[i*3]>>8)&0X00FF;
+      BMS_to_Upmonitor.m_data[4] = (uint8)VoltInfo.CellVolt[i*3+1];
+      BMS_to_Upmonitor.m_data[5] = (VoltInfo.CellVolt[i*3+1]>>8)&0X00FF;
+      BMS_to_Upmonitor.m_data[6] = 0xFF;
+      BMS_to_Upmonitor.m_data[7] = 0xFF;
+       Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor);
+      break;
+      
+      default:
+      break; 
+    }      
     
     BMS_to_Upmonitor.m_ID = BMS_ture_battery+NUM_pack;       
   	BMS_to_Upmonitor.m_IDE = 1;
@@ -116,36 +139,36 @@ void Bms_to_Up_Monitor(void)
   	BMS_to_Upmonitor.m_dataLen = 8;
   	BMS_to_Upmonitor.m_priority = 6;
   	for( i=0; i< ((NUM_Tem+6) / 7) ;i++)         //ly 按照协议修改
-       {
+    {
+
+      BMS_to_Upmonitor.m_data[0] = i;
+      //memset( &pMsgTran.data,0xFF,8 );       /* 8个data设置为40 */
+      if( i < 1 )                      //对于扩展可修改此处
+      {
         
-          BMS_to_Upmonitor.m_data[0] = i;
-          //memset( &pMsgTran.data,0xFF,8 );       /* 8个data设置为40 */
-          if( i < 1 )                      //对于扩展可修改此处
-          {
-            
-              for(j=1; j < NUM_IC*2; j++) 
-              {
-              
-                  BMS_to_Upmonitor.m_data[j] = TempInfo.CellTemp[j-1+i*7] + 40;
-            
-              }   
-              
-          } 
-          else 
+          for(j=1; j < NUM_IC*2; j++) 
           {
           
-               for( j = 1 ; j <= (NUM_Tem% 7);j++ ) 
-               {
-                
-                  
-                  BMS_to_Upmonitor.m_data[j] = TempInfo.CellTemp[j-1+i*7] + 40; 
-                   
-               }
+              BMS_to_Upmonitor.m_data[j] = TempInfo.CellTemp[j-1+i*7] + 40;
+        
+          }   
           
-          }
-           Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor); 
-       }
-    
+      } 
+      else 
+      {
+      
+           for( j = 1 ; j <= (NUM_Tem% 7);j++ ) 
+           {
+            
+              
+              BMS_to_Upmonitor.m_data[j] = TempInfo.CellTemp[j-1+i*7] + 40; 
+               
+           }
+      
+      }
+       Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor); 
+    }
+
   
   
     BMS_to_Upmonitor.m_ID = BMS_Send_Information4+NUM_pack;       // 电池基本信息1;

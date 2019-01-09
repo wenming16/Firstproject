@@ -56,7 +56,7 @@ void LTC6804_rdaux(uint8 reg, uint8 total_ic, uint16 aux_codes[][6],uint8 *);
    
 
    
-     int8 HXYA_Gpio_Search(uint16);
+int8 HXYA_Gpio_Search(uint16);
    
 
    

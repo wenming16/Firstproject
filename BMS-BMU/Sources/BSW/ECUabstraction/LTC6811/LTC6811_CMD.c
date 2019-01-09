@@ -138,7 +138,6 @@ void LTC6811_Wakeup(void)
  *返回：       无
  *说明：       控制从器件的相关命令
 ========================================================================*/
-uint8 bb ; 
 void LTC6804_wrcfg(uint8 total_ic, uint8 config[][6])
 {
   const uint8 BYTES_IN_REG = 6;          //CFG数据为6个字节
@@ -150,8 +149,7 @@ void LTC6804_wrcfg(uint8 total_ic, uint8 config[][6])
   uint8   current_byte;
   
   cmd = (uint8 *)malloc(CMD_LEN*sizeof(uint8)); //入堆
-  
-  bb =  total_ic;
+
   //1
   cmd[0] = 0x00;
   cmd[1] = 0x01;

@@ -104,16 +104,14 @@ static UINT8 ProgramFlash(void)
     if (ProgSRec.RecType == EndRec)         // S7, S* or S9 record?
     {
      
-      //__asm ldx  $effe;            //将App地址加载到累加器X中
-      //__asm jmp   0,x;             //jump to the application
-     //can_send.data[0]=0xC7;
-    // MSCAN1SendMsg(can_send);
-     for(i=0;i<250;i++)
-      for(i=0;i<250;i++);
+      *boot = 0;
+      for(i=0;i<250;i++)
+      {
+        for(i=0;i<250;i++); 
+      }
       COPCTL = 0x01;               //enable watchdog      
       ARMCOP = 0x00;
     
-     //for(;;); 
       break;                                // yes. return
     }
       
@@ -122,14 +120,7 @@ static UINT8 ProgramFlash(void)
       
     else                    //a data record was received
     {
-      
-   /*   if ((ProgSRec.LoadAddr & 0x0000001FUL) != 0) //S-Record address alligned 32 bytes?
-      {
-        can_send.data[0]=2;
-        MSCAN1SendMsg(can_send);
-        return(SRecOddError);        //yes. return
-      } */
-      
+
       if (ProgSRec.LoadAddr == RESET_VEC_SRC)          //复位向量的地址
       {
         //Program reset vector to address 0xEFFE
@@ -246,17 +237,16 @@ void main(void)
      FlashErr = LaunchFlashCommand(0 ,ENABLE_EEPROM_EMULATION, 0, 0, 0, 0, 0, 0, 0, 0);
      ErrorCheck(FlashErr, (accerr|fpviol|mgstat1|mgstat0), (erserif|pgmerif|epviolif|ersvif1|ersvif0|dfdif|sfdif));    
   }
-  *boot = 0;   
+     
   EraseFlash();
   can_send.data[0]=0xC3;
   MSCAN2SendMsg(can_send);
   EnableInterrupts;       //enable interrupts for the CAN
 
-
   for(;;)
-    {
-      ProgramFlash();
-    }
+  {
+    ProgramFlash();
+  }
   
 }
 /******************************************************************************/

@@ -42,13 +42,15 @@ void Time_Init(void)
  *说明：       当系统为常电时，判断电流为0且SOC在[0~20]或[90~100]范围内时间超过
                3小时时进行查表初始初始化
 ========================================================================*/
+uint8 ff[5];
 uint8 Sleep_StaticTime(uint8 readhour, uint8 readminite, float current, float currentset, uint16 hourset)
 {
     static uint8 Time_firstflag;
     static uint8 cnt[2];
     if(abs(current) < currentset)
-    {  
-      if((++cnt[0])*PEWERONOFF_PERIO/1000 >= 10) //当10S内都是电流小于2A开始计时
+    { 
+      ff[0] = cnt[0]*PEWERONOFF_PERIO/1000;
+      if((++cnt[0])*PEWERONOFF_PERIO/1000 >= 10) //当10S内都是电流小于currentsetA开始计时
       {  
         cnt[1] = 0;
         cnt[0] = (uint8)(10000/PEWERONOFF_PERIO); 
@@ -61,7 +63,7 @@ uint8 Sleep_StaticTime(uint8 readhour, uint8 readminite, float current, float cu
         {
           if((((uint16)readhour<<8) | readminite)-g_SysTime.BMS_SleepStatic_Time >= 0)
           {
-            if((((uint16)readhour<<8) | readminite)-g_SysTime.BMS_SleepStatic_Time >= (hourset<<8))//大于4小时查表
+            if((((uint16)readhour<<8) | readminite)-g_SysTime.BMS_SleepStatic_Time >= (hourset<<8))//大于12小时查表
             {
                 return TRUE;
             }
@@ -76,9 +78,9 @@ uint8 Sleep_StaticTime(uint8 readhour, uint8 readminite, float current, float cu
         }
       }       
     }
-    else if((++cnt[1])*PEWERONOFF_PERIO/1000>2)//电流跳变持续超过2s才认为它是处于非工作状态
+    else if((++cnt[1])*PEWERONOFF_PERIO/1000 >= 2)//电流跳变持续超过2s才认为它是处于非工作状态
     {
-       cnt[0] = 0;
+       cnt[0] = 0; ff[1]++;
        cnt[1] = (uint8)(2000/PEWERONOFF_PERIO);
        Time_firstflag = 0;
     }

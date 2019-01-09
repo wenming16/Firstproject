@@ -1,5 +1,5 @@
 
-PROGRAM "C:\Users\hxya-005\Desktop\易动力裸机代码\Firstproject\子板Boot-500k\BootLoader_xep100（子板CAN2-500k）\bin\Project.abs"
+PROGRAM "C:\Users\hxya-005\Desktop\易动力裸机代码\Firstproject\Boot_CSSU(CAN2-500k)\BootLoader_CSSU（子板CAN2-500k）\bin\Project.abs"
 
 *********************************************************************************************
 TARGET SECTION

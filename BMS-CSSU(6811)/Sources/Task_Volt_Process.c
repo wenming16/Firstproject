@@ -252,7 +252,7 @@ void Task_Volt_Process(void)
     }  
      
     VoltInfo.CellVolt_Max = maxvol;
-     VoltInfo.CellVolt_Min = minvol;
+    VoltInfo.CellVolt_Min = minvol;
     
   
     Task_Flag_Counter.Counter_Volt_Process++;      

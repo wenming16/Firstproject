@@ -16,20 +16,20 @@
   #define NUM4_Batper            0
   #define NUM5_Batper            0
 
-  #define NUM1_Batper_true       9
-  #define NUM1_Batper_front      5
+  #define NUM1_Batper_true       8
+  #define NUM1_Batper_front      4
   #define NUM1_Batper_rear       4
-  #define NUM1_Batper_empty      1
+  #define NUM1_Batper_empty      2
 
   #define NUM2_Batper_true       8
   #define NUM2_Batper_front      4
   #define NUM2_Batper_rear       4
   #define NUM2_Batper_empty      2
 
-  #define NUM3_Batper_true       8
-  #define NUM3_Batper_front      4
+  #define NUM3_Batper_true       9
+  #define NUM3_Batper_front      5
   #define NUM3_Batper_rear       4
-  #define NUM3_Batper_empty      2
+  #define NUM3_Batper_empty      1
 
   #define NUM4_Batper_true       0
   #define NUM4_Batper_front      0

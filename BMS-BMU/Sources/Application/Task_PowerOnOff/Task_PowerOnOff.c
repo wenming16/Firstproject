@@ -177,7 +177,7 @@ void PowerOnOff_Control(uint8 FltLevel, uint8 FltSeconds, uint8 StaticCurrSet, u
 void Task_PowerOnOff(void)
 {
    PowerOnOff_Control(g_Flt_DisChg.Level_DisCharge_SwitchOff_flag|g_Flt_Charge.Level_Charge_SwitchOff_flag,\
-                      30, 2, 12);
+                      30, 5, 12);
 
    g_Roll_Tick.Roll_Power++;
 }

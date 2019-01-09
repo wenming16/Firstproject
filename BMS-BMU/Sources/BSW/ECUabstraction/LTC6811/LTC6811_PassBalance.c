@@ -26,8 +26,6 @@ void LTC6811_BalanceCMDSend( uint8 *CFG,uint8 gpio, uint8 refon,uint8 swtrd, uin
 {           
   uint8 char1,char2,char3;
   
-  
-
   *CFG++=(gpio<<3)+(refon<<2)+(swtrd<<1)+adcopt;
   
   *CFG++=(uint8)(((uint16)vuv*10000/16-1)&0x00ff);
