@@ -231,6 +231,7 @@ void CAN1_GetMsg_Process(pCANFRAME receiveFrame)
   {
     case 0x112:
       CAN_ChargetoBMS(receiveFrame);
+      HeartBeat.HeartBeat_Charge = 1;
     break;
   }
 }

@@ -41,10 +41,9 @@ void Task_SOCSOH(void)
     SOC_AhIntegral(g_DataColletInfo.DataCollet_Current_Filter, g_VoltInfo.CellVolt_Min, g_VoltInfo.CellVolt_Max, SOC_PERIOD); //计算SOC值 
   }
   else
-  {
+  {   
     g_SOCInfo.SOC_Init = 0;
   }
-  
   SOH_Cal();
   
   g_Roll_Tick.Roll_SOCSOH++;
@@ -82,11 +81,14 @@ float ADC_Current(void)
                      向存储值，到后期偏向查表值。存储在充电时期且SOC>90%
                      或SOC<20%是进行校正。
 ========================================================================*/  
+uint8 fff[5];
+float AH=0,ah1=0;
+float T=0;
 static
 void SOC_AhIntegral(float current, uint16 Voltagemin, uint16 Voltagemax, uint16 SampleTime)  //100ms
 {        
-  float T=0;
-  float AH=0,ah1=0;
+  //float T=0;
+  //float AH=0,ah1=0;
   float Vmin = 0, Vmax = 0;
   static float Cellcap;
   Vmin = Voltagemin/10000.0;
@@ -106,7 +108,7 @@ void SOC_AhIntegral(float current, uint16 Voltagemin, uint16 Voltagemax, uint16 
       *(uint16*)(0x0D10) =  (uint16)(g_SOCInfo.SOC_Init); //g_SOCInfo.SOC_Init
 
   }
-  else if(((g_SOCInfo.SOC_ValueRead < 0.2)||(g_SOCInfo.SOC_ValueRead > 0.9)||(Vmax>=3.334)||(Vmin<=3.242)&&(Vmin>=2.68)) && (g_SysTime.SOC_Static_Time >= 4))
+  else if(((g_SOCInfo.SOC_ValueRead < 0.2)||(g_SOCInfo.SOC_ValueRead > 0.9)||(Vmax>=3.5)||(Vmin<=3.242)&&(Vmin>=2.68)) && (g_SysTime.SOC_Static_Time >= 4))
   {   //当SOC小于20%或大于90%,且电池静置时间大于4小时,或在常电状态下电流小于0.5A持续时间大于3小时进行查表     
       //SOC_LEP_DATA.SOC_t = 2;
       g_SysTime.SOC_Static_Time = 0;
@@ -120,14 +122,7 @@ void SOC_AhIntegral(float current, uint16 Voltagemin, uint16 Voltagemax, uint16 
   //安时积分，需要避免大数吃小数
   if(current>=0.5 || current<=-0.5)
   {  
-    //if(g_SOCInfo.SOC_CalTime % 300 == 0)//5min根据温度查一次容量
-    //{
-    //   g_SOCInfo.SOC_CalTime = 0;
-    //   Cellcap = CellCapacity_Cal(g_Batt_TempMesg.aveTemp);  
-    //}
-    Cellcap = CELL_CAPACITY;
-    
-    AH = current*T/3600.0/Cellcap;  //SOC值  
+    AH = current*T/3600.0/SYS_CAPACITY;  //SOC值  
     ah1 = current*T/3600.0;
   }
   //充电状态     
@@ -154,10 +149,11 @@ void SOC_AhIntegral(float current, uint16 Voltagemin, uint16 Voltagemax, uint16 
   //放电状态
   else     
   {   
+    fff[0]++;
     if(g_VoltInfo.CellVolt_Min <= CELL_VOLT_MIN*10000.0)//3.0V     
     {     
-      g_SOCInfo.SOC_LowestVoltGet = 0;                                                    //低电压的SOC先为0
-      if(g_SOCInfo.SOC_ValueRead < g_SOCInfo.SOC_ValueVoltGet)                              //防止S_V变为0时，S_R跳变为0
+      g_SOCInfo.SOC_LowestVoltGet = 0;                                  //低电压的SOC先为0
+      if(g_SOCInfo.SOC_ValueRead < g_SOCInfo.SOC_ValueVoltGet)          //防止S_V变为0时，S_R跳变为0
       {
         g_SOCInfo.SOC_ValueRealtimeDiff = g_SOCInfo.SOC_ValueRead;
         g_SOCInfo.SOC_ValueInitDiff  = g_SOCInfo.SOC_ValueRealtimeDiff;
@@ -182,7 +178,7 @@ void SOC_AhIntegral(float current, uint16 Voltagemin, uint16 Voltagemax, uint16 
   
   //充电偏向于电压高的电池的SOC，放电偏向于低电压电池的SOC
   g_SOCInfo.SOC_ValueVoltGet = g_SOCInfo.SOC_LowestVoltGet / (1 + g_SOCInfo.SOC_LowestVoltGet - g_SOCInfo.SOC_HighestVoltGet); 
-  g_SOCInfo.SOC_ValueRead = g_SOCInfo.SOC_ValueVoltGet + g_SOCInfo.SOC_ValueRealtimeDiff;         //按上次读取的SOC累加SOC   
+  g_SOCInfo.SOC_ValueRead    = g_SOCInfo.SOC_ValueVoltGet + g_SOCInfo.SOC_ValueRealtimeDiff;         //按上次读取的SOC累加SOC   
 
   if(g_SOCInfo.SOC_CalTime % 10==0) //SOC_Read校正
   {

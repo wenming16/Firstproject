@@ -102,7 +102,7 @@ void RS485_DataReceice(void)
   RS485_Receive.TxData_single.TX1.Alam_VoltCD_Charge  = (uint8)g_Flt_Charge.Level_Volt_Cell_Diff_High;
   RS485_Receive.TxData_single.TX1.Alam_TempD_Charge   = (uint8)g_Flt_Charge.Level_Temp_Diff_High;
   
-  RS485_Receive.TxData_single.TX1.Alam_Insul          = (uint8)g_IsoDetect.insulation_grade;
+  RS485_Receive.TxData_single.TX1.Alam_Insul          = (uint8)g_Flt_DisChg.Level_Insul|g_Flt_DisChg.Level_Insul;
   RS485_Receive.TxData_single.TX1.Alam_Checkself      = 0x01;
   
  }   

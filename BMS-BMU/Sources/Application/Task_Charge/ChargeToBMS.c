@@ -13,7 +13,7 @@
 ========================================================================*/
 #include  "includes.h"
                                               
-ChargePileBMS_T         ChargePileBMS;
+ChargePileBMS_T  ChargePileBMS;
 Charge_State_T   g_Charge_State;
 /*=======================================================================
  *函数名:      ChargePile_to_Bms(pCANFRAME data)
@@ -24,33 +24,16 @@ Charge_State_T   g_Charge_State;
 ========================================================================*/
 void CAN_ChargetoBMS(pCANFRAME data)
 {
-  uint8   Val8;
-  uint16  Val;
+  ChargePileBMS.Volt_ChargePileOut = (((uint16)(data -> m_data[0]))<<8) + (data -> m_data[1]);   
+  ChargePileBMS.Curr_ChargePileOut = (((uint16)(data -> m_data[2]))<<8) + (data -> m_data[3]);  
 
-  Val = (((uint16)(data -> m_data[0]))<<8) + (data -> m_data[1]);   
-  if(Val!=0xFFFF) 
-  {
-     ChargePileBMS.Volt_ChargePileOut = (uint16)(Val);  
-  }
-  
-  Val = (((uint16)(data -> m_data[2]))<<8) + (data -> m_data[3]);  
-  if(Val!=0xFFFF) 
-  {
-     ChargePileBMS.Curr_ChargePileOut = (uint16)(Val);  
-  }
-  
-  Val8 = (data -> m_data[5]); 
-  if(Val8!=0xFF) 
-  {
-     g_Charge_State.Hard             = Val8&0x01; 
-     g_Charge_State.TempH_ChargePile = (Val8>>1)&0x01; 
-     g_Charge_State.VoltL_ChargePile = (Val8>>2)&0x01; 
-     g_Charge_State.On_Line          = (Val8>>3)&0x01; 
-     g_Charge_State.GetMsg           = (Val8>>4)&0x01;  
-  }
-  if(g_Charge_State.Hard || g_Charge_State.TempH_ChargePile ||\
-    g_Charge_State.VoltL_ChargePile || g_Charge_State.On_Line ||\
-    g_Charge_State.GetMsg)
+  g_Charge_State.Hard             = (data -> m_data[4])&0x01;       //充电桩硬件故障
+  g_Charge_State.TempH_ChargePile = ((data -> m_data[4])>>1)&0x01;  //充电机过温
+  g_Charge_State.VoltL_ChargePile = ((data -> m_data[4])>>2)&0x01;  //充电机输入电压过低
+  g_Charge_State.On_Line          = ((data -> m_data[4])>>3)&0x01;  //充电机启动状态
+  g_Charge_State.GetMsg           = ((data -> m_data[4])>>4)&0x01;  //充电桩接收BMS信息超时
+
+  if((data -> m_data[4])&0x1F)
   {
     g_Charge_State.FltState = 1;
   }

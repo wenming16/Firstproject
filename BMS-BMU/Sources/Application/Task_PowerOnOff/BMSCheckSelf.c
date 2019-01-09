@@ -337,8 +337,8 @@ uint8 CheckSelf_Discharge(Flt_BMSCheckSelf_T*ptr)
    ptr->SysVolt_Low    = CheckSelf_SysVoltLow_DisCharge(g_VoltInfo.SysVolt_Total, g_TempInfo.CellTemp_Ave);
    state = state|ptr->SysVolt_Low;
    
-   //ptr->CellVolt_Low   = CheckSelf_CellVoltLow_DisCharge(g_VoltInfo.CellVolt_Min, g_TempInfo.CellTemp_Ave);
-   //state = state|ptr->CellVolt_Low;
+   ptr->CellVolt_Low   = CheckSelf_CellVoltLow_DisCharge(g_VoltInfo.CellVolt_Min, g_TempInfo.CellTemp_Ave);
+   state = state|ptr->CellVolt_Low;
    
    ptr->CellTemp_Over  = CheckSelf_CellTempHigh_DisCharge(g_TempInfo.CellTemp_Max);
    state = state|ptr->CellTemp_Over;
@@ -346,8 +346,8 @@ uint8 CheckSelf_Discharge(Flt_BMSCheckSelf_T*ptr)
    ptr->CellTemp_Low   = CheckSelf_CellTempLow_DisCharge(g_TempInfo.CellTemp_Min);
    state = state|ptr->CellTemp_Low;
    
-   //ptr->SysCurr_Over   = CheckSelf_CurrentOver_DisCharge(g_DataColletInfo.DataCollet_Current_Filter);
-   //state = state|ptr->SysCurr_Over;
+   ptr->SysCurr_Over   = CheckSelf_CurrentOver_DisCharge(g_DataColletInfo.DataCollet_Current_Filter);
+   state = state|ptr->SysCurr_Over;
    
    ptr->SysInsul_Flt   = CheckSelf_InsulDetect(g_IsoDetect.insulation_resist);
    state = state|ptr->SysInsul_Flt;
@@ -373,8 +373,8 @@ uint8 CheckSelf_Charge(Flt_BMSCheckSelf_T*ptr)
    ptr->SysVolt_Over   = CheckSelf_SysVoltHigh_Charge(g_VoltInfo.SysVolt_Total);
    state = state|ptr->SysVolt_Over;
    
-   //ptr->CellVolt_Over  = CheckSelf_CellVoltHigh_Charge(g_VoltInfo.CellVolt_Max);
-   //state = state|ptr->CellVolt_Over;
+   ptr->CellVolt_Over  = CheckSelf_CellVoltHigh_Charge(g_VoltInfo.CellVolt_Max);
+   state = state|ptr->CellVolt_Over;
    
    ptr->CellTemp_Over  = CheckSelf_CellTempHigh_Charge(g_TempInfo.CellTemp_Max);
    state = state|ptr->CellTemp_Over;

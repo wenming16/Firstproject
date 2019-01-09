@@ -117,8 +117,6 @@ void Bms_to_Up_Monitor(void)
     BMS_to_Upmonitor.m_data[7] = 0xFF;       
     Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor);
     
-    
-                      
     BMS_to_Upmonitor.m_ID = BMS_Send_Information2+NUM_pack;       
   	BMS_to_Upmonitor.m_IDE = 1;
   	BMS_to_Upmonitor.m_RTR = 0;
@@ -140,36 +138,24 @@ void Bms_to_Up_Monitor(void)
   	BMS_to_Upmonitor.m_priority = 6;
   	for( i=0; i< ((NUM_Tem+6) / 7) ;i++)         //ly 按照协议修改
     {
-
       BMS_to_Upmonitor.m_data[0] = i;
       //memset( &pMsgTran.data,0xFF,8 );       /* 8个data设置为40 */
       if( i < 1 )                      //对于扩展可修改此处
       {
-        
           for(j=1; j < NUM_IC*2; j++) 
           {
-          
               BMS_to_Upmonitor.m_data[j] = TempInfo.CellTemp[j-1+i*7] + 40;
-        
           }   
-          
       } 
       else 
       {
-      
            for( j = 1 ; j <= (NUM_Tem% 7);j++ ) 
            {
-            
-              
               BMS_to_Upmonitor.m_data[j] = TempInfo.CellTemp[j-1+i*7] + 40; 
-               
            }
-      
       }
        Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor); 
     }
-
-  
   
     BMS_to_Upmonitor.m_ID = BMS_Send_Information4+NUM_pack;       // 电池基本信息1;
   	BMS_to_Upmonitor.m_IDE = 1;
@@ -247,10 +233,8 @@ void Bms_to_Up_Monitor(void)
   	BMS_to_Upmonitor.m_priority = 6;
   	for(i = 0; i < NUM_IC ; i++)
   	{
-  	  
-        BMS_to_Upmonitor.m_data[i*2] = Openwire_flag[i];                   // 导线开路
-      	BMS_to_Upmonitor.m_data[i*2 + 1] = (uint8)((Openwire_flag[i]>>8)&0x00FF);	       
-        
+      BMS_to_Upmonitor.m_data[i*2] = Openwire_flag[i];                   // 导线开路
+    	BMS_to_Upmonitor.m_data[i*2 + 1] = (uint8)((Openwire_flag[i]>>8)&0x00FF);	       
   	}
   	Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor);
  

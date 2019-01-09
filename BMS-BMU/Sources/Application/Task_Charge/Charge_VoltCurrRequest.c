@@ -15,20 +15,21 @@ void Charge_VoltCurrRequest(void)
   static uint8 cnt;
   float curr;
   //最大电压请求
-  g_BMSCharge.Volt_Max_ChargePile = (CELL_VOLT_MAX * SYS_SERIES_YiDongLi + 5)*10;     //最高允许充电端电压 分辨率:0.1V
+  g_BMSCharge.Volt_Max_ChargePile = (CELL_VOLT_MAX * SYS_SERIES_YiDongLi + 5);         //最高允许充电端电压 分辨率:0.1V
   //最大电流请求
   curr = Charge_CurrInit(CurrLimit.Curr_Charge_Cons, g_BMSCharge.Curr_Max_ChargePile);
-  g_BMSCharge.Curr_Max_ChargePile = ChargeEnd_CurrentOut(g_VoltInfo.CellVolt_Max, curr) * 10.0;//先进行处理 分辨率0.1A
+  g_BMSCharge.Curr_Max_ChargePile = ChargeEnd_CurrentOut(g_VoltInfo.CellVolt_Max, curr);//先进行处理 分辨率0.1A
   
-  g_BMSCharge.Control_ChargePile = ChargeEndJudge(g_SOCInfo.SOC_ValueRead, g_DataColletInfo.DataCollet_Current_Filter, \
-                                                    g_VoltInfo.CellVolt_Max, g_TempInfo.CellTemp_Max, g_TempInfo.CellTemp_Min,\
-                                                    g_Flt_Charge.Level_Charge_SwitchOff_flag, g_Charge_State.FltState);
+  g_BMSCharge.Control_ChargePile  = ChargeEndJudge(g_SOCInfo.SOC_ValueRead, g_BMSCharge.Curr_Max_ChargePile,\
+                                                   g_VoltInfo.CellVolt_Max,\
+                                                   g_TempInfo.CellTemp_Max, g_TempInfo.CellTemp_Min,\
+                                                   g_Flt_Charge.Level_Charge_SwitchOff_flag, g_Charge_State.FltState);
   
-  g_BMSCharge.VoltC_Max           = g_VoltInfo.CellVolt_Max * 0.1;  //单体最高电压 分辨率:0.001V
-  g_BMSCharge.VoltC_Min           = g_VoltInfo.CellVolt_Min * 0.1;  //单体最低电压 分辨率:0.001V
-  g_BMSCharge.SOC                 = g_SOCInfo.SOC_ValueRead*250.0;  //先进行处理 分辨率:0.4%
+  g_BMSCharge.VoltC_Max           = g_VoltInfo.CellVolt_Max;  //单体最高电压 分辨率:0.001V
+  g_BMSCharge.VoltC_Min           = g_VoltInfo.CellVolt_Min;  //单体最低电压 分辨率:0.001V
+  g_BMSCharge.SOC                 = g_SOCInfo.SOC_ValueRead;  //先进行处理 分辨率:0.4%
   g_BMSCharge.Temp_Max            = g_TempInfo.CellTemp_Max;
-  g_BMSCharge.VoltS               = g_VoltInfo.SysVolt_Total * 0.001; //将g_VoltInfo.SysVolt_Total单位:0.1mV->0.1V
+  g_BMSCharge.VoltS               = g_VoltInfo.SysVolt_Total; //将g_VoltInfo.SysVolt_Total单位:0.1mV->0.1V
   
   //充电过温
   if(g_Flt_Charge.Level_Temp_High == 2)
@@ -71,17 +72,12 @@ void Charge_VoltCurrRequest(void)
   }
   
   //BMS接收报文超时
-   if(g_Charge_State.GetMsg)
+  if((State_Offline.RelayFlt_Positive == 1)||(State_Offline.CSSU1 == 1))
   {
-    if(++cnt == 5)
-    {
-      cnt = 0;
-      BMSCharge_State.BMSGetMsg = 1;
-    }
-  }
+    BMSCharge_State.BMSGetMsg = 1;
+  } 
   else
   {
-    cnt = 0;
     BMSCharge_State.BMSGetMsg = 0;
   }
   
@@ -122,7 +118,7 @@ uint8 ChargeEndJudge(float soc,float curr_end,uint16 cellvoltmax,uint8 temph,uin
     cnt[0] = 0;
   }
   //充电末期电流小于0.03C
-  if(curr_end < 0.03*SYS_CAPACITY)
+  if(abs(curr_end) < 0.03*SYS_CAPACITY) //0.03*542=16.26A
   {
     if(++cnt[1]>3)
     {
@@ -135,7 +131,7 @@ uint8 ChargeEndJudge(float soc,float curr_end,uint16 cellvoltmax,uint8 temph,uin
      cnt[1] = 0;
   }
   //到达单体截止电压
-  if(cellvoltmax > CELL_VOLT_MAX)
+  if(cellvoltmax/10000.0 > CELL_VOLT_MAX)
   {
     if(++cnt[2]>3)
     {

@@ -36,8 +36,6 @@ uint8 Init_Flash(void)
   {
     FlashErr = LaunchFlashCommand(0 ,ENABLE_EEPROM_EMULATION, 0, 0, 0, 0, 0, 0, 0, 0);//BuffRam模拟EEprom(EEE)
     ErrorCheck(FlashErr, (accerr|fpviol|mgstat1|mgstat0), (erserif|pgmerif|epviolif|ersvif1|ersvif0|dfdif|sfdif));    
-    //接受电池数据变量清零（SOC不清零）
-    EEprom_DateMemset(); 
   }
   return(FlashErr.ErrCode);
 }

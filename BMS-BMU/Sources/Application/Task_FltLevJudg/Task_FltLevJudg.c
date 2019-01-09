@@ -38,6 +38,7 @@ static uint8 Fault_Charge_TempL(uint8 Temp);             //充电低温
 static uint8 Fault_Charge_TempD(uint8 T_Diff);           //充电温差
 static uint8 Fault_Charge_CurrH(float Current);          //充电过流
 static uint8 Fault_Charge_Insul(uint16 Insul);           //绝缘故障
+static uint8 Fault_Charge_OffLine(void);
 //通信掉线
 static uint8 Fault_CSSU_OffLine(void);                   //从板掉线
 static uint8 Fault_Relay_BreakDown(void);                //继电器粘连故障
@@ -98,6 +99,8 @@ void FltLevJudg(uint8 workstate)
       g_Flt_Charge.Level_Charge_BalanceOff_Flag = 0;
       g_Flt_Charge.Level_Volt_Sys_High          = 0;
       g_Flt_Charge.Level_Volt_Cell_High         = 0;
+      g_Flt_Charge.Level_Insul                  = 0;
+      State_Offline.RelayFlt_Positive           = 0;
       //判断放电状态故障
       g_Flt_DisChg.Level_Volt_Sys_Low           = Fault_DisChg_VoltSL(g_VoltInfo.SysVolt_Total, g_TempInfo.CellTemp_Ave);
       g_Flt_DisChg.Level_Volt_Cell_Low          = Fault_DisChg_VoltCL(g_VoltInfo.CellVolt_Min, g_TempInfo.CellTemp_Ave);
@@ -125,7 +128,7 @@ void FltLevJudg(uint8 workstate)
       g_Flt_DisChg.Level_Volt_Sys_Low             = 0;
       g_Flt_DisChg.Level_Volt_Cell_Low            = 0;
       g_Flt_DisChg.Level_DisCharge_SwitchOff_flag = 0;
-      
+      g_Flt_DisChg.Level_Insul                    = 0;
       //判断充电状态故障
       g_Flt_Charge.Level_Volt_Sys_High        = Fault_Charge_VoltSH(g_VoltInfo.SysVolt_Total);
       g_Flt_Charge.Level_Volt_Cell_High       = Fault_Charge_VoltCH(g_VoltInfo.CellVolt_Max);
@@ -135,13 +138,14 @@ void FltLevJudg(uint8 workstate)
       g_Flt_Charge.Level_Temp_Diff_High       = Fault_Charge_TempD(g_TempInfo.CellTemp_Diff);
       g_Flt_Charge.Level_Current_Charge_High  = Fault_Charge_CurrH(g_DataColletInfo.DataCollet_Current_Filter);
       g_Flt_Charge.Level_Insul                = Fault_Charge_Insul(g_IsoDetect.insulation_resist);
+      State_Offline.RelayFlt_Positive         = Fault_Charge_OffLine();
       //断开继电器的二级故障标记
       if((g_Flt_Charge.Level_Volt_Sys_High==2) ||\
          (g_Flt_Charge.Level_Volt_Cell_High==2) ||\
          (g_Flt_Charge.Level_Temp_High == 2)||\
          (g_Flt_Charge.Level_Temp_Low == 2)||\
          (g_Flt_Charge.Level_Insul == 2)||(State_Offline.CSSU1 == 1)||\
-         (State_Offline.RelayFlt_Positive == 1))
+         (State_Offline.RelayFlt_Positive == 1)||(State_Offline.RelayFlt_Positive == 1))
       {
         g_Flt_Charge.Level_Charge_SwitchOff_flag = 1;//2级故障闭合继电器  
       }
@@ -154,13 +158,13 @@ void FltLevJudg(uint8 workstate)
          (g_Flt_Charge.Level_Temp_Diff_High != 0) ||\
          (g_Flt_Charge.Level_Current_Charge_High != 0) ||\
          (g_Flt_Charge.Level_Insul != 0)||(State_Offline.CSSU1 != 0)||\
-         (State_Offline.RelayFlt_Positive != 0))
+         (State_Offline.RelayFlt_Positive != 0)||(State_Offline.RelayFlt_Positive != 0))
       {
-        //g_Flt_Charge.Level_Charge_BalanceOff_Flag = 1;//只要出现故障则不启动均衡  
+        g_Flt_Charge.Level_Charge_BalanceOff_Flag = 1;//只要出现故障则不启动均衡  
       }
       else
       {
-        g_Flt_Charge.Level_Charge_BalanceOff_Flag = 0;
+        g_Flt_Charge.Level_Charge_BalanceOff_Flag = 0;//开启均衡
       }
             
     break;
@@ -812,7 +816,7 @@ static uint8 Fault_Charge_VoltSH(uint32 Volt)  //输入系统电压
       cnt[2] = 0;
     }
     
-    if(Volt/1000.0<=(Volt>=g_BMSMonitor_Volt.Volt_Sys_High1 - 0.5*SYS_SERIES_YiDongLi))    //1变0
+    if(Volt/1000.0<=(g_BMSMonitor_Volt.Volt_Sys_High1 - 0.5*SYS_SERIES_YiDongLi))    //1变0
     {
       if(++cnt[3]*PERIOD_DISCHARGE/1000>=DELAYTIME_DANGERLEVEL2)
       {
@@ -1261,7 +1265,7 @@ uint8 Fault_CSSU_OffLine(void)
   }
   else
   {
-     if(++cnt*PERIOD_DISCHARGE/1000>=2)//2S
+     if(++cnt*PERIOD_DISCHARGE/1000 >= 3)//3S
      {
        cnt = 0;
        state = 1; 
@@ -1310,7 +1314,7 @@ uint8 Fault_Relay_BreakDown(void)
    static uint8 flt; 
    if(Port_StateGet(Relay_Positive_PORT, Relay_Positive_pin) == Relay_ON)
    {
-      if(abs(g_VoltInfo.SysVolt_Total-g_FromCSSU_Volt.InsulVolt_Total)<0.5*CELL_VOLT_NOMINAL*SYS_SERIES_YiDongLi)
+      if(abs(g_VoltInfo.SysVolt_Total/10000.0-g_FromCSSU_Volt.InsulVolt_Total/10000.0)>0.5*CELL_VOLT_NOMINAL*SYS_SERIES_YiDongLi)
       {
           if(++cnt*PERIOD_DISCHARGE/1000>=2)
           {
@@ -1326,7 +1330,7 @@ uint8 Fault_Relay_BreakDown(void)
    }
    else
    {
-      if(abs(g_VoltInfo.SysVolt_Total-g_FromCSSU_Volt.InsulVolt_Total)>0.5*CELL_VOLT_NOMINAL*SYS_SERIES_YiDongLi)
+      if(abs(g_VoltInfo.SysVolt_Total/10000.0-g_FromCSSU_Volt.InsulVolt_Total/10000.0)<0.5*CELL_VOLT_NOMINAL*SYS_SERIES_YiDongLi)
       {
           if(++cnt*PERIOD_DISCHARGE/1000>=2)
           {
@@ -1341,4 +1345,29 @@ uint8 Fault_Relay_BreakDown(void)
       }
    }
    return flt;
+}
+
+/*=======================================================================
+                           充电桩掉线故障0x20
+ ======================================================================*/
+static 
+uint8 Fault_Charge_OffLine(void)
+{
+  static uint8 cnt;      
+  static uint8 state=0;
+  if(HeartBeat.HeartBeat_Charge == 1 )
+  { 
+     HeartBeat.HeartBeat_Charge = 0;
+     state = 0;
+     cnt = 0;      
+  }
+  else
+  {
+     if(++cnt*PERIOD_DISCHARGE/1000 >= 5)//5S
+     {
+       cnt = 0;
+       state = 1; 
+     }
+  }
+  return state;
 }

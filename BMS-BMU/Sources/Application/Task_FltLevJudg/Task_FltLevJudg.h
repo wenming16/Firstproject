@@ -83,6 +83,7 @@
     uint8 HVU;
     
     uint8 CSSU1;
+    uint8 Charge;
     uint8 RelayFlt_Positive;
     /*#if(SYS_NUMBER_MODULE>=2)
       uint8 CSSU2;
@@ -108,6 +109,7 @@
   {
     //CSSU
     uint8 HeartBeat_CSSU1;
+    uint8 HeartBeat_Charge;
     /*#if(SYS_NUMBER_MODULE>=2)
       uint8 HeartBeat_CSSU2;
     #endif

@@ -80,7 +80,7 @@
   #define           R1_DISCHG_CURRH                 600 
   
   //绝缘故障 
-  #define           F2_DISCHG_INSUL                 (100 * 3.65 * SYS_SERIES_YiDongLi * 0.001)    //单位:kΩ
+  #define           F2_DISCHG_INSUL                 (100 * CELL_VOLT_MAX * SYS_SERIES_YiDongLi * 0.001)    //单位:kΩ
   
   //------------------充电故障阈值(FaultLevel_Charge)---------------------------
   //充电总压高(分辨率:0.0001V)(偏移量:0)

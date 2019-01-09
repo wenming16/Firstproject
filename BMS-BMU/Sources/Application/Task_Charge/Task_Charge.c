@@ -78,19 +78,19 @@ void Charge_Strategy(void)
       //0x111
       BMS_to_ChargePile.m_ID = 0x111;
      
-      BMS_to_ChargePile.m_data[0] = (g_BMSCharge.Volt_Max_ChargePile) >> 8;       //最高允许充电端电压高字节   0.1V/bit
-    	BMS_to_ChargePile.m_data[1] = (uint8)(g_BMSCharge.Volt_Max_ChargePile);                              
-    	BMS_to_ChargePile.m_data[2] = (g_BMSCharge.Curr_Max_ChargePile)>> 8;        //最高允许充充电电流高字节   已经过分辨率(0.1A/bit)处理   
-    	BMS_to_ChargePile.m_data[3] = (uint8)(g_BMSCharge.Curr_Max_ChargePile); 
-    	BMS_to_ChargePile.m_data[4] = g_BMSCharge.Control_ChargePile;                  //控制充电桩    0:开启    1:关闭
+      BMS_to_ChargePile.m_data[0] = (g_BMSCharge.Volt_Max_ChargePile*10) >> 8;    //最高允许充电端电压高字节   0.1V/bit
+    	BMS_to_ChargePile.m_data[1] = (uint8)(g_BMSCharge.Volt_Max_ChargePile*10);                              
+    	BMS_to_ChargePile.m_data[2] = (g_BMSCharge.Curr_Max_ChargePile*10)>> 8;     //最高允许充充电电流高字节   已经过分辨率(0.1A/bit)处理   
+    	BMS_to_ChargePile.m_data[3] = (uint8)(g_BMSCharge.Curr_Max_ChargePile*10); 
+    	BMS_to_ChargePile.m_data[4] = g_BMSCharge.Control_ChargePile;               //控制充电桩    0:开启    1:关闭
     	BMS_to_ChargePile.m_data[5] = (((0x00)&0x01) + \
-    	                                ((BMSCharge_State.TempH_Cell<<1)&0x02) + \
-    	                                ((BMSCharge_State.TempL_Cell<<2)&0x04) + \
-    	                                ((BMSCharge_State.CurrH_Cell<<3)&0x08) + \
-    	                                ((BMSCharge_State.Insul<<4)&0x10) + \
-    	                                ((BMSCharge_State.BMSGetMsg<<5)&0x20) + \
-    	                                ((BMSCharge_State.FaultFlag<<6)&0x40) + \
-    	                                ((0x00)&0x80));
+    	                               ((BMSCharge_State.TempH_Cell<<1)&0x02) + \
+    	                               ((BMSCharge_State.TempL_Cell<<2)&0x04) + \
+    	                               ((BMSCharge_State.CurrH_Cell<<3)&0x08) + \
+    	                               ((BMSCharge_State.Insul<<4)&0x10) + \
+    	                               ((BMSCharge_State.BMSGetMsg<<5)&0x20) + \
+    	                               ((BMSCharge_State.FaultFlag<<6)&0x40) + \
+    	                               ((0x00)&0x80));
     	BMS_to_ChargePile.m_data[6] = 0xFF;                 
     	BMS_to_ChargePile.m_data[7] = 0xFF; 
       while(CAN_BMSToCharge(&BMS_to_ChargePile));
@@ -101,14 +101,14 @@ void Charge_Strategy(void)
       //0x115
       BMS_to_ChargePile.m_ID = 0x115;
      
-      BMS_to_ChargePile.m_data[0] = (g_BMSCharge.VoltC_Max) >> 8;      //单体最高电压高字节   
-    	BMS_to_ChargePile.m_data[1] = (uint8)(g_BMSCharge.VoltC_Max);                              
-    	BMS_to_ChargePile.m_data[2] = (g_BMSCharge.VoltC_Min)>> 8;       //单体最低电压高字节   
-    	BMS_to_ChargePile.m_data[3] = (uint8)(g_BMSCharge.VoltC_Min); 
-    	BMS_to_ChargePile.m_data[4] = g_BMSCharge.SOC;                        //SOC   已经过分辨率(0.4%/bit)处理
+      BMS_to_ChargePile.m_data[0] = ((uint16)(g_BMSCharge.VoltC_Max*0.1)) >> 8;      //单体最高电压高字节   
+    	BMS_to_ChargePile.m_data[1] = (uint8)(g_BMSCharge.VoltC_Max*0.1);                              
+    	BMS_to_ChargePile.m_data[2] = ((uint16)(g_BMSCharge.VoltC_Min*0.1)) >> 8;       //单体最低电压高字节   
+    	BMS_to_ChargePile.m_data[3] = (uint8)(g_BMSCharge.VoltC_Min*0.1); 
+    	BMS_to_ChargePile.m_data[4] = g_BMSCharge.SOC*250.0;                        //SOC   已经过分辨率(0.4%/bit)处理
     	BMS_to_ChargePile.m_data[5] = g_BMSCharge.Temp_Max;                   //最高温度     1℃/bit  偏移量:-40℃
-    	BMS_to_ChargePile.m_data[6] = (g_BMSCharge.VoltS)>>8;                 //电池组电压高字节     已经过分辨率处理
-    	BMS_to_ChargePile.m_data[7] = (uint8)(g_BMSCharge.VoltS);       
+    	BMS_to_ChargePile.m_data[6] = ((uint16)(g_BMSCharge.VoltS* 0.001)) >>8;                 //电池组电压高字节     已经过分辨率处理
+    	BMS_to_ChargePile.m_data[7] = (uint8)(g_BMSCharge.VoltS* 0.001);       
       while(CAN_BMSToCharge(&BMS_to_ChargePile));
       time = 0;
     break;

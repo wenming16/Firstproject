@@ -62,18 +62,18 @@
   //导线开路
   typedef struct
   {
-    uint8   OpenWire_Status;                      //导线开路状态
-    uint16  OpenWire_Node[NUM_OPENWIRE];     //导线开路节点
+    uint8   OpenWire_Status;             //导线开路状态
+    uint16  OpenWire_Node[NUM_OPENWIRE]; //导线开路节点
   }OpenWireInfo_T;
   extern OpenWireInfo_T g_OpenWireInfo;
 
   //采集的数据
   typedef struct
   {
-    //uint32  SysVolt_Total;                           //系统电压总和    分辨率:0.0001V
+    //uint32  SysVolt_Total;             //系统电压总和    分辨率:0.0001V
     //uint16  InsulVolt_Total;
     uint8   CSSU_Flt_TempH;
-    float   DataCollet_Current_Filter;               //滤波处理后的电流
+    float   DataCollet_Current_Filter;   //滤波处理后的电流
   }DataColletInfo_T;
   extern DataColletInfo_T g_DataColletInfo;
     
