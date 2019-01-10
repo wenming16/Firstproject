@@ -607,10 +607,10 @@ void Task_BMUToUpMonitor(void)
 	BMS_to_Upmonitor.m_dataLen = 8;
 	BMS_to_Upmonitor.m_priority = 6; 
     
-  BMS_to_Upmonitor.m_ID = BMS_Send_Information1;       
+  BMS_to_Upmonitor.m_ID = BMS_Send_Information1;  //0x18FF9701       
   for(i = 0; i <batt ; i++) 
   {
-    BMS_to_Upmonitor.m_data[0] = g_Flt_Charge.Level_Charge_BalanceON_Flag;  //BMS主板是否允许均衡    
+    BMS_to_Upmonitor.m_data[0] = g_Flt_Charge.Level_Charge_BalanceON_Flag;  //BMS主板是否允许子板进行均衡    
     BMS_to_Upmonitor.m_data[1] = (uint8)(i);             
     BMS_to_Upmonitor.m_data[2] = (uint8)g_LTC6811_VoltInfo.CellVolt[i*3];
     BMS_to_Upmonitor.m_data[3] = (g_LTC6811_VoltInfo.CellVolt[i*3]>>8)&0xFF;
@@ -660,8 +660,8 @@ void Task_BMUToUpMonitor(void)
   BMS_to_Upmonitor.m_data[3] = (uint8)g_LTC6811_VoltInfo.CellVolt_Min;
   BMS_to_Upmonitor.m_data[4] = (g_LTC6811_VoltInfo.CellVolt_Min>>8)&0x00FF;
   BMS_to_Upmonitor.m_data[5] = g_LTC6811_VoltInfo.CellVolt_MinNode;
-  BMS_to_Upmonitor.m_data[6] = 0xFF;  
-  BMS_to_Upmonitor.m_data[7] = 0xFF;       
+  BMS_to_Upmonitor.m_data[6] = g_PassiveBalance.BalanceOn;//均衡的电池编号  
+  BMS_to_Upmonitor.m_data[7] = g_PassiveBalance.BalanceNode;//均衡的电池编号        
   while(CAN_ToUpMonitor(&BMS_to_Upmonitor));
   UpMonitor_DelayTimeus(20);
  
@@ -669,7 +669,7 @@ void Task_BMUToUpMonitor(void)
 	for(i=0; i< ((NUM_Tem+6) / 7) ;i++)         
   {
     BMS_to_Upmonitor.m_data[0] = i;
-    if( i < 1 )                      //对于扩展可修改此处
+    if(i < 1)                      //对于扩展可修改此处
     {
       for(j=1; j < NUM_IC*2; j++) 
       {

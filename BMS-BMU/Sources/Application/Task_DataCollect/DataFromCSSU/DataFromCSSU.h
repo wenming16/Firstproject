@@ -25,8 +25,8 @@
     uint16  CellVolt_Min;           //单体最小电压
     uint8   CellVolt_MaxNode;       //单体最大电压节点
     uint8   CellVolt_MinNode;       //单体最小电压节点
-    uint16  CellVolt_Diff;          //子板压差
-    uint16  CellVolt_Ave;           //只会用于均衡控制
+    //uint16  CellVolt_Diff;          //子板压差
+    //uint16  CellVolt_Ave;           //只会用于均衡控制
     uint32  CSSUVolt_Total;         //子板总压
     uint32  InsulVolt_Total;        //绝缘总压
   }FromCSSU_Volt_T;
@@ -41,7 +41,7 @@
     uint8   CellTemp_Min;           //单体最低温度       分辨率：1℃  偏移量：-40
     uint8   CellTemp_MinNode;       //单体最低温度节点
     uint8   CellTemp_Ave;           //单体平均温度       分辨率：1℃  偏移量：-40
-    uint8   CellTemp_Diff;          //子板温差
+    //uint8   CellTemp_Diff;          //子板温差
   }FromCSSU_Temp_T;
   extern FromCSSU_Temp_T g_FromCSSU_Temp;
 

@@ -120,11 +120,10 @@ uint8 BalanceControl_Strategy(uint8 balanceOn, uint16 voltmax, uint32 totalvolt,
 void Task_BalanceControl_ON(void)
 {
    uint8 balancestate;
-   uint8 BMUOffline,BalanceContol;
+   uint8 BalanceContol;
    
-   BMUOffline = BMU_OffLineStateJudge();
-   BalanceContol = (!BMUOffline)&balance_receive.BalanceOn;//主板未掉线并且主板运行均衡
-          
+   BMU_OffLineState.BMU_OffLine = BMU_OffLineStateJudge();
+   BalanceContol = (!BMU_OffLineState.BMU_OffLine)&balance_receive.BalanceOn;//主板未掉线并且主板运行均衡
    balancestate = BalanceControl_Strategy(BalanceContol, VoltInfo.CellVolt_Max,balance_receive.total_volt,\
                                           (VoltInfo.CellVolt_MaxNode+1), 500); 
    
@@ -139,8 +138,6 @@ void Task_BalanceControl_ON(void)
       ToBMU_BalanceState.CSSUBalanceOn   = 0;
       ToBMU_BalanceState.CSSUBalanceNode = 0;
    }
-   
-   memset(&balance_receive,0,sizeof(balance_receive));
    
    Task_Flag_Counter.Counter_Balance_open++;                                       
 }

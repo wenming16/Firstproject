@@ -50,8 +50,7 @@ void System_init(void)
     
     DDRT=0XFF;
     PTT_PTT0 = 0;
-   // COPCTL = 0x07; 
-    //COPCTL = 0x00;
+    memset(&balance_receive,0,sizeof(balance_receive));
 
     EnableInterrupts;                  
     

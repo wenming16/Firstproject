@@ -55,15 +55,15 @@ void Bms_to_Up_Monitor(void)
     batt=(NUM1_Batper_true+NUM2_Batper_true+NUM3_Batper_true+NUM4_Batper_true+NUM5_Batper_true)/3;
     batt1=(NUM1_Batper_true+NUM2_Batper_true+NUM3_Batper_true+NUM4_Batper_true+NUM5_Batper_true)%3;
        
-    BMS_to_Upmonitor.m_ID = BMS_Send_Information1+NUM_pack;       
+    BMS_to_Upmonitor.m_ID = BMS_Send_Information1;//0x18FF9701       
   	BMS_to_Upmonitor.m_IDE = 1;
   	BMS_to_Upmonitor.m_RTR = 0;
   	BMS_to_Upmonitor.m_dataLen = 8;
   	BMS_to_Upmonitor.m_priority = 6;
     for(i = 0; i <batt ; i++) 
     {
-      BMS_to_Upmonitor.m_data[0] = (uint8)(ToBMU_BalanceState.CSSUBalanceNode);             //均衡开启状态
-      BMS_to_Upmonitor.m_data[1] = (uint8)(i);            //每个6804采集电压的编号  0-3  
+      BMS_to_Upmonitor.m_data[0] = 0xFF;//子板备用      
+      BMS_to_Upmonitor.m_data[1] = (uint8)(i);//每个6804采集电压的编号,从0开始往下推  
       BMS_to_Upmonitor.m_data[2] = (uint8)VoltInfo.CellVolt[i*3];
       BMS_to_Upmonitor.m_data[3] = (VoltInfo.CellVolt[i*3]>>8)&0X00FF;
       BMS_to_Upmonitor.m_data[4] = (uint8)VoltInfo.CellVolt[i*3+1];
@@ -76,8 +76,8 @@ void Bms_to_Up_Monitor(void)
     switch(batt1) 
     {
       case 1:
-      BMS_to_Upmonitor.m_data[0] = (uint8)(i/NUM_IC);
-      BMS_to_Upmonitor.m_data[1] = (uint8)(i);                             //每个6804采集电压的编号 
+      BMS_to_Upmonitor.m_data[0] = 0xFF;//子板备用  
+      BMS_to_Upmonitor.m_data[1] = (uint8)(i); //每个6804采集电压的编号 
       BMS_to_Upmonitor.m_data[2] = (uint8)VoltInfo.CellVolt[i*3];
       BMS_to_Upmonitor.m_data[3] = (VoltInfo.CellVolt[i*3]>>8)&0X00FF;
       BMS_to_Upmonitor.m_data[4] = 0xFF;
@@ -103,7 +103,7 @@ void Bms_to_Up_Monitor(void)
       break; 
     }      
     
-    BMS_to_Upmonitor.m_ID = BMS_ture_battery+NUM_pack;       
+    BMS_to_Upmonitor.m_ID = BMS_ture_battery; //0x18FF9601      
   	BMS_to_Upmonitor.m_IDE = 1;
   	BMS_to_Upmonitor.m_RTR = 0;
   	BMS_to_Upmonitor.m_dataLen = 8;
@@ -117,7 +117,7 @@ void Bms_to_Up_Monitor(void)
     BMS_to_Upmonitor.m_data[7] = 0xFF;       
     Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor);
     
-    BMS_to_Upmonitor.m_ID = BMS_Send_Information2+NUM_pack;       
+    BMS_to_Upmonitor.m_ID = BMS_Send_Information2; //0x18FF9711      
   	BMS_to_Upmonitor.m_IDE = 1;
   	BMS_to_Upmonitor.m_RTR = 0;
   	BMS_to_Upmonitor.m_dataLen = 8;
@@ -127,20 +127,19 @@ void Bms_to_Up_Monitor(void)
     BMS_to_Upmonitor.m_data[3] = (uint8)VoltInfo.CellVolt_Min;
     BMS_to_Upmonitor.m_data[4] = (VoltInfo.CellVolt_Min>>8)&0x00FF;
     BMS_to_Upmonitor.m_data[5] = VoltInfo.CellVolt_MinNode;
-    BMS_to_Upmonitor.m_data[6] = 0xFF;  
-    BMS_to_Upmonitor.m_data[7] = 0xFF;       
+    BMS_to_Upmonitor.m_data[6] = ToBMU_BalanceState.CSSUBalanceOn;  
+    BMS_to_Upmonitor.m_data[7] = ToBMU_BalanceState.CSSUBalanceNode;       
     Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor); 
    
-    BMS_to_Upmonitor.m_ID = BMS_Send_Information3+NUM_pack;      
+    BMS_to_Upmonitor.m_ID = BMS_Send_Information3; //0x18FF981     
   	BMS_to_Upmonitor.m_IDE = 1;
   	BMS_to_Upmonitor.m_RTR = 0;
   	BMS_to_Upmonitor.m_dataLen = 8;
   	BMS_to_Upmonitor.m_priority = 6;
-  	for( i=0; i< ((NUM_Tem+6) / 7) ;i++)         //ly 按照协议修改
+  	for( i=0; i< ((NUM_Tem+6) / 7) ;i++)         
     {
       BMS_to_Upmonitor.m_data[0] = i;
-      //memset( &pMsgTran.data,0xFF,8 );       /* 8个data设置为40 */
-      if( i < 1 )                      //对于扩展可修改此处
+      if( i < 1 )                     
       {
           for(j=1; j < NUM_IC*2; j++) 
           {
@@ -157,7 +156,7 @@ void Bms_to_Up_Monitor(void)
        Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor); 
     }
   
-    BMS_to_Upmonitor.m_ID = BMS_Send_Information4+NUM_pack;       // 电池基本信息1;
+    BMS_to_Upmonitor.m_ID = BMS_Send_Information4;//0x18FF9811
   	BMS_to_Upmonitor.m_IDE = 1;
   	BMS_to_Upmonitor.m_RTR = 0;
   	BMS_to_Upmonitor.m_dataLen = 8;
@@ -211,7 +210,7 @@ void Bms_to_Up_Monitor(void)
         Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor); 
     } */
 
-    BMS_to_Upmonitor.m_ID = BMS_Send_Information5+NUM_pack;             //导线开路
+    BMS_to_Upmonitor.m_ID = BMS_Send_Information5;//导线开路0x18ff9901
   	BMS_to_Upmonitor.m_IDE = 1;
   	BMS_to_Upmonitor.m_RTR = 0;
   	BMS_to_Upmonitor.m_dataLen = 8;
@@ -226,14 +225,14 @@ void Bms_to_Up_Monitor(void)
   	BMS_to_Upmonitor.m_data[7] = IsoDetect.insulation_TotalVolt>>16;       
     Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor); 
      
-    BMS_to_Upmonitor.m_ID = BMS_Send_Information6+NUM_pack;             //导线开路
+    BMS_to_Upmonitor.m_ID = BMS_Send_Information6;//导线开路0x19FF9901
   	BMS_to_Upmonitor.m_IDE = 1;
   	BMS_to_Upmonitor.m_RTR = 0;
   	BMS_to_Upmonitor.m_dataLen = 6;
   	BMS_to_Upmonitor.m_priority = 6;
   	for(i = 0; i < NUM_IC ; i++)
   	{
-      BMS_to_Upmonitor.m_data[i*2] = Openwire_flag[i];                   // 导线开路
+      BMS_to_Upmonitor.m_data[i*2] = Openwire_flag[i];                   
     	BMS_to_Upmonitor.m_data[i*2 + 1] = (uint8)((Openwire_flag[i]>>8)&0x00FF);	       
   	}
   	Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor);

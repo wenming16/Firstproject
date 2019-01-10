@@ -12,7 +12,7 @@
 #ifndef _LTC6811_CONNECTTYPE_H_
 #define _LTC6811_CONNECTTYPE_H_  
   
-  #define NUM_pack               1   //子板的编号(决定子板的ID号)
+  #define NUM_pack               0   //子板的编号(决定子板的ID号)
   #define NUM_IC                 3   //子板6811的个数
   #define NUM_Tem                5   //子板测试的温度个数
   

@@ -152,7 +152,6 @@ void FltLevJudg(uint8 workstate)
       //均衡开启标记
       if((g_Flt_Charge.Level_Volt_Sys_High!=0) ||\
          (g_Flt_Charge.Level_Volt_Cell_High != 0)|\
-         (g_Flt_Charge.Level_Volt_Cell_Diff_High != 0)||\
          (g_Flt_Charge.Level_Temp_High != 0)||\
          (g_Flt_Charge.Level_Temp_Low != 0) ||\
          (g_Flt_Charge.Level_Temp_Diff_High != 0) ||\
@@ -160,7 +159,7 @@ void FltLevJudg(uint8 workstate)
          (g_Flt_Charge.Level_Insul != 0)||(State_Offline.CSSU1 != 0)||\
          (State_Offline.RelayFlt_Positive != 0)||(State_Offline.Charge!=0))
       {
-        g_Flt_Charge.Level_Charge_BalanceON_Flag = 0;//只要出现故障则不启动均衡  
+        g_Flt_Charge.Level_Charge_BalanceON_Flag = 0;//只要出现故障则不启动均衡(除压差故障)  
       }
       else
       {
@@ -1255,7 +1254,7 @@ uint8 Fault_Charge_CurrH(float Current)//输入温度
 static 
 uint8 Fault_CSSU_OffLine(void)
 {
-  static uint8 cnt;      
+  static uint16 cnt;      
   static uint8 state=0;
   if(HeartBeat.HeartBeat_CSSU1 == 1 )
   { 
@@ -1265,10 +1264,11 @@ uint8 Fault_CSSU_OffLine(void)
   }
   else
   {
-     if(++cnt*PERIOD_DISCHARGE/1000 >= 3)//3S
+     if(++cnt*PERIOD_DISCHARGE/1000 >= 5)//3S
      {
        cnt = 0;
        state = 1; 
+       memset(&g_FromCSSU_Temp, 0x00, sizeof(FromCSSU_Temp_T));//子板掉线后清掉子板信息
      }
   }
   return state;

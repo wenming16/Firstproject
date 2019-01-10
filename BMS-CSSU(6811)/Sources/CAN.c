@@ -154,19 +154,19 @@ Bool MSCAN2GetMsg(pCANFRAME receiveFrame)
     case Boot_ID://0xF300
       if(receiveFrame->m_data[1] == 0xAA)
       {
-          if(receiveFrame->m_data[0] == CSSU_IDNUM)
+          if(receiveFrame->m_data[0] == (CSSU_IDNUM&0x01))
           {
              Boot_Data.OnlineUpdateCheck = 1;
           }           
       }
     break;
 
-    case 0x18FF9701:
+    case 0x18FF9700:
       balance_receive.BalanceOn = receiveFrame->m_data[0];
       BMU_OffLineState.BMU_Life = 1;  //lifeĞÅºÅ
     break;
     
-    case 0x18FF9901:
+    case 0x18FF9900:
       balance_receive.total_volt = (receiveFrame->m_data[5] + ((uint16)receiveFrame->m_data[6]<<8) + ((uint32)receiveFrame->m_data[7]<<16)); 
     break;
     
