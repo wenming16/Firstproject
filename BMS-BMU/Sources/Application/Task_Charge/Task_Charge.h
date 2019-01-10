@@ -19,15 +19,15 @@
 
   typedef struct
   {
-    uint16  Volt_Max_ChargePile;
-    uint16  Curr_Max_ChargePile;
-    uint8   Control_ChargePile;
+    uint16  Volt_Max_ChargePile;//最大请求电压
+    uint16  Curr_Max_ChargePile;//最大请求电流
+    uint8   Control_ChargePile; //充电桩充电控制位
    
-    uint16  VoltC_Max;
-    uint16  VoltC_Min;
-    uint8   SOC;
-    uint8   Temp_Max;
-    uint16  VoltS;
+    uint16  VoltC_Max;          //最大单体电压
+    uint16  VoltC_Min;          //最小单体电压
+    float   SOC;                //发送SOC值
+    uint8   Temp_Max;           //最大温度
+    uint16  VoltS;              //系统总压
   }BMSCharge_T;
   extern BMSCharge_T g_BMSCharge;
   

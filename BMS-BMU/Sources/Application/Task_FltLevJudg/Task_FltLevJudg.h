@@ -44,7 +44,7 @@
     uint8 Level_Charge_SwitchOff_flag; //存在2级，断开继电器
     
     //均衡
-    uint8 Level_Charge_BalanceOff_Flag;//存在故障,不进行均衡
+    uint8 Level_Charge_BalanceON_Flag;//存在故障,不进行均衡
            
   }Fault_Charge_T;
   extern Fault_Charge_T g_Flt_Charge;             //充电故障判断

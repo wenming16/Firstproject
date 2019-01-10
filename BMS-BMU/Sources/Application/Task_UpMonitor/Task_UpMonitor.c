@@ -547,8 +547,8 @@ void CAN_ToUpMonitorMsg(void)
       	#if(ENABLE_RELAYADHESION_JUDGE == 1)    //继电器判断功能使能
       	  BMS_to_Upmonitor.m_data[1] = (Positive & 0x03) + ((1 << 2) & 0x0C) + ((1 << 4) & 0x30) + ((1 << 6) & 0xC0);      //继电器状态 0 打开，1关闭
       	  BMS_to_Upmonitor.m_data[2] = 0xFF; //预留字节             
-        	BMS_to_Upmonitor.m_data[3] = (g_Flt_Charge.Level_Volt_Cell_High & 0x03) + ((g_Flt_DisChg.Level_Volt_Cell_Low  << 2) & 0x0C) + ((g_Flt_DisChg.Level_Volt_Cell_Diff_High << 4) & 0x30) + ((g_Flt_Charge.Level_Volt_Sys_High  << 6) & 0xC0);     //单体电池过压/欠压/压差过大，总压过高
-        	BMS_to_Upmonitor.m_data[4] = (g_Flt_DisChg.Level_Volt_Sys_Low  & 0x03) + ((g_Flt_DisChg.Level_Insul << 2) & 0x0C) + ((g_Flt_DisChg.Level_Temp_High << 4) & 0x30) + ((g_Flt_DisChg.Level_Temp_Low << 6) & 0xC0);     //总压过低，绝缘故障，放电温度过高/过低
+        	BMS_to_Upmonitor.m_data[3] = (g_Flt_Charge.Level_Volt_Cell_High & 0x03) + ((g_Flt_DisChg.Level_Volt_Cell_Low  << 2) & 0x0C) + (((g_Flt_DisChg.Level_Volt_Cell_Diff_High|g_Flt_Charge.Level_Volt_Cell_Diff_High) << 4) & 0x30) + ((g_Flt_Charge.Level_Volt_Sys_High  << 6) & 0xC0);     //单体电池过压/欠压/压差过大，总压过高
+        	BMS_to_Upmonitor.m_data[4] = (g_Flt_DisChg.Level_Volt_Sys_Low  & 0x03) + (((g_Flt_DisChg.Level_Insul|g_Flt_Charge.Level_Insul) << 2) & 0x0C) + ((g_Flt_DisChg.Level_Temp_High << 4) & 0x30) + ((g_Flt_DisChg.Level_Temp_Low << 6) & 0xC0);     //总压过低，绝缘故障，放电温度过高/过低
         	BMS_to_Upmonitor.m_data[5] = (g_Flt_DisChg.Level_Temp_Diff_High & 0x03) + ((g_Flt_Charge.Level_Temp_High<< 2) & 0x0C) + ((g_Flt_Charge.Level_Temp_Low << 4) & 0x30) + ((g_Flt_Charge.Level_Temp_Diff_High << 6) & 0xC0);   //放电温差过大，充电温度过高/过低，充电温差过大
         	BMS_to_Upmonitor.m_data[6] = (0x00 & 0x03) + ((0x00 << 2) & 0x0C) + ((g_Flt_Charge.Level_Current_Charge_High << 4) & 0x30) + ((g_Flt_DisChg.Level_Current_DisCharge_High << 6) & 0xC0);   //SOC高，SOC低，充电电流过大，放电电流过大                                     
         	BMS_to_Upmonitor.m_data[7] = (0x00 & 0x03) + ((0x00 << 2) & 0x0C) + ((0x00 << 4) & 0x30) + (0b11 << 6) ;  //充电枪温度过高（未写），慢充接触器温度过高（未写），总压测量故障       
@@ -572,7 +572,7 @@ void CAN_ToUpMonitorMsg(void)
         BMS_to_Upmonitor.m_data[0] = i;      //编号 0x01
         BMS_to_Upmonitor.m_data[1] = 0x00;   //BMS芯片温度过高
         BMS_to_Upmonitor.m_data[2] = State_Offline.RelayFlt_Positive&0x01;//(DiscFlt.HIVL_ECT0_Fault & 0x01) + ((DiscFlt.HIVL_ECT1_Fault << 1) & 0x02) + ((DiscFlt.HIVL_ECT2_Fault << 2) & 0x04) + ((DiscFlt.HIVL_ECT3_Fault << 3) & 0x08) + (0b11111 << 4) ;      //互锁故障
-        BMS_to_Upmonitor.m_data[3] = ((State_Offline.CSSU1) & 0x01) + ((State_Offline.VCU << 1) & 0x02) + ((State_Offline.HVU << 2) & 0x04);     //通信故障  0000 正常，0001 CSSU掉线，0010 VUC掉线，0100 HVU掉线，1000 TBOX掉线(暂时没有设为0x01)          
+        BMS_to_Upmonitor.m_data[3] = ((State_Offline.CSSU1) & 0x01) + ((State_Offline.VCU << 1) & 0x02) + ((State_Offline.HVU << 2) & 0x04) + ((State_Offline.Charge<<3)&0x08);     //通信故障  0000 正常，0001 CSSU掉线，0010 VUC掉线，0100 HVU掉线，1000 TBOX掉线(暂时没有设为0x01)          
         BMS_to_Upmonitor.m_data[4] = g_PassiveBalance.BalanceOn;           
         BMS_to_Upmonitor.m_data[5] = g_PassiveBalance.BalanceNode;              
         BMS_to_Upmonitor.m_data[6] = 0x00;         
@@ -610,7 +610,7 @@ void Task_BMUToUpMonitor(void)
   BMS_to_Upmonitor.m_ID = BMS_Send_Information1;       
   for(i = 0; i <batt ; i++) 
   {
-    BMS_to_Upmonitor.m_data[0] = g_WorkStateJudge.WorkState;  //BMS的工作状态     
+    BMS_to_Upmonitor.m_data[0] = g_Flt_Charge.Level_Charge_BalanceON_Flag;  //BMS主板是否允许均衡    
     BMS_to_Upmonitor.m_data[1] = (uint8)(i);             
     BMS_to_Upmonitor.m_data[2] = (uint8)g_LTC6811_VoltInfo.CellVolt[i*3];
     BMS_to_Upmonitor.m_data[3] = (g_LTC6811_VoltInfo.CellVolt[i*3]>>8)&0xFF;

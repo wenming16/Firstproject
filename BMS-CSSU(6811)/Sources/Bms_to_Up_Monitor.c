@@ -62,7 +62,7 @@ void Bms_to_Up_Monitor(void)
   	BMS_to_Upmonitor.m_priority = 6;
     for(i = 0; i <batt ; i++) 
     {
-      BMS_to_Upmonitor.m_data[0] = (uint8)(i/NUM_IC);            //需要改正-6804的编号 0-3
+      BMS_to_Upmonitor.m_data[0] = (uint8)(ToBMU_BalanceState.CSSUBalanceNode);             //均衡开启状态
       BMS_to_Upmonitor.m_data[1] = (uint8)(i);            //每个6804采集电压的编号  0-3  
       BMS_to_Upmonitor.m_data[2] = (uint8)VoltInfo.CellVolt[i*3];
       BMS_to_Upmonitor.m_data[3] = (VoltInfo.CellVolt[i*3]>>8)&0X00FF;

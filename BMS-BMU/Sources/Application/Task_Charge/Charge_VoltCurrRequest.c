@@ -16,6 +16,10 @@ void Charge_VoltCurrRequest(void)
   float curr;
   //最大电压请求
   g_BMSCharge.Volt_Max_ChargePile = (CELL_VOLT_MAX * SYS_SERIES_YiDongLi + 5);         //最高允许充电端电压 分辨率:0.1V
+  if(g_BMSCharge.Control_ChargePile == 1)//出现故障
+  {
+    g_BMSCharge.Volt_Max_ChargePile = 0;
+  }
   //最大电流请求
   curr = Charge_CurrInit(CurrLimit.Curr_Charge_Cons, g_BMSCharge.Curr_Max_ChargePile);
   g_BMSCharge.Curr_Max_ChargePile = ChargeEnd_CurrentOut(g_VoltInfo.CellVolt_Max, curr);//先进行处理 分辨率0.1A
@@ -191,7 +195,7 @@ static
 float Charge_CurrInit(float currlimt, float chargeInit)
 {
    float currIn;
-   if (chargeInit <= 0.03*SYS_CAPACITY)//初始值的确定
+   if (chargeInit <= 0)//初始的chargeInit值的确定
    {
       chargeInit = currlimt;
    }
@@ -225,7 +229,14 @@ float ChargeEnd_CurrentOut(uint16 cellvoltmax, float currIn)
   {
     currflag = 1;
     cnt = 0;
-    current = 0.7*currIn;
+    if(currIn >= 0.01*SYS_CAPACITY)
+    {
+      current = 0.7*currIn;  
+    }
+    else
+    {
+      current = currIn;
+    }
   }
   else
   {

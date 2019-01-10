@@ -96,11 +96,11 @@ void FltLevJudg(uint8 workstate)
     case MODE_DISCHARGE: //放电状态
       //清除充电状态故障
       g_Flt_Charge.Level_Charge_SwitchOff_flag  = 0; 
-      g_Flt_Charge.Level_Charge_BalanceOff_Flag = 0;
+      g_Flt_Charge.Level_Charge_BalanceON_Flag  = 0;
       g_Flt_Charge.Level_Volt_Sys_High          = 0;
       g_Flt_Charge.Level_Volt_Cell_High         = 0;
       g_Flt_Charge.Level_Insul                  = 0;
-      State_Offline.RelayFlt_Positive           = 0;
+      State_Offline.Charge                      = 0;
       //判断放电状态故障
       g_Flt_DisChg.Level_Volt_Sys_Low           = Fault_DisChg_VoltSL(g_VoltInfo.SysVolt_Total, g_TempInfo.CellTemp_Ave);
       g_Flt_DisChg.Level_Volt_Cell_Low          = Fault_DisChg_VoltCL(g_VoltInfo.CellVolt_Min, g_TempInfo.CellTemp_Ave);
@@ -138,14 +138,14 @@ void FltLevJudg(uint8 workstate)
       g_Flt_Charge.Level_Temp_Diff_High       = Fault_Charge_TempD(g_TempInfo.CellTemp_Diff);
       g_Flt_Charge.Level_Current_Charge_High  = Fault_Charge_CurrH(g_DataColletInfo.DataCollet_Current_Filter);
       g_Flt_Charge.Level_Insul                = Fault_Charge_Insul(g_IsoDetect.insulation_resist);
-      State_Offline.RelayFlt_Positive         = Fault_Charge_OffLine();
+      State_Offline.Charge                    = Fault_Charge_OffLine();
       //断开继电器的二级故障标记
       if((g_Flt_Charge.Level_Volt_Sys_High==2) ||\
          (g_Flt_Charge.Level_Volt_Cell_High==2) ||\
          (g_Flt_Charge.Level_Temp_High == 2)||\
          (g_Flt_Charge.Level_Temp_Low == 2)||\
          (g_Flt_Charge.Level_Insul == 2)||(State_Offline.CSSU1 == 1)||\
-         (State_Offline.RelayFlt_Positive == 1)||(State_Offline.RelayFlt_Positive == 1))
+         (State_Offline.Charge == 1))
       {
         g_Flt_Charge.Level_Charge_SwitchOff_flag = 1;//2级故障闭合继电器  
       }
@@ -158,13 +158,13 @@ void FltLevJudg(uint8 workstate)
          (g_Flt_Charge.Level_Temp_Diff_High != 0) ||\
          (g_Flt_Charge.Level_Current_Charge_High != 0) ||\
          (g_Flt_Charge.Level_Insul != 0)||(State_Offline.CSSU1 != 0)||\
-         (State_Offline.RelayFlt_Positive != 0)||(State_Offline.RelayFlt_Positive != 0))
+         (State_Offline.RelayFlt_Positive != 0)||(State_Offline.Charge!=0))
       {
-        g_Flt_Charge.Level_Charge_BalanceOff_Flag = 1;//只要出现故障则不启动均衡  
+        g_Flt_Charge.Level_Charge_BalanceON_Flag = 0;//只要出现故障则不启动均衡  
       }
       else
       {
-        g_Flt_Charge.Level_Charge_BalanceOff_Flag = 0;//开启均衡
+        g_Flt_Charge.Level_Charge_BalanceON_Flag = 1;//开启均衡
       }
             
     break;
@@ -1310,39 +1310,39 @@ uint8 Fault_Charge_Insul(uint16 Insul)
 static 
 uint8 Fault_Relay_BreakDown(void)
 {
-   static uint8 cnt;
+   static uint8 cnt[2];
    static uint8 flt; 
-   if(Port_StateGet(Relay_Positive_PORT, Relay_Positive_pin) == Relay_ON)
+   if(Port_StateGet(Relay_Positive_PORT, Relay_Positive_pin) == Relay_ON)//继电器开启的状态
    {
       if(abs(g_VoltInfo.SysVolt_Total/10000.0-g_FromCSSU_Volt.InsulVolt_Total/10000.0)>0.5*CELL_VOLT_NOMINAL*SYS_SERIES_YiDongLi)
       {
-          if(++cnt*PERIOD_DISCHARGE/1000>=2)
+          if(++cnt[0]*PERIOD_DISCHARGE/1000>=2)
           {
-             cnt = 0;
+             cnt[0] = 0;    
              flt = 1;
           }
       }
       else
       {
-         cnt = 0;
-         flt = 0;
+         cnt[0] = 0;   
       }
+      cnt[1] = 0;
    }
-   else
+   else//继电器关闭的状态
    {
       if(abs(g_VoltInfo.SysVolt_Total/10000.0-g_FromCSSU_Volt.InsulVolt_Total/10000.0)<0.5*CELL_VOLT_NOMINAL*SYS_SERIES_YiDongLi)
       {
-          if(++cnt*PERIOD_DISCHARGE/1000>=2)
+          if(++cnt[1]*PERIOD_DISCHARGE/1000>=2)
           {
-             cnt = 0;
+             cnt[1] = 0;   
              flt = 1;
           }
       }
       else
       {
-         cnt = 0;
-         flt = 0;
+         cnt[1] = 0;     
       }
+      cnt[0] = 0;
    }
    return flt;
 }
@@ -1353,7 +1353,7 @@ uint8 Fault_Relay_BreakDown(void)
 static 
 uint8 Fault_Charge_OffLine(void)
 {
-  static uint8 cnt;      
+  static uint16 cnt;      
   static uint8 state=0;
   if(HeartBeat.HeartBeat_Charge == 1 )
   { 
@@ -1363,7 +1363,7 @@ uint8 Fault_Charge_OffLine(void)
   }
   else
   {
-     if(++cnt*PERIOD_DISCHARGE/1000 >= 5)//5S
+     if(++cnt*PERIOD_DISCHARGE/1000 >= 50)//50S
      {
        cnt = 0;
        state = 1; 

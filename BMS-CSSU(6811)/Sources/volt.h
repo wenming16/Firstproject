@@ -41,7 +41,7 @@
   #define NUM5_Batper_rear       0
   #define NUM5_Batper_empty      0
 
-  #define NUM_Battery      NUM1_Batper_true+NUM2_Batper_true+NUM3_Batper_true+NUM4_Batper_true+NUM5_Batper_true
+  #define NUM_Battery      (NUM1_Batper_true+NUM2_Batper_true+NUM3_Batper_true+NUM4_Batper_true+NUM5_Batper_true)
    //#define NUM_Battery      NUM_IC*NUM_Batper
 
 

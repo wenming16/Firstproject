@@ -31,13 +31,13 @@ PassiveBalance_T g_PassiveBalance;
  *说明：       被动均衡函数
 ========================================================================*/
 static
-uint8 BalanceControl_Strategy(float curr, uint8 faultflg, uint16 voltmax, uint32 totalvolt, uint8 balacenod, uint16 balancevolt)
+uint8 BalanceControl_Strategy(float curr, uint8 BalanceOn, uint16 voltmax, uint32 totalvolt, uint8 balacenod, uint16 balancevolt)
 {
   uint8 tskstate=2;                   //返回2表示未进行均衡
   static uint16 cnt;
   uint8 balanceNum;
   
-  if(abs(curr)>=10 && (faultflg == 0) && (g_WorkStateJudge.WorkState == MODE_CHARGE)) //只有在充电的过程中电流大于5A才开启
+  if(abs(curr)>=10 && (BalanceOn == 1) && (g_WorkStateJudge.WorkState == MODE_CHARGE)) //只有在充电的过程中电流大于5A才开启
   {  
     if((voltmax - (totalvolt/25.0)) > balancevolt)
     {  
@@ -88,7 +88,7 @@ void Task_BalanceControl_ON(void)
 {
    uint8 balancestate;
    
-   balancestate = BalanceControl_Strategy(g_DataColletInfo.DataCollet_Current_Filter, g_Flt_Charge.Level_Charge_BalanceOff_Flag,\
+   balancestate = BalanceControl_Strategy(g_DataColletInfo.DataCollet_Current_Filter, g_Flt_Charge.Level_Charge_BalanceON_Flag,\
                                           g_LTC6811_VoltInfo.CellVolt_Max, g_LTC6811_VoltInfo.CellVolt_Total, (g_LTC6811_VoltInfo.CellVolt_MaxNode+1), 500);
    
    if(balancestate == 0)//开启均衡标记

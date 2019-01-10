@@ -30,8 +30,10 @@ void DataFromCSSU(pCANFRAME data)
   switch(data->m_ID) 
   { 
     //电池模组单体电压信息
-    case 0x18FF9700:                                      //子板采集的单体电压信息，从第25节开始存储
-      j = data->m_data[1];                                //6804采集电压编号
+    case 0x18FF9700:      
+      g_FromCSSU_FltData.CSSU_BalanceState = data->m_data[0];//接收子板均衡的状态
+      
+      j = data->m_data[1];  //6804采集电压编号,从0一致往下排列
 
       for(i=0; i<3&&(3*j+i<(SYS_SERIES_YiDongLi)); i++)   //&&(3*j+i<(SYS_SERIES_YiDongLi))
       {

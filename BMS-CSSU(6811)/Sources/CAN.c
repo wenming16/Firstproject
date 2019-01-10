@@ -160,24 +160,17 @@ Bool MSCAN2GetMsg(pCANFRAME receiveFrame)
           }           
       }
     break;
-    
-    case 0x18FF9711:
-        
-    	   balance_receive.current =  receiveFrame->m_data[6]+(((uint16)receiveFrame->m_data[7])<<8);
-      
-      break;
+
     case 0x18FF9701:
-         
-            balance_receive.model_work = receiveFrame->m_data[0];
-         
-         break;
+      balance_receive.BalanceOn = receiveFrame->m_data[0];
+      BMU_OffLineState.BMU_Life = 1;  //lifeĞÅºÅ
+    break;
+    
     case 0x18FF9901:
-         balance_receive.total_volt = (receiveFrame->m_data[5] + ((uint16)receiveFrame->m_data[6]<<8) + ((uint32)receiveFrame->m_data[7]<<16)); 
-          
-         break;
+      balance_receive.total_volt = (receiveFrame->m_data[5] + ((uint16)receiveFrame->m_data[6]<<8) + ((uint32)receiveFrame->m_data[7]<<16)); 
+    break;
     
     default:
-    
     break;     
   }
   

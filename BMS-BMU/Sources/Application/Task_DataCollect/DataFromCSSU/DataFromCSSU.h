@@ -50,6 +50,7 @@
   {
     uint8   OpenWire_Status;         //导线开路状态
     uint8   CSSUFlt_ChipTemp;        //子板芯片温度故障
+    uint8   CSSU_BalanceState;       //子板的均衡状态,00:未均衡
   }FromCSSU_FltData_T;
   extern FromCSSU_FltData_T g_FromCSSU_FltData;
 

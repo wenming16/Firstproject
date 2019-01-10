@@ -27,10 +27,10 @@ uint8 VoltSH( uint8 pack_volt_over,uint8 year,uint8 month,uint8 day,uint8 hour,u
     uint8 error = 0,temp;
     static uint8 first_fault;
     uint16 write_val,read_val;
-       
+    uint8  Epag;
+    Epag  = EPAGE; 
     if( pack_volt_over != 0 )                 
     {
-        
         EPAGE = 0xFC;
         
         temp = *(uint8*)(0x0826);
@@ -58,10 +58,10 @@ uint8 VoltSH( uint8 pack_volt_over,uint8 year,uint8 month,uint8 day,uint8 hour,u
             {
                 error = 0; 
             }
-             
-        }   
+        } 
     }
     
+    EPAGE = Epag; 
     return error;    
 }
 
@@ -78,10 +78,10 @@ uint8 VoltSL( uint8 pack_volt_under,uint8 year,uint8 month,uint8 day,uint8 hour,
     uint8 error = 0,temp;
     static uint8 first_fault;
     uint16 write_val,read_val;
-       
+    uint8  Epag;
+    Epag  = EPAGE;   
     if( pack_volt_under != 0 )                 
     {
-        
         EPAGE = 0xFC;
         
         temp = *(uint8*)(0x082d);
@@ -109,9 +109,9 @@ uint8 VoltSL( uint8 pack_volt_under,uint8 year,uint8 month,uint8 day,uint8 hour,
             {
                 error = 0; 
             }
-        }   
+        } 
     }
-    
+    EPAGE = Epag; 
     return error;    
 }
 
@@ -128,10 +128,10 @@ uint8 VoltCH( uint8 cell_volt_over,uint8 year,uint8 month,uint8 day,uint8 hour,u
     uint8 error = 0,temp;
     static uint8 first_fault;
     uint16 write_val,read_val;
-       
+    uint8  Epag;
+    Epag  = EPAGE;   
     if( cell_volt_over != 0 )                 
     {
-        
         EPAGE = 0xFC;
         
         temp = *(uint8*)(0x0834);
@@ -160,9 +160,9 @@ uint8 VoltCH( uint8 cell_volt_over,uint8 year,uint8 month,uint8 day,uint8 hour,u
                 error = 0; 
             }
              
-        }   
+        } 
     }
-    
+    EPAGE = Epag;
     return error;    
 }
 
@@ -179,10 +179,10 @@ uint8 VoltCL( uint8 cell_volt_under,uint8 year,uint8 month,uint8 day,uint8 hour,
     uint8 error = 0,temp;
     static uint8 first_fault;
     uint16 write_val,read_val;
-       
+    uint8 Epag;
+    Epag  = EPAGE;   
     if( cell_volt_under != 0 )                 
     {
-        
         EPAGE = 0xFC;
         
         temp = *(uint8*)(0x083b);
@@ -210,10 +210,9 @@ uint8 VoltCL( uint8 cell_volt_under,uint8 year,uint8 month,uint8 day,uint8 hour,
             {
                 error = 0; 
             }
-             
-        }   
+        } 
     }
-    
+    EPAGE = Epag;
     return error;    
 }
 
@@ -230,10 +229,10 @@ uint8 VoltCD( uint8 cell_volt_delta,uint8 year,uint8 month,uint8 day,uint8 hour,
     uint8 error = 0,temp;
     static uint8 first_fault;
     uint16 write_val,read_val;
-       
+    uint8 Epag;
+    Epag  = EPAGE;   
     if( cell_volt_delta != 0 )                 
     {
-        
         EPAGE = 0xFC;
         
         temp = *(uint8*)(0x0842);
@@ -261,10 +260,9 @@ uint8 VoltCD( uint8 cell_volt_delta,uint8 year,uint8 month,uint8 day,uint8 hour,
             {
                 error = 0; 
             }
-             
-        }   
+        } 
     }
-    
+    EPAGE = Epag;
     return error;    
 }
 
@@ -281,10 +279,10 @@ uint8 CurrH_Charge( uint8 charge_cur_over,uint8 year,uint8 month,uint8 day,uint8
     uint8 error = 0,temp;
     static uint8 first_fault;
     uint16 write_val,read_val;
-       
+    uint8 Epag;
+    Epag  = EPAGE;  
     if( charge_cur_over != 0 )                 
     {
-        
         EPAGE = 0xFC;
         
         temp = *(uint8*)(0x0849);
@@ -313,9 +311,9 @@ uint8 CurrH_Charge( uint8 charge_cur_over,uint8 year,uint8 month,uint8 day,uint8
                 error = 0; 
             }
              
-        }   
+        } 
     }
-    
+    EPAGE = Epag; 
     return error;    
 }
 
@@ -332,10 +330,10 @@ uint8 CurrH_DisChg( uint8 dischar_cur_over,uint8 year,uint8 month,uint8 day,uint
     uint8 error = 0,temp;
     static uint8 first_fault;
     uint16 write_val,read_val;
-       
+    uint8 Epag; 
+    Epag  = EPAGE;  
     if( dischar_cur_over != 0 )                 
     {
-        
         EPAGE = 0xFC;
         
         temp = *(uint8*)(0x0850);
@@ -363,10 +361,9 @@ uint8 CurrH_DisChg( uint8 dischar_cur_over,uint8 year,uint8 month,uint8 day,uint
             {
                 error = 0; 
             }
-             
-        }   
+        } 
     }
-    
+    EPAGE = Epag;
     return error;    
 }
 
@@ -383,10 +380,10 @@ uint8 TempH_DisChg( uint8 dischar_temper_over,uint8 year,uint8 month,uint8 day,u
     uint8 error = 0,temp;
     static uint8 first_fault;
     uint16 write_val,read_val;
-       
+    uint8 Epag; 
+    Epag  = EPAGE;  
     if( dischar_temper_over != 0 )                 
     {
-        
         EPAGE = 0xFC;
         
         temp = *(uint8*)(0x0857);
@@ -414,10 +411,9 @@ uint8 TempH_DisChg( uint8 dischar_temper_over,uint8 year,uint8 month,uint8 day,u
             {
                 error = 0; 
             }
-             
-        }   
+        } 
     }
-    
+    EPAGE = Epag; 
     return error;    
 }
 
@@ -434,10 +430,10 @@ uint8 TempH_Charge( uint8 charge_temper_over,uint8 year,uint8 month,uint8 day,ui
     uint8 error = 0,temp;
     static uint8 first_fault;
     uint16 write_val,read_val;
-       
+    uint8 Epag; 
+    Epag  = EPAGE;  
     if( charge_temper_over != 0 )                 
     {
-        
         EPAGE = 0xFC;
         
         temp = *(uint8*)(0x085e);
@@ -465,10 +461,9 @@ uint8 TempH_Charge( uint8 charge_temper_over,uint8 year,uint8 month,uint8 day,ui
             {
                 error = 0; 
             }
-             
-        }   
+        } 
     }
-    
+    EPAGE = Epag; 
     return error;    
 }
 
@@ -485,10 +480,10 @@ uint8 TempL_DisChg( uint8 dischar_temper_under,uint8 year,uint8 month,uint8 day,
     uint8 error = 0,temp;
     static uint8 first_fault;
     uint16 write_val,read_val;
-       
+    uint8 Epag; 
+    Epag  = EPAGE;   
     if( dischar_temper_under != 0 )                 
     {
-        
         EPAGE = 0xFC;
         
         temp = *(uint8*)(0x0865);
@@ -516,10 +511,9 @@ uint8 TempL_DisChg( uint8 dischar_temper_under,uint8 year,uint8 month,uint8 day,
             {
                 error = 0; 
             }
-             
-        }   
+        }  
     }
-    
+    EPAGE = Epag; 
     return error;    
 }
 
@@ -536,10 +530,10 @@ uint8 TempL_Charge( uint8 charge_temper_under,uint8 year,uint8 month,uint8 day,u
     uint8 error = 0,temp;
     static uint8 first_fault;
     uint16 write_val,read_val;
-       
+    uint8 Epag;
+    Epag  = EPAGE;  
     if( charge_temper_under != 0 )                 
     {
-        
         EPAGE = 0xFC;
         
         temp = *(uint8*)(0x086c);
@@ -567,10 +561,9 @@ uint8 TempL_Charge( uint8 charge_temper_under,uint8 year,uint8 month,uint8 day,u
             {
                 error = 0; 
             }
-             
-        }   
+        } 
     }
-    
+    EPAGE = Epag;
     return error;    
 }
 
@@ -587,10 +580,10 @@ uint8 TempD_DisChg( uint8 dischar_temper_delta,uint8 year,uint8 month,uint8 day,
     uint8 error = 0,temp;
     static uint8 first_fault;
     uint16 write_val,read_val;
-       
+    uint8 Epag; 
+    Epag  = EPAGE;  
     if( dischar_temper_delta != 0 )                 
     {
-        
         EPAGE = 0xFC;
         
         temp = *(uint8*)(0x0873);
@@ -618,10 +611,9 @@ uint8 TempD_DisChg( uint8 dischar_temper_delta,uint8 year,uint8 month,uint8 day,
             {
                 error = 0; 
             }
-             
-        }   
+        } 
     }
-    
+    EPAGE = Epag; 
     return error;    
 }
 
@@ -638,10 +630,10 @@ uint8 TempD_Charge( uint8 charge_temper_under,uint8 year,uint8 month,uint8 day,u
     uint8 error = 0,temp;
     static uint8 first_fault;
     uint16 write_val,read_val;
-       
+    uint8  Epag;  
+    Epag  = EPAGE; 
     if( charge_temper_under != 0 )                 
     {
-        
         EPAGE = 0xFC;
         
         temp = *(uint8*)(0x0880);
@@ -669,10 +661,9 @@ uint8 TempD_Charge( uint8 charge_temper_under,uint8 year,uint8 month,uint8 day,u
             {
                 error = 0; 
             }
-             
-        }   
+        }  
     }
-    
+    EPAGE = Epag; 
     return error;    
 }
 
@@ -689,10 +680,10 @@ uint8 InsulationPos_Fault( uint8 insulation_pos_fault,uint8 year,uint8 month,uin
     uint8 error = 0,temp;
     static uint8 first_fault;
     uint16 write_val,read_val;
-       
+    uint8 Epag; 
+    Epag  = EPAGE;  
     if( insulation_pos_fault != 0 )                 
     {
-        
         EPAGE = 0xFC;
         
         temp = *(uint8*)(0x0881);
@@ -720,10 +711,9 @@ uint8 InsulationPos_Fault( uint8 insulation_pos_fault,uint8 year,uint8 month,uin
             {
                 error = 0; 
             }
-             
-        }   
+        } 
     }
-    
+    EPAGE = Epag; 
     return error;    
 }
 
@@ -740,10 +730,10 @@ uint8 InsulationNeg_Fault( uint8 insulation_neg_fault,uint8 year,uint8 month,uin
     uint8 error = 0,temp;
     static uint8 first_fault;
     uint16 write_val,read_val;
-       
+    uint8  Epag;
+    Epag  = EPAGE;   
     if( insulation_neg_fault != 0 )                 
     {
-        
         EPAGE = 0xFC;
         
         temp = *(uint8*)(0x0888);
@@ -771,10 +761,9 @@ uint8 InsulationNeg_Fault( uint8 insulation_neg_fault,uint8 year,uint8 month,uin
             {
                 error = 0; 
             }
-             
-        }   
+        } 
     }
-    
+    EPAGE = Epag;
     return error;    
 }
 
@@ -791,10 +780,10 @@ uint8 OpenWire_Fault( uint8 open_wire_fault,uint8 year,uint8 month,uint8 day,uin
   uint8 error = 0,temp;
   static uint8 first_fault;
   uint16 write_val,read_val;
-     
+  uint8 Epag; 
+  Epag  = EPAGE;  
   if( open_wire_fault != 0 )                 
   {
-      
     EPAGE = 0xFD;
     
     temp = *(uint8*)(0x0826);
@@ -821,8 +810,9 @@ uint8 OpenWire_Fault( uint8 open_wire_fault,uint8 year,uint8 month,uint8 day,uin
       {
           error = 0; 
       }
-    }   
+    }
   }
+  EPAGE = Epag;
   return error;    
 }
 
@@ -853,13 +843,15 @@ uint8 ReadFltCodeFromEEE(uint8 *read_flag,uint8 *clear_flag)
 {
     uint8 error = 0;
     uint8 j;
+    uint8 Epag;
     uint8 *EEPROM_ptr=NULL;
     uint16 i;
     CANFRAME  FltCodeBMSToUpmonitor;
+    
+    Epag  = EPAGE;
     if(*read_flag == 0xAA) 
     {
        error = 1;
-       
        *read_flag = 0;
        EPAGE = 0xFC;
        EEPROM_ptr = (uint8*)0x0820;
@@ -903,9 +895,7 @@ uint8 ReadFltCodeFromEEE(uint8 *read_flag,uint8 *clear_flag)
     } 
     else if( *clear_flag == 0xAA ) 
     {
-      
         DisableInterrupts;
-
         error = 1;
         *clear_flag = 0;
         
@@ -921,14 +911,11 @@ uint8 ReadFltCodeFromEEE(uint8 *read_flag,uint8 *clear_flag)
                *(EEPROM_ptr++) = 0x00 ;
            }     
         }
-        
         error = 0;
-        
         EnableInterrupts;
     }
-    
     EEPROM_ptr = NULL;
-    
+    EPAGE = Epag;
     g_Roll_Tick.Roll_FltCodeP++;
     return error;
 }
@@ -972,7 +959,7 @@ void Task_FltCodeStore(void)
   
   readfault[3] = VoltCL(g_Flt_DisChg.Level_Volt_Cell_Low, year, month, day, hour, min); 
   
-  readfault[4] = VoltCD(g_Flt_DisChg.Level_Volt_Cell_Diff_High, year, month, day, hour, min); 
+  readfault[4] = VoltCD((g_Flt_DisChg.Level_Volt_Cell_Diff_High|g_Flt_Charge.Level_Volt_Cell_Diff_High), year, month, day, hour, min); 
   
   readfault[5] = CurrH_Charge(g_Flt_Charge.Level_Current_Charge_High, year, month, day, hour, min); 
   

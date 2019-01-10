@@ -1,4 +1,4 @@
-  /*=======================================================================
+/*=======================================================================
  *Subsystem:   裸机
  *File:        Task_Charge.C
  *Author:      Wen Yuhao
@@ -105,7 +105,7 @@ void Charge_Strategy(void)
     	BMS_to_ChargePile.m_data[1] = (uint8)(g_BMSCharge.VoltC_Max*0.1);                              
     	BMS_to_ChargePile.m_data[2] = ((uint16)(g_BMSCharge.VoltC_Min*0.1)) >> 8;       //单体最低电压高字节   
     	BMS_to_ChargePile.m_data[3] = (uint8)(g_BMSCharge.VoltC_Min*0.1); 
-    	BMS_to_ChargePile.m_data[4] = g_BMSCharge.SOC*250.0;                        //SOC   已经过分辨率(0.4%/bit)处理
+    	BMS_to_ChargePile.m_data[4] = (uint8)((g_BMSCharge.SOC + 0.005)*250);                        //SOC   已经过分辨率(0.4%/bit)处理
     	BMS_to_ChargePile.m_data[5] = g_BMSCharge.Temp_Max;                   //最高温度     1℃/bit  偏移量:-40℃
     	BMS_to_ChargePile.m_data[6] = ((uint16)(g_BMSCharge.VoltS* 0.001)) >>8;                 //电池组电压高字节     已经过分辨率处理
     	BMS_to_ChargePile.m_data[7] = (uint8)(g_BMSCharge.VoltS* 0.001);       

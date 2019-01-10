@@ -65,9 +65,7 @@ uint8 LTC6811_BalanceControl(uint8 state1, uint8 state2, uint8 state3, uint8 tim
   if((state1<1||state1>NUM1_Batper_true)&&(state2<1||state2>NUM2_Batper_true)&&((state3<1||state3>NUM3_Batper_true)))
   {
     return 1;
-    
   } 
-  
   state[0] = ((uint16)1)<<(uint8)(state1-1);
   if(state1>NUM1_Batper_front)//4
   {

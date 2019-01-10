@@ -16,6 +16,38 @@
 #include  "Includes.h"
 
 BalanceInfo_T balance_receive;
+ToBMU_BalanceState_T ToBMU_BalanceState;
+BMU_OffLineState_T BMU_OffLineState;
+
+/*=======================================================================
+ *函数名:      BMU_OffLineState(void)  
+ *功能:        均衡时判断是否掉线
+ *参数:        无       
+ *返回：       无
+ *说明：       在均衡进行钳先要判断主板是否掉线
+========================================================================*/
+static
+uint8  BMU_OffLineStateJudge(void)
+{
+  static uint16 cnt;
+  static uint8 state=0;
+  if(BMU_OffLineState.BMU_Life == 1)
+  {
+    BMU_OffLineState.BMU_Life = 0;
+    state = 0;
+    cnt = 0;
+  }
+  else
+  {
+     if(++cnt*500/1000 >= 10)//10S
+     {
+       cnt = 0;
+       state = 1; 
+     }
+  }
+  return state;
+}
+
 /*=======================================================================
  *函数名:      BalanceControl_Strategy(flaot, uint8, uint16, uint32, uint8, float)
  *功能:        对电池组进行被动均衡
@@ -32,29 +64,27 @@ BalanceInfo_T balance_receive;
  *说明：       被动均衡函数
 ========================================================================*/
 static
-uint8 BalanceControl_Strategy(float curr, uint8 faultflg, uint16 voltmax, uint32 totalvolt, uint8 balacenod, uint16 balancevolt)
+uint8 BalanceControl_Strategy(uint8 balanceOn, uint16 voltmax, uint32 totalvolt, uint8 balacenod, uint16 balancevolt)
 {
   uint8 tskstate=2;                   //返回2表示未进行均衡
   static uint16 cnt;
   uint8 balanceNum;
   
-  if(curr>=10 && (faultflg == 0) && (1 == balance_receive.model_work))//MODE_CHARGE)) //只有在充电的过程中电流大于5A才开启
+  if(1 == balanceOn)//主板允许才进行充电
   {
     if((voltmax - (totalvolt/25.0)) > balancevolt)
     { 
        if(++cnt*BALANCEPERIO/1000>=3)//持续2s,连续发命令是否会出错?
        {
-          
-         PTT_PTT0 = 0;//均衡显示灯开启
          cnt = 3000/BALANCEPERIO;
          if(balacenod <= NUM1_Batper_true)
          {
-           tskstate = LTC6811_BalanceControl(balacenod, 0x00, 0x00, 1); 
+            tskstate = LTC6811_BalanceControl(balacenod, 0x00, 0x00, 1); 
          }
          else if(balacenod <= (NUM1_Batper_true+NUM2_Batper_true))
          {
             balanceNum = balacenod-NUM1_Batper_true;
-           tskstate =  LTC6811_BalanceControl(0x00, balanceNum, 0x00, 1);
+            tskstate =  LTC6811_BalanceControl(0x00, balanceNum, 0x00, 1);
          }
          else if(balacenod <= (NUM1_Batper_true+NUM2_Batper_true+NUM3_Batper_true))
          {
@@ -90,18 +120,25 @@ uint8 BalanceControl_Strategy(float curr, uint8 faultflg, uint16 voltmax, uint32
 void Task_BalanceControl_ON(void)
 {
    uint8 balancestate;
+   uint8 BMUOffline,BalanceContol;
+   
+   BMUOffline = BMU_OffLineStateJudge();
+   BalanceContol = (!BMUOffline)&balance_receive.BalanceOn;//主板未掉线并且主板运行均衡
           
-  if(balance_receive.total_volt < 5000)
-  {
-      balance_receive.flag = 1;
-  } 
-  else
-  {    
-      balance_receive.flag = 0;
-  }
-          
-   BalanceControl_Strategy(balance_receive.current, balance_receive.flag,\
-                           VoltInfo.CellVolt_Max, balance_receive.total_volt,(VoltInfo.CellVolt_MaxNode+1), 500); 
+   balancestate = BalanceControl_Strategy(BalanceContol, VoltInfo.CellVolt_Max,balance_receive.total_volt,\
+                                          (VoltInfo.CellVolt_MaxNode+1), 500); 
+   
+   if(balancestate == 0)
+   {
+      PTT_PTT0 = 0;//均衡显示灯开启
+      ToBMU_BalanceState.CSSUBalanceOn   = 1;
+      ToBMU_BalanceState.CSSUBalanceNode = VoltInfo.CellVolt_MaxNode+1;
+   }
+   else
+   {
+      ToBMU_BalanceState.CSSUBalanceOn   = 0;
+      ToBMU_BalanceState.CSSUBalanceNode = 0;
+   }
    
    memset(&balance_receive,0,sizeof(balance_receive));
    
@@ -117,6 +154,7 @@ void Task_BalanceControl_ON(void)
 void Task_BalanceControl_OFF(void)
 {
    LTC6811_BalanceControl(0, 0, 0, 0);//关闭均衡功能
-   PTT_PTT0 = 1;
+   PTT_PTT0 = 1; //关闭均衡灯
    Task_Flag_Counter.Counter_Balance_close++;
 }
+
