@@ -81,14 +81,11 @@ float ADC_Current(void)
                      向存储值，到后期偏向查表值。存储在充电时期且SOC>90%
                      或SOC<20%是进行校正。
 ========================================================================*/  
-uint8 fff[5];
-float AH=0,ah1=0;
-float T=0;
 static
 void SOC_AhIntegral(float current, uint16 Voltagemin, uint16 Voltagemax, uint16 SampleTime)  //100ms
 {        
-  //float T=0;
-  //float AH=0,ah1=0;
+  float T=0;
+  float AH=0,ah1=0;
   float Vmin = 0, Vmax = 0;
   static float Cellcap;
   Vmin = Voltagemin/10000.0;
@@ -128,12 +125,12 @@ void SOC_AhIntegral(float current, uint16 Voltagemin, uint16 Voltagemax, uint16 
   //充电状态     
   if(g_WorkStateJudge.WorkState == MODE_CHARGE)    //充电 
   {      
-    if(g_VoltInfo.CellVolt_Max >= (CELL_VOLT_MAX-0.01)*10000)                         
+    if(g_VoltInfo.CellVolt_Max >= (CELL_VOLT_MAX-0.02)*10000)                         
     //if(g_TempInfo.CellVolt_Max >= (MaxVolt_Cal(g_Batt_TempMesg.aveTemp)-0.02)*10000)          //当电压达到(最大值-0.02)时，进行充电末端的校正    
     {     
       g_SOCInfo.SOC_HighestVoltGet = 1.0;                             // 高电压单体SOC先为1；
-      if(g_SOCInfo.SOC_ValueRead > g_SOCInfo.SOC_ValueVoltGet)          //充电状态max_V达到(最大值-0.01)V时,R>V,重置SOC_deta和SOC_K的值
-      {                                                             //soc_v未置1前soc_r>soc_v,当第二次进入此函数时soc_v=1,此时soc_v>soc_r
+      if(g_SOCInfo.SOC_ValueRead > g_SOCInfo.SOC_ValueVoltGet)        //充电状态max_V达到(最大值-0.01)V时,R>V,重置SOC_deta和SOC_K的值
+      {  //soc_v未置1前soc_r>soc_v,当第二次进入此函数时soc_v=1,此时soc_v>soc_r
         g_SOCInfo.SOC_ValueRealtimeDiff = g_SOCInfo.SOC_ValueRead - 1; 
         g_SOCInfo.SOC_ValueInitDiff  =  g_SOCInfo.SOC_ValueRealtimeDiff;
       }
@@ -149,7 +146,6 @@ void SOC_AhIntegral(float current, uint16 Voltagemin, uint16 Voltagemax, uint16 
   //放电状态
   else     
   {   
-    fff[0]++;
     if(g_VoltInfo.CellVolt_Min <= CELL_VOLT_MIN*10000.0)//3.0V     
     {     
       g_SOCInfo.SOC_LowestVoltGet = 0;                                  //低电压的SOC先为0

@@ -104,9 +104,6 @@ void Bms_to_Up_Monitor(void)
     }      
     
     BMS_to_Upmonitor.m_ID = BMS_ture_battery; //0x18FF9601      
-  	BMS_to_Upmonitor.m_IDE = 1;
-  	BMS_to_Upmonitor.m_RTR = 0;
-  	BMS_to_Upmonitor.m_dataLen = 8;
   	BMS_to_Upmonitor.m_data[0] = NUM1_Batper_true;
     BMS_to_Upmonitor.m_data[1] = NUM2_Batper_true;
     BMS_to_Upmonitor.m_data[2] = NUM3_Batper_true;
@@ -118,9 +115,6 @@ void Bms_to_Up_Monitor(void)
     Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor);
     
     BMS_to_Upmonitor.m_ID = BMS_Send_Information2; //0x18FF9711      
-  	BMS_to_Upmonitor.m_IDE = 1;
-  	BMS_to_Upmonitor.m_RTR = 0;
-  	BMS_to_Upmonitor.m_dataLen = 8;
   	BMS_to_Upmonitor.m_data[0] = (uint8)VoltInfo.CellVolt_Max;
     BMS_to_Upmonitor.m_data[1] = (VoltInfo.CellVolt_Max>>8)&0x00FF;
     BMS_to_Upmonitor.m_data[2] = VoltInfo.CellVolt_MaxNode;
@@ -131,90 +125,43 @@ void Bms_to_Up_Monitor(void)
     BMS_to_Upmonitor.m_data[7] = ToBMU_BalanceState.CSSUBalanceNode;       
     Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor); 
    
-    BMS_to_Upmonitor.m_ID = BMS_Send_Information3; //0x18FF981     
-  	BMS_to_Upmonitor.m_IDE = 1;
-  	BMS_to_Upmonitor.m_RTR = 0;
-  	BMS_to_Upmonitor.m_dataLen = 8;
-  	BMS_to_Upmonitor.m_priority = 6;
-  	for( i=0; i< ((NUM_Tem+6) / 7) ;i++)         
+    BMS_to_Upmonitor.m_ID = BMS_Send_Information3; //0x18FF9801     
+  	for(i=0; i< ((NUM_Tem+6)/7) ;i++)         
     {
       BMS_to_Upmonitor.m_data[0] = i;
-      if( i < 1 )                     
+      for(j=1; j < 8; j++) 
       {
-          for(j=1; j < NUM_IC*2; j++) 
-          {
-              BMS_to_Upmonitor.m_data[j] = TempInfo.CellTemp[j-1+i*7] + 40;
-          }   
+        BMS_to_Upmonitor.m_data[j] = TempInfo.CellTemp[j-1+i*7];
       } 
-      else 
+      Return_Value = MSCAN2SendMsg(&BMS_to_Upmonitor);
+    }
+    j=NUM_Tem%7;
+    if((j!=0)&&(NUM_Tem>7))
+    {
+      BMS_to_Upmonitor.m_data[0] = i;
+      for(i=1; i<j; i++)
       {
-           for( j = 1 ; j <= (NUM_Tem% 7);j++ ) 
-           {
-              BMS_to_Upmonitor.m_data[j] = TempInfo.CellTemp[j-1+i*7] + 40; 
-           }
+         BMS_to_Upmonitor.m_data[i] = TempInfo.CellTemp[i-1+BMS_to_Upmonitor.m_data[0]*7];
       }
-       Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor); 
+      for(i=j;j<8;j++)
+      {
+         BMS_to_Upmonitor.m_data[i]=0xFF;
+      }
+      Return_Value = MSCAN2SendMsg(&BMS_to_Upmonitor);
     }
   
     BMS_to_Upmonitor.m_ID = BMS_Send_Information4;//0x18FF9811
-  	BMS_to_Upmonitor.m_IDE = 1;
-  	BMS_to_Upmonitor.m_RTR = 0;
-  	BMS_to_Upmonitor.m_dataLen = 8;
-  	BMS_to_Upmonitor.m_priority = 6;
-    BMS_to_Upmonitor.m_data[0] = TempInfo.CellTemp_Max + 40;
+    BMS_to_Upmonitor.m_data[0] = TempInfo.CellTemp_Max ;
   	BMS_to_Upmonitor.m_data[1] = TempInfo.CellTemp_MaxNode;   
-  	BMS_to_Upmonitor.m_data[2] = TempInfo.CellTemp_Min + 40;
+  	BMS_to_Upmonitor.m_data[2] = TempInfo.CellTemp_Min ;
   	BMS_to_Upmonitor.m_data[3] = TempInfo.CellTemp_MinNode;   
   	BMS_to_Upmonitor.m_data[4] = TempInfo.CellTemp_tatoltemp;
   	BMS_to_Upmonitor.m_data[5] = TempInfo.CellTemp_tatoltemp>>8;   
   	BMS_to_Upmonitor.m_data[6] = 0xFF;
   	BMS_to_Upmonitor.m_data[7] = 0xFF;       	 
     Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor); 
-   
-   /* BMS_to_Upmonitor.m_ID = BMS_Send_Single_Volt;       
-  	BMS_to_Upmonitor.m_IDE = 1;
-  	BMS_to_Upmonitor.m_RTR = 0;
-  	BMS_to_Upmonitor.m_dataLen = 8;
-  	BMS_to_Upmonitor.m_priority = 6;
-	  for(j = 0; j < Monitor_Stand.LTC_Chip_Num; j++) 
-	  {
-    	  for(i = 0;i<4;i++) 
-    	  {  
-          	BMS_to_Upmonitor.m_data[0] = j+1;
-          	BMS_to_Upmonitor.m_data[1] = i;
-          	BMS_to_Upmonitor.m_data[2] = Volt_Data_T.Signal_Vol[j][i*3];   
-          	BMS_to_Upmonitor.m_data[3] = Volt_Data_T.Signal_Vol[j][i*3]>>8;
-          	BMS_to_Upmonitor.m_data[4] = Volt_Data_T.Signal_Vol[j][i*3+1];
-          	BMS_to_Upmonitor.m_data[5] = Volt_Data_T.Signal_Vol[j][i*3+1]>>8;
-          	BMS_to_Upmonitor.m_data[6] = Volt_Data_T.Signal_Vol[j][i*3+2];
-          	BMS_to_Upmonitor.m_data[7] = Volt_Data_T.Signal_Vol[j][i*3+2]>>8;       
-            Return_Value= MSCAN1SendMsg(&BMS_to_Upmonitor); 
-    	  } 
-	  } */
-  
-   /* BMS_to_Upmonitor.m_ID = BMS_Send_Pack_Temp;             //芯片温度、导线开路、总压
-  	BMS_to_Upmonitor.m_IDE = 1;
-  	BMS_to_Upmonitor.m_RTR = 0;
-  	BMS_to_Upmonitor.m_dataLen = 8;
-  	BMS_to_Upmonitor.m_priority = 6;
-    for(i =0;i<Monitor_Stand.LTC_Chip_Num;i++)
-    {
-        BMS_to_Upmonitor.m_data[0] = i+1;
-      	BMS_to_Upmonitor.m_data[1] = 0;	
-      	BMS_to_Upmonitor.m_data[2] = Temp_Data_T.Pack_Temper[i][0]+40;   
-      	BMS_to_Upmonitor.m_data[3] = Temp_Data_T.Pack_Temper[i][1]+40;
-      	BMS_to_Upmonitor.m_data[4] = Temp_Data_T.Pack_Temper[i][2]+40;
-      	BMS_to_Upmonitor.m_data[5] = Temp_Data_T.Pack_Temper[i][3]+40;
-      	BMS_to_Upmonitor.m_data[6] = 40;
-      	BMS_to_Upmonitor.m_data[7] = 40;       
-        Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor); 
-    } */
 
     BMS_to_Upmonitor.m_ID = BMS_Send_Information5;//导线开路0x18ff9901
-  	BMS_to_Upmonitor.m_IDE = 1;
-  	BMS_to_Upmonitor.m_RTR = 0;
-  	BMS_to_Upmonitor.m_dataLen = 8;
-  	BMS_to_Upmonitor.m_priority = 6;
     BMS_to_Upmonitor.m_data[0] = TempInfo.CellTemp_over_ic;
   	BMS_to_Upmonitor.m_data[1] = VoltInfo.Openwire_error;	
   	BMS_to_Upmonitor.m_data[2] = VoltInfo.CellVolt_Total;   
@@ -226,10 +173,7 @@ void Bms_to_Up_Monitor(void)
     Return_Value= MSCAN2SendMsg(&BMS_to_Upmonitor); 
      
     BMS_to_Upmonitor.m_ID = BMS_Send_Information6;//导线开路0x19FF9901
-  	BMS_to_Upmonitor.m_IDE = 1;
-  	BMS_to_Upmonitor.m_RTR = 0;
   	BMS_to_Upmonitor.m_dataLen = 6;
-  	BMS_to_Upmonitor.m_priority = 6;
   	for(i = 0; i < NUM_IC ; i++)
   	{
       BMS_to_Upmonitor.m_data[i*2] = Openwire_flag[i];                   

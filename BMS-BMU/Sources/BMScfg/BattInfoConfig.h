@@ -47,7 +47,7 @@
     #define         CELL_CAPACITY                                   271.0    //单体容量(Ah)
     #define         CELL_VOLT_NOMINAL                               3.22    //标称单体电压(V)
     #define         CELL_VOLT_MAX                                   3.65    //最高单体电压(V)
-    #define         CELL_VOLT_MIN                                   3.0     //最低单体电压(V)     
+    #define         CELL_VOLT_MIN                                   2.75     //最低单体电压(V)     
   #endif
   
   //电池单体使用参数  

@@ -666,22 +666,27 @@ void Task_BMUToUpMonitor(void)
   UpMonitor_DelayTimeus(20);
  
   BMS_to_Upmonitor.m_ID = BMS_Send_Information3;//18FF9800      
-	for(i=0; i< ((NUM_Tem+6) / 7) ;i++)         
+	for(i=0; i< ((NUM_Tem+6)/7) ;i++)         
   {
     BMS_to_Upmonitor.m_data[0] = i;
-    if(i < 1)                      //对于扩展可修改此处
+    for(j=1; j < 8; j++) 
     {
-      for(j=1; j < NUM_IC*2; j++) 
-      {
-        BMS_to_Upmonitor.m_data[j] = g_LTC6811_TempInfo.CellTemp[j-1+i*7];
-      }   
+      BMS_to_Upmonitor.m_data[j] = g_LTC6811_TempInfo.CellTemp[j-1+i*7];
     } 
-    else 
+    while(CAN_ToUpMonitor(&BMS_to_Upmonitor));
+    UpMonitor_DelayTimeus(20); 
+  }
+  j=NUM_Tem%7;
+  if((j!=0)&&(NUM_Tem>7))
+  {
+    BMS_to_Upmonitor.m_data[0] = i;
+    for(i=1; i<j; i++)
     {
-      for( j = 1 ; j <= (NUM_Tem% 7);j++ ) 
-      {
-        BMS_to_Upmonitor.m_data[j] = g_LTC6811_TempInfo.CellTemp[j-1+i*7]; 
-      }
+       BMS_to_Upmonitor.m_data[i] = g_LTC6811_TempInfo.CellTemp[i-1+BMS_to_Upmonitor.m_data[0]*7];
+    }
+    for(i=j;j<8;j++)
+    {
+       BMS_to_Upmonitor.m_data[i]=0xFF;
     }
     while(CAN_ToUpMonitor(&BMS_to_Upmonitor));
     UpMonitor_DelayTimeus(20); 
@@ -712,7 +717,8 @@ void Task_BMUToUpMonitor(void)
   while(CAN_ToUpMonitor(&BMS_to_Upmonitor));
   UpMonitor_DelayTimeus(20); 
    
-  BMS_to_Upmonitor.m_ID = BMS_Send_Information6;             
+  BMS_to_Upmonitor.m_ID = BMS_Send_Information6;//0x19FF9900   
+  BMS_to_Upmonitor.m_dataLen = 6;          
 	for(i = 0; i < NUM_IC ; i++)
 	{
     BMS_to_Upmonitor.m_data[i*2] = g_LTC6811_OpwireInfo.OpenwireLocation[i];                   // 导线开路
@@ -722,6 +728,7 @@ void Task_BMUToUpMonitor(void)
   UpMonitor_DelayTimeus(20);
   
   BMS_to_Upmonitor.m_ID = BMS_Send_Information7;//0x18FF9600
+  BMS_to_Upmonitor.m_dataLen = 8;
 	BMS_to_Upmonitor.m_data[0] = NUM1_Batper_true;
   BMS_to_Upmonitor.m_data[1] = NUM2_Batper_true;
   BMS_to_Upmonitor.m_data[2] = NUM3_Batper_true;

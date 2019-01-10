@@ -120,17 +120,17 @@ void Task_Pack_Temp_Process(void)
   
           
        
-  TempInfo.CellTemp[0] =   Temperature[0][0];
-  TempInfo.CellTemp[1] =   Temperature[0][1];
-  TempInfo.CellTemp[2] =   Temperature[1][0];
-  TempInfo.CellTemp[3] =   Temperature[1][1];
-  TempInfo.CellTemp[4] =   Temperature[1][2];
+  TempInfo.CellTemp[0] =   Temperature[0][0] + 40;
+  TempInfo.CellTemp[1] =   Temperature[0][1] + 40;
+  TempInfo.CellTemp[2] =   Temperature[1][0] + 40;
+  TempInfo.CellTemp[3] =   Temperature[1][1] + 40;
+  TempInfo.CellTemp[4] =   Temperature[1][2] + 40;
   
   TempInfo.CellTemp_tatoltemp = 0;
   
   for(i = 0; i< 5 ; i++)
   {  
-      TempInfo.CellTemp_tatoltemp = TempInfo.CellTemp_tatoltemp + TempInfo.CellTemp[i] + 40;
+      TempInfo.CellTemp_tatoltemp = TempInfo.CellTemp_tatoltemp + TempInfo.CellTemp[i];
   }
   /*totaltemp=0;
     if(flag_ft==0)

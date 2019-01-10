@@ -1541,11 +1541,11 @@ MODULE:                 -- MC9S12XEP100.c.o --
 MODULE:                 -- main.c.o --
 - PROCEDURES:
      EraseFlash                                F01B      75     117       2   .text       
-     ProgramFlash                              F090     11D     285       5   .text       
-     CopyCodeToRAM                             F1AD      22      34       2   .text       
-     InterruptModuleSetup                      F1CF       6       6       2   .text       
-     PLL_Init                                  F1D5      20      32       2   .text       
-     main                                      F1F5      EC     236       1   .text       
+     ProgramFlash                              F090     122     290       5   .text       
+     CopyCodeToRAM                             F1B2      22      34       2   .text       
+     InterruptModuleSetup                      F1D4       6       6       2   .text       
+     PLL_Init                                  F1DA      20      32       2   .text       
+     main                                      F1FA      E7     231       1   .text       
 - VARIABLES:
      FlashErr                                  3901       3       3      14   .common     
      boot                                      3904       2       2       9   .common     
@@ -3873,11 +3873,11 @@ OBJECT LIST SORTED BY ADDRESS
      _BootStart                                F000      15      21       0   .init       
      GoBoot                                    F015       6       6       0   .init       
      EraseFlash                                F01B      75     117       2   .text       
-     ProgramFlash                              F090     11D     285       5   .text       
-     CopyCodeToRAM                             F1AD      22      34       2   .text       
-     InterruptModuleSetup                      F1CF       6       6       2   .text       
-     PLL_Init                                  F1D5      20      32       2   .text       
-     main                                      F1F5      EC     236       1   .text       
+     ProgramFlash                              F090     122     290       5   .text       
+     CopyCodeToRAM                             F1B2      22      34       2   .text       
+     InterruptModuleSetup                      F1D4       6       6       2   .text       
+     PLL_Init                                  F1DA      20      32       2   .text       
+     main                                      F1FA      E7     231       1   .text       
      isdigit                                   F2E1       E      14       4   .text       
      isxdigit                                  F2EF      24      36       2   .text       
      GetHexByte                                F313      7D     125       4   .text       
@@ -3932,9 +3932,9 @@ OBJECT-DEPENDENCIES SECTION
 GoBoot                    USES main 
 EraseFlash                USES _PARTID PFlash_EraseSectorBySector 
                                 PFlash_EraseBlock can_send _COPY MSCAN2SendMsg boot 
-ProgramFlash              USES ProgramFlash RcvSRecord SrcdAlign4W _COPCTL 
-                                _ARMCOP PFlash_Program _PARTID can_send _COPY 
-                                MSCAN2SendMsg boot 
+ProgramFlash              USES ProgramFlash RcvSRecord SrcdAlign4W boot 
+                                _COPCTL _ARMCOP PFlash_Program _PARTID can_send _COPY 
+                                MSCAN2SendMsg 
 CopyCodeToRAM             USES __SEG_SIZE_RAM_CODE __SEG_START_RAM_CODE 
 InterruptModuleSetup      USES _IVBR 
 PLL_Init                  USES _PLLCTL _CLKSEL _SYNR _REFDV _POSTDIV _CRGFLG 
