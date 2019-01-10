@@ -68,7 +68,7 @@
   //#define  CellMinStorageTemp             15      //电池最低存储温度(℃)
   
   //电池系统参数 
-  #define           SYS_PARALLEL                                    2.0                   //系统总并数
+  #define           SYS_PARALLEL                                    2.0                 //系统总并数
   #define           SYS_SERIES                                      50                  //系统总串数       
   #define           SYS_SERIES_YiDongLi                             25                  //易动力项目系统串数
   #define           SYS_NUMBER_BOX                                  1                   //系统的箱数

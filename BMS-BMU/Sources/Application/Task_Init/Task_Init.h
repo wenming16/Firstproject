@@ -3,12 +3,12 @@
 
   #include  "TypeDefinition.h"
   
-  #define ARRAY_SIZE   24                // 任务堆栈大小； 
+  #define ARRAY_SIZE   21                // 任务堆栈大小； 
 
   typedef struct                         // 任务结构体；
   {
-      uint8 flags;                       // 任务标识；  
-      void (*handle)();                  // 任务处理函数的函数指针； 
+    uint8 flags;                       // 任务标识；  
+    void (*handle)();                  // 任务处理函数的函数指针； 
   }TASK;   
 
   typedef struct
