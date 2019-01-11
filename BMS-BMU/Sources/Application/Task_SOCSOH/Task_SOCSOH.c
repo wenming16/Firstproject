@@ -146,7 +146,7 @@ void SOC_AhIntegral(float current, uint16 Voltagemin, uint16 Voltagemax, uint16 
   //放电状态
   else     
   {   
-    if(g_VoltInfo.CellVolt_Min <= CELL_VOLT_MIN*10000.0)//3.0V     
+    if(g_VoltInfo.CellVolt_Min <= CELL_VOLT_MIN*10000.0)//2.75V     
     {     
       g_SOCInfo.SOC_LowestVoltGet = 0;                                  //低电压的SOC先为0
       if(g_SOCInfo.SOC_ValueRead < g_SOCInfo.SOC_ValueVoltGet)          //防止S_V变为0时，S_R跳变为0

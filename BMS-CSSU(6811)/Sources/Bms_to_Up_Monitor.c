@@ -129,23 +129,27 @@ void Bms_to_Up_Monitor(void)
   	for(i=0; i< ((NUM_Tem+6)/7) ;i++)         
     {
       BMS_to_Upmonitor.m_data[0] = i;
-      for(j=1; j < 8; j++) 
+      for(j=1; j < ((NUM_Tem+1)%7); j++) 
       {
         BMS_to_Upmonitor.m_data[j] = TempInfo.CellTemp[j-1+i*7];
       } 
+      for(j=((NUM_Tem+1)%7); j<8; j++)
+      {
+        BMS_to_Upmonitor.m_data[j] = 0xFF;
+      }
       Return_Value = MSCAN2SendMsg(&BMS_to_Upmonitor);
     }
     j=NUM_Tem%7;
     if((j!=0)&&(NUM_Tem>7))
     {
       BMS_to_Upmonitor.m_data[0] = i;
-      for(i=1; i<j; i++)
+      for(i=1; i<j+1; i++)
       {
          BMS_to_Upmonitor.m_data[i] = TempInfo.CellTemp[i-1+BMS_to_Upmonitor.m_data[0]*7];
       }
-      for(i=j;j<8;j++)
+      for(i=j+1; j<8; j++)
       {
-         BMS_to_Upmonitor.m_data[i]=0xFF;
+         BMS_to_Upmonitor.m_data[i] = 0xFF;
       }
       Return_Value = MSCAN2SendMsg(&BMS_to_Upmonitor);
     }

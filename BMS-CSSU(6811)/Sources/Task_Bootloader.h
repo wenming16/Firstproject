@@ -28,7 +28,7 @@
   typedef struct
   {
      uint16 *Boot;
-     uint8  OnlineUpdateCheck;
+     uint8  OnlineUpdateCheck;      
   }Boot_Data_T;
   extern  Boot_Data_T Boot_Data;
   

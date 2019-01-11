@@ -80,9 +80,9 @@ void DS3231SN_INIT(uint8 year, uint8 month, uint8 week, uint8 day, uint8 hour, u
    DS3231_DelayTimeus(10);
    IIC_write(0xd0,0x02,hour);    /*将小时数初始化为0*/
    DS3231_DelayTimeus(10);
-   IIC_write(0xd0,0x03,day);     /*将周数初始化为0*/
+   IIC_write(0xd0,0x03,week);     /*将周数初始化为0*/
    DS3231_DelayTimeus(10);
-   IIC_write(0xd0,0x04,week);    /*将天初始化为0*/
+   IIC_write(0xd0,0x04,day);    /*将天初始化为0*/
    DS3231_DelayTimeus(10);
    IIC_write(0xd0,0x05,month);   /*将月数初始化为0*/
    DS3231_DelayTimeus(10);

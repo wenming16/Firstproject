@@ -189,7 +189,6 @@ Bool MSCAN2SendMsg(struct can_send msg)
 #pragma CODE_SEG RAM_CODE
 interrupt void CAN2RxISR(void) 
 {  
-   
    char index;
    
    if(MSCAN2GetMsg(&can_msg)) //接收数据成功

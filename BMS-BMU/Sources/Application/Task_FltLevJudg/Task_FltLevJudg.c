@@ -157,7 +157,7 @@ void FltLevJudg(uint8 workstate)
          (g_Flt_Charge.Level_Temp_Diff_High != 0) ||\
          (g_Flt_Charge.Level_Current_Charge_High != 0) ||\
          (g_Flt_Charge.Level_Insul != 0)||(State_Offline.CSSU1 != 0)||\
-         (State_Offline.RelayFlt_Positive != 0)||(State_Offline.Charge!=0))
+         (State_Offline.RelayFlt_Positive != 0)||(State_Offline.Charge != 0))
       {
         g_Flt_Charge.Level_Charge_BalanceON_Flag = 0;//只要出现故障则不启动均衡(除压差故障)  
       }
@@ -1264,11 +1264,13 @@ uint8 Fault_CSSU_OffLine(void)
   }
   else
   {
-     if(++cnt*PERIOD_DISCHARGE/1000 >= 5)//3S
+     if(++cnt*PERIOD_DISCHARGE/1000 >= 10)//10S
      {
        cnt = 0;
        state = 1; 
-       memset(&g_FromCSSU_Temp, 0x00, sizeof(FromCSSU_Temp_T));//子板掉线后清掉子板信息
+       //memset(&g_FromCSSU_Temp, 0x00, sizeof(FromCSSU_Temp_T));//子板掉线后清掉子板信息
+       //memset(&g_FromCSSU_Volt, 0x00, sizeof(FromCSSU_Volt_T)); 
+       //memset(&g_FromCSSU_FltData, 0x00, sizeof(FromCSSU_FltData_T));
      }
   }
   return state;
@@ -1324,6 +1326,7 @@ uint8 Fault_Relay_BreakDown(void)
       }
       else
       {
+         flt = 0;
          cnt[0] = 0;   
       }
       cnt[1] = 0;
@@ -1340,6 +1343,7 @@ uint8 Fault_Relay_BreakDown(void)
       }
       else
       {
+         flt = 0;
          cnt[1] = 0;     
       }
       cnt[0] = 0;

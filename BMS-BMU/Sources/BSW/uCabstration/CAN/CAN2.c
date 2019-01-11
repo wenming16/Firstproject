@@ -235,35 +235,47 @@ void CAN2_GetMsg_Process(pCANFRAME receiveFrame)
 {
   switch(receiveFrame->m_ID) 
   {
-     case Boot_ID://0xF300:
-       if(receiveFrame->m_data[1] == 0xAA)
-       {
-          if(receiveFrame->m_data[0] == BMU_IDNUM)
-          {
-             Boot_Data.OnlineUpdateCheck = 1;
-          }           
-       }
-       break;  
+    case Boot_ID://0xF300:
+      HeartBeat.HeartBeat_CSSU1 = 1;//对子板进行程序升级的时候需要屏蔽掉线的故障
+      if(receiveFrame->m_data[1] == 0xAA)
+      {
+        if(receiveFrame->m_data[0] == BMU_IDNUM)
+        {
+           Boot_Data.OnlineUpdateCheck = 1;
+        }           
+      }
+    break; 
+       
+    case 0x002:
+    case 0x003:
+    case 0x004:
+    case 0x005:
+    case 0x006:
+    case 0x007:
+    case 0x008:
+    case 0x009:
+       HeartBeat.HeartBeat_CSSU1 = 1;//对子板进行程序升级的时候需要屏蔽掉线的故障
+    break;
         
-     default:             //接收上位机和内网的报文
-       if((receiveFrame->m_ID)>>24 == 0x18)//内网报文 
-       {
+    default:             //接收上位机和内网的报文
+      if((receiveFrame->m_ID)>>24 == 0x18)//内网报文 
+      {
+        HeartBeat.HeartBeat_CSSU1 = 1;
+        DataFromCSSU(receiveFrame);
+      } 
+      else if((receiveFrame->m_ID)>>24 == 0x19)//标定报文
+      {            
+        if((receiveFrame->m_ID)>>8 == 0x19FF99)
+        {
+          DataFromCSSU(receiveFrame); 
           HeartBeat.HeartBeat_CSSU1 = 1;
-          DataFromCSSU(receiveFrame);
-       } 
-       else if((receiveFrame->m_ID)>>24 == 0x19)//标定报文
-       {            
-         if((receiveFrame->m_ID)>>8 == 0x19FF99)
-         {
-           DataFromCSSU(receiveFrame); 
-           HeartBeat.HeartBeat_CSSU1 = 1;
-         }
-         else 
-         {
-           UpMonitor_to_Bms(receiveFrame);
-         }
-       } 
-       break;
+        }
+        else 
+        {
+          UpMonitor_to_Bms(receiveFrame);
+        }
+      } 
+    break;
   }
 }
 /*=======================================================================

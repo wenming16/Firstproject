@@ -42,7 +42,7 @@ void Task_BootLoader()
    if(Boot_Data.OnlineUpdateCheck == 1)
    {
      Boot_Data.OnlineUpdateCheck = 0;
-     Boot_Data.Boot=(uint8 *)0x0C00;
+     Boot_Data.Boot=(uint16 *)0x0C00;
      *(Boot_Data.Boot) = 0x66;
      
      Boot_DelayTime(100);

@@ -84,7 +84,7 @@ void RS485_DataReceice(void)
   RS485_Receive.TxData_couple.TX2.Single_Lowvolt      = (g_VoltInfo.CellVolt_Min +5)/10;        
   RS485_Receive.TxData_couple.TX2.iso_resistance      = g_IsoDetect.insulation_resist;    //绝缘电阻
                        
-/*------------------------------------------单字节接收---------------------------------*/       
+ /*------------------------------------------单字节接收---------------------------------*/       
   RS485_Receive.TxData_single.TX1.Alam_SOC            = 0x00;
   RS485_Receive.TxData_single.TX1.Alam_VoltSL         = (uint8)g_Flt_DisChg.Level_Volt_Sys_Low;
   RS485_Receive.TxData_single.TX1.Alam_VoltCL         = (uint8)g_Flt_DisChg.Level_Volt_Cell_Low;
@@ -102,7 +102,7 @@ void RS485_DataReceice(void)
   RS485_Receive.TxData_single.TX1.Alam_VoltCD_Charge  = (uint8)g_Flt_Charge.Level_Volt_Cell_Diff_High;
   RS485_Receive.TxData_single.TX1.Alam_TempD_Charge   = (uint8)g_Flt_Charge.Level_Temp_Diff_High;
   
-  RS485_Receive.TxData_single.TX1.Alam_Insul          = (uint8)g_Flt_DisChg.Level_Insul|g_Flt_DisChg.Level_Insul;
+  RS485_Receive.TxData_single.TX1.Alam_Insul          = (uint8)(g_Flt_DisChg.Level_Insul|g_Flt_Charge.Level_Insul);
   RS485_Receive.TxData_single.TX1.Alam_Checkself      = 0x01;
   
  }   

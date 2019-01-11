@@ -28,15 +28,7 @@ void main(void)
     
     for(;;) 
     {
-        
-        Task_Handle();
-        
-        /*if(Task_Flag_Counter.Time_Flag600ms == 45)
-        {
-          
-        Passive_Balance();   
-        } */
-
+      Task_Handle();
     }
 }
 /*=======================================================================
@@ -56,7 +48,6 @@ interrupt void isrPIT0()
    }
    
    Task_Flag_Counter.Time_Flag600ms++;                                                                    
-   //Task_Flag_Counter.Time_FlagGPS++;                           
                                       
    Task_Roll();                                           
 }                                                                                    

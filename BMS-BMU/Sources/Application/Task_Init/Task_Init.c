@@ -100,7 +100,7 @@ void Task_Init()
 ========================================================================*/
 void Task_Roll(void)
 {
-  static uint8 cnt[4]={0,0,0,0};
+  static uint8 cnt[5]={0,0,0,0,0};
   switch(PIT_TimePeriod.T500ms)//500ms的周期
   {
     case 1:
@@ -153,7 +153,12 @@ void Task_Roll(void)
     break; 
     
     case 29:
-      tasks[11].flags = 1;//Task_SysTimeGet
+      if(cnt[4]%10 == 0)  //10*0.5S任务 
+      {
+        cnt[4] = 0;
+        tasks[11].flags = 1;//Task_SysTimeGet
+      }
+      cnt[4]++;
     break;
     
     case 31:
