@@ -72,7 +72,7 @@ void DS3231_DelayTimeus(uint16 us)
  *返回：       无
  *说明：       此处用到BCD码,高4位为十进制的十位,低4位为十进制的个位
 ========================================================================*/
-void DS3231SN_INIT(uint8 year, uint8 month, uint8 week, uint8 day, uint8 hour, uint8 min) // 这个函数第一次下载时可以使用一次
+void DS3231SN_INIT(uint8 year, uint8 month, uint8 day, uint8 hour, uint8 min) // 这个函数第一次下载时可以使用一次
 {
    IIC_write(0xd0,0x00,0x00);    /*将秒数初始化为0*/
    DS3231_DelayTimeus(10);
@@ -80,9 +80,9 @@ void DS3231SN_INIT(uint8 year, uint8 month, uint8 week, uint8 day, uint8 hour, u
    DS3231_DelayTimeus(10);
    IIC_write(0xd0,0x02,hour);    /*将小时数初始化为0*/
    DS3231_DelayTimeus(10);
-   IIC_write(0xd0,0x03,week);     /*将周数初始化为0*/
-   DS3231_DelayTimeus(10);
-   IIC_write(0xd0,0x04,day);    /*将天初始化为0*/
+   //IIC_write(0xd0,0x03,week);    /*将周数初始化为0*/
+   //DS3231_DelayTimeus(10);
+   IIC_write(0xd0,0x04,day);     /*将天初始化为0*/
    DS3231_DelayTimeus(10);
    IIC_write(0xd0,0x05,month);   /*将月数初始化为0*/
    DS3231_DelayTimeus(10);

@@ -55,7 +55,11 @@ void WorkMode_DelayTime(uint16 ts)
 uint8 WokeModeJudgment(void)                                
 {  
   //判断车的状态(充电or放电)
-  uint8  i=0, q=0;
+  uint8 state;
+  state = Fault_Charge_OffLine(); //以充电报文来判断充电状态
+  //state = !state;   
+  return state;   
+  /*uint8  i=0, q=0;
   for(i=0; i<10; i++)
   {
     if(ADC_CC2_State() <= 3000)
@@ -71,5 +75,5 @@ uint8 WokeModeJudgment(void)
   else
   {
     return MODE_DISCHARGE;
-  }
+  }*/
 }

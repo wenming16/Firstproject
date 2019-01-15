@@ -17,7 +17,7 @@ EnergyInfo_T  g_EnergyInfo;
 
 static float  inition_soc(float v);
 static void   SOC_AhIntegral(float current, uint16 Voltagemin, uint16 Voltagemax, uint16 SampleTime);
-static float  Energy_TotalCal(uint8 mode,float ah1,uint32 Total_V,float Total_E,float current);
+static float  Energy_TotalCal(float ah1,uint32 Total_V,float Total_E);
 static float  ADC_Current(void); 
 static void   SOH_Cal(void);
 
@@ -119,8 +119,8 @@ void SOC_AhIntegral(float current, uint16 Voltagemin, uint16 Voltagemax, uint16 
   //安时积分，需要避免大数吃小数
   if(current>=0.5 || current<=-0.5)
   {  
-    AH = current*T/3600.0/SYS_CAPACITY;  //SOC值  
-    ah1 = current*T/3600.0;
+    AH = current*T/3600.0/SYS_CAPACITY;//SOC值  
+    ah1 = current*T/3600.0;//单位:Ah
   }
   //充电状态     
   if(g_WorkStateJudge.WorkState == MODE_CHARGE)    //充电 
@@ -141,7 +141,7 @@ void SOC_AhIntegral(float current, uint16 Voltagemin, uint16 Voltagemax, uint16 
       }      
     }             
    
-    g_EnergyInfo.Energy_Total_Charge = Energy_TotalCal(g_WorkStateJudge.WorkState,ah1,g_VoltInfo.SysVolt_Total,g_EnergyInfo.Energy_Total_Charge,current);
+    g_EnergyInfo.Energy_Total_Charge = Energy_TotalCal(ah1,g_VoltInfo.SysVolt_Total,g_EnergyInfo.Energy_Total_Charge);
   }            
   //放电状态
   else     
@@ -160,7 +160,7 @@ void SOC_AhIntegral(float current, uint16 Voltagemin, uint16 Voltagemax, uint16 
         g_SOCInfo.SOC_ValueInitDiff  = g_SOCInfo.SOC_ValueRealtimeDiff;
       }
     }
-    g_EnergyInfo.Energy_Total_DisCharge = Energy_TotalCal(g_WorkStateJudge.WorkState,ah1,g_VoltInfo.SysVolt_Total,g_EnergyInfo.Energy_Total_DisCharge,current);          
+    g_EnergyInfo.Energy_Total_DisCharge = Energy_TotalCal(ah1,g_VoltInfo.SysVolt_Total,g_EnergyInfo.Energy_Total_DisCharge);          
   } 
   
   g_SOCInfo.SOC_LowestVoltGet  = g_SOCInfo.SOC_LowestVoltGet-AH;        //按查表的最小电压累加SOC
@@ -345,24 +345,13 @@ float inition_soc(float v)
  *说明：       
 ========================================================================*/ 
 static
-float Energy_TotalCal(uint8 mode,float ah1,uint32 Total_V,float Total_E,float current)
+float Energy_TotalCal(float ah1,uint32 Total_V,float Total_E)
 {
-  static float Energy=0;
-  static float mode_n;
-  
-  if(mode == MODE_CHARGE)
-  {
-    mode_n = (-1);
-  }
-  else
-  {
-    mode_n = 1;
-  }
-  Energy = mode_n*ah1*(((float)Total_V)/10000.0)/1000.0; 
-  if(abs(current) > 0.5) 
-  {        
-    Total_E = Total_E + Energy;//充电总能量KWH
-  }
+  float Energy=0;
+
+  Energy = ah1*(((float)Total_V)/10000.0)/1000.0; 
+  Total_E = Total_E + abs(Energy);//充电总能量KWH
+
   return (Total_E);
 }
 
@@ -373,12 +362,11 @@ float Energy_TotalCal(uint8 mode,float ah1,uint32 Total_V,float Total_E,float cu
  *返回：       无
  *说明：       按满充的充电次数来计算电池的使用寿命衰减
 ========================================================================*/  
-float aaa[5];
 static
 void SOH_Cal(void) 
 {
-   g_BMSMonitor_SOH.SOH = 1 - (g_EnergyInfo.Energy_Total_Charge/SYS_VOLT_NOMINAL/1000.0/CELL_LIFE_CYCLE*0.2);   //初始SOH-计算值(标定值：Bms_Life_Count)
-   aaa[1] = g_EnergyInfo.Energy_Total_Charge/SYS_VOLT_NOMINAL/1000.0/CELL_LIFE_CYCLE*0.2;
+   //g_BMSMonitor_SOH.SOH = 1 - (g_EnergyInfo.Energy_Total_Charge/SYS_VOLT_NOMINAL/1000.0/CELL_LIFE_CYCLE*0.2);   //初始SOH-计算值(标定值：Bms_Life_Count)
+   g_BMSMonitor_SOH.SOH = 1; 
 }
 
 

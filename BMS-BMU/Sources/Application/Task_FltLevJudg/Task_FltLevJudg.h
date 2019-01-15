@@ -137,5 +137,6 @@
 =========================================================================*/
  void Init_TaskFltLevJudg(void);
  void Task_FltLevJudg(void);
+ uint8 Fault_Charge_OffLine(void);
 
 #endif

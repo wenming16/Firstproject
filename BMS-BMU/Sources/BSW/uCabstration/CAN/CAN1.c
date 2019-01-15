@@ -230,7 +230,7 @@ void CAN1_GetMsg_Process(pCANFRAME receiveFrame)
   switch(receiveFrame->m_ID) 
   {
     case 0x112:
-      CAN_ChargetoBMS(receiveFrame);
+      CAN_ChargetoBMS(receiveFrame); 
       HeartBeat.HeartBeat_Charge = 1;
     break;
   }

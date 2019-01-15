@@ -41,6 +41,5 @@ void CAN_ChargetoBMS(pCANFRAME data)
   {
     g_Charge_State.FltState = 0;
   }
-   
 }         
 

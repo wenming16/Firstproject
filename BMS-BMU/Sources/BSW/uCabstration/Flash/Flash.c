@@ -99,10 +99,10 @@ Notes     : Clears any error flags and uses parameters to initiate an FTM comman
 ErrType LaunchFlashCommand(char params, unsigned char ccob0high, unsigned char ccob0low, unsigned int ccob1,
 unsigned int ccob2,unsigned int ccob3,unsigned int ccob4,unsigned int ccob5, unsigned int ccob6, unsigned int ccob7)
 { 
-  unsigned char temp;
+  uint8 temp;
   volatile ErrType status;          //Used to copy and store Flash status registers.
     
-   temp = FCLKDIV;                  //Read the FCLKDIV register
+  temp = FCLKDIV;                   //Read the FCLKDIV register
   if((temp & 0x80) != 0x80)         //If FDIVLD not set, then write FCLKDIV.
   {
     FCLKDIV = FCLK_DIV;             //Write FCLKDIV before launching FTM command.

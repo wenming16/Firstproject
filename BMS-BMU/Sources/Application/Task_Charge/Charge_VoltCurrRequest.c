@@ -76,7 +76,7 @@ void Charge_VoltCurrRequest(void)
   }
   
   //BMS接收报文超时
-  if((State_Offline.RelayFlt_Positive == 1)||(State_Offline.CSSU1 == 1))
+  if(State_Offline.CSSU1 == 1)
   {
     BMSCharge_State.BMSGetMsg = 1;
   } 

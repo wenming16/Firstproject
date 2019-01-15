@@ -38,7 +38,7 @@ static uint8 Fault_Charge_TempL(uint8 Temp);             //充电低温
 static uint8 Fault_Charge_TempD(uint8 T_Diff);           //充电温差
 static uint8 Fault_Charge_CurrH(float Current);          //充电过流
 static uint8 Fault_Charge_Insul(uint16 Insul);           //绝缘故障
-static uint8 Fault_Charge_OffLine(void);
+//static uint8 Fault_Charge_OffLine(void);
 //通信掉线
 static uint8 Fault_CSSU_OffLine(void);                   //从板掉线
 static uint8 Fault_Relay_BreakDown(void);                //继电器粘连故障
@@ -100,7 +100,13 @@ void FltLevJudg(uint8 workstate)
       g_Flt_Charge.Level_Volt_Sys_High          = 0;
       g_Flt_Charge.Level_Volt_Cell_High         = 0;
       g_Flt_Charge.Level_Insul                  = 0;
-      State_Offline.Charge                      = 0;
+      g_Flt_Charge.Level_Volt_Cell_Diff_High    = 0;
+      //State_Offline.Charge                      = 0;
+      g_Flt_Charge.Level_Current_Charge_High    = 0;
+      g_Flt_Charge.Level_Temp_High              = 0;
+      g_Flt_Charge.Level_Temp_Low               = 0;
+      g_Flt_Charge.Level_Temp_Diff_High         = 0;
+      
       //判断放电状态故障
       g_Flt_DisChg.Level_Volt_Sys_Low           = Fault_DisChg_VoltSL(g_VoltInfo.SysVolt_Total, g_TempInfo.CellTemp_Ave);
       g_Flt_DisChg.Level_Volt_Cell_Low          = Fault_DisChg_VoltCL(g_VoltInfo.CellVolt_Min, g_TempInfo.CellTemp_Ave);
@@ -129,6 +135,12 @@ void FltLevJudg(uint8 workstate)
       g_Flt_DisChg.Level_Volt_Cell_Low            = 0;
       g_Flt_DisChg.Level_DisCharge_SwitchOff_flag = 0;
       g_Flt_DisChg.Level_Insul                    = 0;
+      g_Flt_DisChg.Level_Current_DisCharge_High   = 0;
+      g_Flt_DisChg.Level_Volt_Cell_Diff_High      = 0;
+      g_Flt_DisChg.Level_Temp_High                = 0;
+      g_Flt_DisChg.Level_Temp_Low                 = 0;
+      g_Flt_DisChg.Level_Temp_Diff_High           = 0;
+      
       //判断充电状态故障
       g_Flt_Charge.Level_Volt_Sys_High        = Fault_Charge_VoltSH(g_VoltInfo.SysVolt_Total);
       g_Flt_Charge.Level_Volt_Cell_High       = Fault_Charge_VoltCH(g_VoltInfo.CellVolt_Max);
@@ -138,14 +150,13 @@ void FltLevJudg(uint8 workstate)
       g_Flt_Charge.Level_Temp_Diff_High       = Fault_Charge_TempD(g_TempInfo.CellTemp_Diff);
       g_Flt_Charge.Level_Current_Charge_High  = Fault_Charge_CurrH(g_DataColletInfo.DataCollet_Current_Filter);
       g_Flt_Charge.Level_Insul                = Fault_Charge_Insul(g_IsoDetect.insulation_resist);
-      State_Offline.Charge                    = Fault_Charge_OffLine();
+      //State_Offline.Charge                    = Fault_Charge_OffLine();
       //断开继电器的二级故障标记
       if((g_Flt_Charge.Level_Volt_Sys_High==2) ||\
          (g_Flt_Charge.Level_Volt_Cell_High==2) ||\
          (g_Flt_Charge.Level_Temp_High == 2)||\
          (g_Flt_Charge.Level_Temp_Low == 2)||\
-         (g_Flt_Charge.Level_Insul == 2)||(State_Offline.CSSU1 == 1)||\
-         (State_Offline.Charge == 1))
+         (g_Flt_Charge.Level_Insul == 2)||(State_Offline.CSSU1 == 1))
       {
         g_Flt_Charge.Level_Charge_SwitchOff_flag = 1;//2级故障闭合继电器  
       }
@@ -157,7 +168,7 @@ void FltLevJudg(uint8 workstate)
          (g_Flt_Charge.Level_Temp_Diff_High != 0) ||\
          (g_Flt_Charge.Level_Current_Charge_High != 0) ||\
          (g_Flt_Charge.Level_Insul != 0)||(State_Offline.CSSU1 != 0)||\
-         (State_Offline.RelayFlt_Positive != 0)||(State_Offline.Charge != 0))
+         (State_Offline.RelayFlt_Positive != 0))
       {
         g_Flt_Charge.Level_Charge_BalanceON_Flag = 0;//只要出现故障则不启动均衡(除压差故障)  
       }
@@ -1354,23 +1365,22 @@ uint8 Fault_Relay_BreakDown(void)
 /*=======================================================================
                            充电桩掉线故障0x20
  ======================================================================*/
-static 
-uint8 Fault_Charge_OffLine(void)
+uint8 Fault_Charge_OffLine(void)//此项目用作充放电的状态判断
 {
-  static uint16 cnt;      
+  static uint8 cnt;      
   static uint8 state=0;
   if(HeartBeat.HeartBeat_Charge == 1 )
   { 
      HeartBeat.HeartBeat_Charge = 0;
-     state = 0;
+     state = 1;
      cnt = 0;      
   }
   else
   {
-     if(++cnt*PERIOD_DISCHARGE/1000 >= 50)//50S
+     if(++cnt*PERIOD_DISCHARGE/1000 >= 6)//5S
      {
-       cnt = 0;
-       state = 1; 
+       cnt = 6000/PERIOD_DISCHARGE;
+       state = 0; 
      }
   }
   return state;

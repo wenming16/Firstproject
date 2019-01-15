@@ -27,7 +27,7 @@
     uint16  VoltC_Min;          //最小单体电压
     float   SOC;                //发送SOC值
     uint8   Temp_Max;           //最大温度
-    uint16  VoltS;              //系统总压
+    uint32  VoltS;              //系统总压
   }BMSCharge_T;
   extern BMSCharge_T g_BMSCharge;
   

@@ -977,9 +977,9 @@ void Task_FltCodeStore(void)
   
   readfault[12] = TempD_Charge(g_Flt_Charge.Level_Temp_Diff_High, year, month, day, hour, min); 
   
-  readfault[13] = InsulationNeg_Fault(g_Flt_DisChg.Level_Insul|g_Flt_DisChg.Level_Insul, year, month, day, hour, min); 
+  readfault[13] = InsulationNeg_Fault(g_Flt_Charge.Level_Insul|g_Flt_DisChg.Level_Insul, year, month, day, hour, min); 
   
-  readfault[14] = InsulationPos_Fault(g_Flt_DisChg.Level_Insul|g_Flt_DisChg.Level_Insul, year, month, day, hour, min); 
+  readfault[14] = InsulationPos_Fault(g_Flt_Charge.Level_Insul|g_Flt_DisChg.Level_Insul, year, month, day, hour, min); 
   
   readfault[15] = OpenWire_Fault(g_OpenWireInfo.OpenWire_Status, year, month, day, hour, min); 
   

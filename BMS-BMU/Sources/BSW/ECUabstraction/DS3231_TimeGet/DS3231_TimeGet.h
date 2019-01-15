@@ -28,7 +28,7 @@
   extern Read_IIC_Time_T Read_IIC_Time;
 
   uint8 HEX2BCD(uint8 val);
-  void  DS3231SN_INIT(uint8 year, uint8 month, uint8 week, uint8 day, uint8 hour, uint8 min);
+  void  DS3231SN_INIT(uint8 year, uint8 month, uint8 day, uint8 hour, uint8 min);
   void  DS3231_Read_Time(void);
 
 #endif 

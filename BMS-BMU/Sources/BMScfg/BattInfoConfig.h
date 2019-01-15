@@ -88,7 +88,7 @@
   #define           SYS_VOLT_MIN                                    (CELL_VOLT_MIN*SYS_SERIES_YiDongLi)  //系统最低电压
   
   #define           SYS_CAPACITY                                    (CELL_CAPACITY*SYS_PARALLEL)//系统容量(Ah)
-  #define           SYS_ELECTRIC_QUANTITY                           ((CELL_CAPACITY)*(SYS_VOLT_NOMINAL)/1000.0) //系统电量(KWh)
+  #define           SYS_ELECTRIC_QUANTITY                           ((SYS_CAPACITY)*(SYS_VOLT_NOMINAL)/1000.0) //系统电量(KWh)
   #define           SYS_LIFE_END_CAPACITY                           ((SYS_CAPACITY)*0.8) //电池终止寿命(%80SOH)
   
  

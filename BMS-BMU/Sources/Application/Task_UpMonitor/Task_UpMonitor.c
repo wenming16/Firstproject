@@ -522,12 +522,12 @@ void CAN_ToUpMonitorMsg(void)
       
       case 1:    //主板温度及慢充/快充充电枪温度
         BMS_to_Upmonitor.m_data[0] = i;      //编号 0x01
-        BMS_to_Upmonitor.m_data[1] = (uint8)(g_EnergyInfo.Energy_Total_Charge*10);            //累计充电电量   0.1kWh分辨率
-        BMS_to_Upmonitor.m_data[2] = ((uint16)(g_EnergyInfo.Energy_Total_Charge*10)) >> 8; 
-        BMS_to_Upmonitor.m_data[3] = ((uint32)(g_EnergyInfo.Energy_Total_Charge*10)) >> 16;             
-        BMS_to_Upmonitor.m_data[4] = (uint8)(g_EnergyInfo.Energy_Total_DisCharge*10);           //累计放电电量   0.1kWh分辨率
-        BMS_to_Upmonitor.m_data[5] = ((uint16)(g_EnergyInfo.Energy_Total_DisCharge*10)) >> 8;              
-        BMS_to_Upmonitor.m_data[6] = ((uint32)(g_EnergyInfo.Energy_Total_DisCharge*10)) >> 16;         
+        BMS_to_Upmonitor.m_data[1] = 0xff;//(uint8)(g_EnergyInfo.Energy_Total_Charge*10);            //累计充电电量   0.1kWh分辨率
+        BMS_to_Upmonitor.m_data[2] = 0xff;//((uint16)(g_EnergyInfo.Energy_Total_Charge*10)) >> 8; 
+        BMS_to_Upmonitor.m_data[3] = 0xff;//((uint32)(g_EnergyInfo.Energy_Total_Charge*10)) >> 16;             
+        BMS_to_Upmonitor.m_data[4] = 0xff;//(uint8)(g_EnergyInfo.Energy_Total_DisCharge*10);           //累计放电电量   0.1kWh分辨率
+        BMS_to_Upmonitor.m_data[5] = 0xff;//((uint16)(g_EnergyInfo.Energy_Total_DisCharge*10)) >> 8;              
+        BMS_to_Upmonitor.m_data[6] = 0xff;//((uint32)(g_EnergyInfo.Energy_Total_DisCharge*10)) >> 16;         
         BMS_to_Upmonitor.m_data[7] = 0xFF;
         while(CAN_ToUpMonitor(&BMS_to_Upmonitor));
         UpMonitor_DelayTimeus(20);
@@ -551,7 +551,7 @@ void CAN_ToUpMonitorMsg(void)
         	BMS_to_Upmonitor.m_data[4] = (g_Flt_DisChg.Level_Volt_Sys_Low  & 0x03) + (((g_Flt_DisChg.Level_Insul|g_Flt_Charge.Level_Insul) << 2) & 0x0C) + ((g_Flt_DisChg.Level_Temp_High << 4) & 0x30) + ((g_Flt_DisChg.Level_Temp_Low << 6) & 0xC0);     //总压过低，绝缘故障，放电温度过高/过低
         	BMS_to_Upmonitor.m_data[5] = (g_Flt_DisChg.Level_Temp_Diff_High & 0x03) + ((g_Flt_Charge.Level_Temp_High<< 2) & 0x0C) + ((g_Flt_Charge.Level_Temp_Low << 4) & 0x30) + ((g_Flt_Charge.Level_Temp_Diff_High << 6) & 0xC0);   //放电温差过大，充电温度过高/过低，充电温差过大
         	BMS_to_Upmonitor.m_data[6] = (0x00 & 0x03) + ((0x00 << 2) & 0x0C) + ((g_Flt_Charge.Level_Current_Charge_High << 4) & 0x30) + ((g_Flt_DisChg.Level_Current_DisCharge_High << 6) & 0xC0);   //SOC高，SOC低，充电电流过大，放电电流过大                                     
-        	BMS_to_Upmonitor.m_data[7] = (0x00 & 0x03) + ((0x00 << 2) & 0x0C) + ((0x00 << 4) & 0x30) + (0b11 << 6) ;  //充电枪温度过高（未写），慢充接触器温度过高（未写），总压测量故障       
+        	BMS_to_Upmonitor.m_data[7] = (0x00 & 0x03) + ((0x00 << 2) & 0x0C) + ((0x00 << 4) & 0x30) + (0x00 << 6) ;  //充电枪温度过高（未写），慢充接触器温度过高（未写），总压测量故障       
           while(CAN_ToUpMonitor(&BMS_to_Upmonitor));
           UpMonitor_DelayTimeus(20);
         #else                         //继电器判断功能未使能
@@ -573,10 +573,10 @@ void CAN_ToUpMonitorMsg(void)
         BMS_to_Upmonitor.m_data[1] = 0x00;   //BMS芯片温度过高
         BMS_to_Upmonitor.m_data[2] = State_Offline.RelayFlt_Positive&0x01;//(DiscFlt.HIVL_ECT0_Fault & 0x01) + ((DiscFlt.HIVL_ECT1_Fault << 1) & 0x02) + ((DiscFlt.HIVL_ECT2_Fault << 2) & 0x04) + ((DiscFlt.HIVL_ECT3_Fault << 3) & 0x08) + (0b11111 << 4) ;      //互锁故障
         BMS_to_Upmonitor.m_data[3] = ((State_Offline.CSSU1) & 0x01) + ((State_Offline.VCU << 1) & 0x02) + ((State_Offline.HVU << 2) & 0x04) + ((State_Offline.Charge<<3)&0x08);     //通信故障  0000 正常，0001 CSSU掉线，0010 VUC掉线，0100 HVU掉线，1000 TBOX掉线(暂时没有设为0x01)          
-        BMS_to_Upmonitor.m_data[4] = g_PassiveBalance.BalanceOn;           
-        BMS_to_Upmonitor.m_data[5] = g_PassiveBalance.BalanceNode;              
-        BMS_to_Upmonitor.m_data[6] = 0x00;         
-        BMS_to_Upmonitor.m_data[7] = 0x00;
+        BMS_to_Upmonitor.m_data[4] = 0xFF;           
+        BMS_to_Upmonitor.m_data[5] = 0xFF;              
+        BMS_to_Upmonitor.m_data[6] = 0xFF;         
+        BMS_to_Upmonitor.m_data[7] = 0xFF;
         while(CAN_ToUpMonitor(&BMS_to_Upmonitor));
         UpMonitor_DelayTimeus(20);
       break;
