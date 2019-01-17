@@ -24,13 +24,13 @@ WorkStateJudge_T  g_WorkStateJudge;
  *返回：       Current:霍尔传感器通道的转换结果
  *说明：       ADC 时钟频率：2MHz
 ========================================================================*/
-static
+/*static
 uint16 ADC_CC2_State(void) 
 {
   uint16 cc2_state;
   cc2_state = ADC_Value(QCharge_CC2); 
   return cc2_state;  
-}
+}*/
 
 /*=======================================================================
  *函数名:      WorkMode_DelayTime(uint16)  
@@ -39,12 +39,12 @@ uint16 ADC_CC2_State(void)
  *返回：       无
  *说明：       进行AD采集时进行短暂的延时
 ========================================================================*/
-static
+/*static
 void WorkMode_DelayTime(uint16 ts)
 {
   uint16 i;
   for(i=0; i<ts; i++);
-} 
+}*/ 
 /*=======================================================================
  *函数名:      WokeModeJudgment(void)  
  *功能:        判断充电还是放电状态

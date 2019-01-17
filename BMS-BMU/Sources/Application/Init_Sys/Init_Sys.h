@@ -9,11 +9,10 @@
       Author:
       Modification:
 ========================================================================*/
-
 #ifndef _INIT_SYS_H_
 #define _INIT_SYS_H_  
 
-  #include  "TypeDefinition.h"
+  #include  "TypeDefinition.h" 
 
   typedef struct//底层初始化标记位 00:成功;1:失败
   {

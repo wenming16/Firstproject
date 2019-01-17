@@ -87,7 +87,7 @@ void SOC_AhIntegral(float current, uint16 Voltagemin, uint16 Voltagemax, uint16 
   float T=0;
   float AH=0,ah1=0;
   float Vmin = 0, Vmax = 0;
-  static float Cellcap;
+  //static float Cellcap;
   Vmin = Voltagemin/10000.0;
   Vmax = Voltagemax/10000.0;
   T = SampleTime/1000.0;// 100ms时间转变为秒
