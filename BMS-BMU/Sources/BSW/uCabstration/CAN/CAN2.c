@@ -209,7 +209,7 @@ uint8 CAN2_GetMsg(pCANFRAME receiveFrame)
     receiveFrame->m_RTR = FALSE;    
   
   
-  receiveFrame->m_dataLen = CAN2RXDLR&0X0F;
+  receiveFrame->m_dataLen = CAN2RXDLR&0x0F;
   
   for (i=0;i<receiveFrame->m_dataLen;i++)       // 读取数据
   {
@@ -239,7 +239,7 @@ void CAN2_GetMsg_Process(pCANFRAME receiveFrame)
       HeartBeat.HeartBeat_CSSU1 = 1;//对子板进行程序升级的时候需要屏蔽掉线的故障
       if(receiveFrame->m_data[1] == 0xAA)
       {
-        if(receiveFrame->m_data[0] == BMU_IDNUM)
+        if(receiveFrame->m_data[0] == ID_BMU)//ID_BMU:0xF0
         {
            Boot_Data.OnlineUpdateCheck = 1;
         }           

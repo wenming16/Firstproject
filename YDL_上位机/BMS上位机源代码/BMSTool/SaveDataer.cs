@@ -1,0 +1,15 @@
+﻿using Microsoft.Analytics.Interfaces;
+using Microsoft.Analytics.Types.Sql;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+
+namespace BMSTool
+{
+    class SaveDataer
+    {
+        //从主窗体得到主管类，id和原始数据+以及解析后数据
+    }
+}

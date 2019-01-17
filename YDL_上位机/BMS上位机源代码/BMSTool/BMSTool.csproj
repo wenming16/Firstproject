@@ -1,0 +1,483 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F6C30F30-62CA-40B9-BEBA-7CB964155342}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BMSTool</RootNamespace>
+    <AssemblyName>Battery Control Center</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ApplicationIcon>BMS.ico</ApplicationIcon>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>false</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\x86\Release\Battery Control Center.xml</DocumentationFile>
+    <WarningLevel>0</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL" />
+    <Reference Include="NPOI, Version=2.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL" />
+    <Reference Include="NPOI.OOXML, Version=2.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL" />
+    <Reference Include="NPOI.OpenXml4Net, Version=2.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL" />
+    <Reference Include="NPOI.OpenXmlFormats, Version=2.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsFormsControlLibrary1, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\tanliangbao\Desktop\WindowsFormsControlLibrary1.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Analysiss\FromControl\ID18FF960.cs" />
+    <Compile Include="Analysiss\MainControl\RealTime\RtimeAnalysis.cs" />
+    <Compile Include="Forms\balance.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\balance.Designer.cs">
+      <DependentUpon>balance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\companyInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\companyInfo.Designer.cs">
+      <DependentUpon>companyInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\InitialSet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InitialSet.Designer.cs">
+      <DependentUpon>InitialSet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ReadInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ReadInfo.designer.cs">
+      <DependentUpon>ReadInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\update.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\update.designer.cs">
+      <DependentUpon>update.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OtherClass\AnalysisHelper.cs" />
+    <Compile Include="Analysiss\Seter.cs" />
+    <Compile Include="Analysiss\FromControl\ID18FF970.cs" />
+    <Compile Include="Analysiss\FromControl\ID18FF971.cs" />
+    <Compile Include="Analysiss\FromControl\ID18FF980.cs" />
+    <Compile Include="Analysiss\FromControl\ID18FF981.cs" />
+    <Compile Include="Analysiss\FromControl\ID18FF990.cs" />
+    <Compile Include="Analysiss\FromControl\ID19FF990.cs" />
+    <Compile Include="Analysiss\Analysiser.cs" />
+    <Compile Include="Analysiss\MainControl\ID1800C0F4.cs" />
+    <Compile Include="Analysiss\MainControl\ID1810C0F4.cs" />
+    <Compile Include="Analysiss\MainControl\ID1811C0F4.cs" />
+    <Compile Include="Analysiss\MainControl\ID1812C0F4.cs" />
+    <Compile Include="Analysiss\MainControl\ID1813C0F4.cs" />
+    <Compile Include="Analysiss\MainControl\RealTime\ID1820C0F4.cs" />
+    <Compile Include="Analysiss\MainControl\RealTime\ID1830C0F4.cs" />
+    <Compile Include="Analysiss\MainControl\RealTime\ID1840C0F4.cs" />
+    <Compile Include="Analysiss\MainControl\RealTime\ID1850C0F4.cs" />
+    <Compile Include="Analysiss\MainControl\RealTime\ID1860C0F4.cs" />
+    <Compile Include="Analysiss\MainControl\RealTime\ID1870C0F4.cs" />
+    <Compile Include="Analysiss\MainControl\RealTime\ID1880C0F4.cs" />
+    <Compile Include="Analysiss\MainControl\RealTime\ID1890C0F4.cs" />
+    <Compile Include="Battery Console Center.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Battery Console Center.Designer.cs">
+      <DependentUpon>Battery Console Center.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Comm\CanComm.cs" />
+    <Compile Include="Comm\CanCommunication.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Comm\CanCommunication.designer.cs">
+      <DependentUpon>CanCommunication.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Comm\CanComm_E.cs" />
+    <Compile Include="Comm\CanComm_II.cs" />
+    <Compile Include="Comm\CanSet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Comm\CanSet.Designer.cs">
+      <DependentUpon>CanSet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CsvWriter.cs" />
+    <Compile Include="DataPacks\DataPack.cs" />
+    <Compile Include="Director.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\BatCellPar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\BatCellPar.designer.cs">
+      <DependentUpon>BatCellPar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CrgCommError.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CrgCommError.Designer.cs">
+      <DependentUpon>CrgCommError.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Current.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Current.Designer.cs">
+      <DependentUpon>Current.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Insula.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Insula.Designer.cs">
+      <DependentUpon>Insula.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ModuleError.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ModuleError.Designer.cs">
+      <DependentUpon>ModuleError.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SysError.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SysError.Designer.cs">
+      <DependentUpon>SysError.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Temp\Temp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Temp\Temp.designer.cs">
+      <DependentUpon>Temp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Temp\FromControlTemp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Temp\FromControlTemp.designer.cs">
+      <DependentUpon>FromControlTemp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Vol\FromControlVol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Vol\FromControlVol.designer.cs">
+      <DependentUpon>FromControlVol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\BasicForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\BasicForm.designer.cs">
+      <DependentUpon>BasicForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Vol\Voltage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Vol\Voltage.designer.cs">
+      <DependentUpon>Voltage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OtherClass\AddItem.cs" />
+    <Compile Include="OtherClass\ArrConvert.cs" />
+    <Compile Include="OtherClass\ChartTool.cs" />
+    <Compile Include="OtherClass\SendHelper.cs" />
+    <Compile Include="OtherClass\ThresholdSeter.cs" />
+    <Compile Include="Analysiss\ReadInfos\ReadFlash.cs" />
+    <Compile Include="OtherClass\AutoSizeFormClass.cs" />
+    <Compile Include="OtherClass\CheckIsSet.cs" />
+    <Compile Include="OtherClass\Compute.cs" />
+    <Compile Include="Forms\SocSet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SocSet.Designer.cs">
+      <DependentUpon>SocSet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Analysiss\ReadInfos\ReadEpprom.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Analysiss\ReadInfos\ReadRealTimeInfo.cs" />
+    <Compile Include="Forms\SohSet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SohSet.designer.cs">
+      <DependentUpon>SohSet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VerticalProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <EmbeddedResource Include="Battery Console Center.resx">
+      <DependentUpon>Battery Console Center.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Comm\CanCommunication.resx">
+      <DependentUpon>CanCommunication.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Comm\CanSet.resx">
+      <DependentUpon>CanSet.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\balance.resx">
+      <DependentUpon>balance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\companyInfo.resx">
+      <DependentUpon>companyInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ReadInfo.resx">
+      <DependentUpon>ReadInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\BatCellPar.resx">
+      <DependentUpon>BatCellPar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CrgCommError.resx">
+      <DependentUpon>CrgCommError.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Current.resx">
+      <DependentUpon>Current.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\InitialSet.resx">
+      <DependentUpon>InitialSet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Insula.resx">
+      <DependentUpon>Insula.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ModuleError.resx">
+      <DependentUpon>ModuleError.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SysError.resx">
+      <DependentUpon>SysError.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Temp\Temp.resx">
+      <DependentUpon>Temp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Temp\FromControlTemp.resx">
+      <DependentUpon>FromControlTemp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\update.resx">
+      <DependentUpon>update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Vol\FromControlVol.resx">
+      <DependentUpon>FromControlVol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\BasicForm.resx">
+      <DependentUpon>BasicForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Vol\Voltage.resx">
+      <DependentUpon>Voltage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SocSet.resx">
+      <DependentUpon>SocSet.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="Forms\SohSet.resx">
+      <DependentUpon>SohSet.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BMS.ico" />
+    <Content Include="Photo\BMS.ico" />
+    <Content Include="Photo\SOC_0%25.png" />
+    <Content Include="Photo\SOC_0%25_副本.png" />
+    <Content Include="Photo\SOC_5%25.png" />
+    <Content Include="Photo\SOC_5%25_副本.png" />
+    <Content Include="Photo\VCU.png" />
+    <Content Include="Photo\串并下划线.png" />
+    <Content Include="Photo\云之家图片20171222141933.png" />
+    <Content Include="Photo\云之家图片20171222141933_副本.png" />
+    <Content Include="Photo\停止.png" />
+    <Content Include="Photo\停止按钮.png" />
+    <Content Include="Photo\充电.jpg" />
+    <Content Include="Photo\充电机.png" />
+    <Content Include="Photo\功率计.png" />
+    <Content Include="Photo\单体参数.png" />
+    <Content Include="Photo\单体电压.png" />
+    <Content Include="Photo\历史数据.png" />
+    <Content Include="Photo\固件升级.png" />
+    <Content Include="Photo\均衡.png" />
+    <Content Include="Photo\均衡上升.png" />
+    <Content Include="Photo\均衡下降.png" />
+    <Content Include="Photo\开关_关.png" />
+    <Content Include="Photo\开关_开.png" />
+    <Content Include="Photo\开始按钮.png" />
+    <Content Include="Photo\开路图标.png" />
+    <Content Include="Photo\打开文件.png" />
+    <Content Include="Photo\报警1级.png" />
+    <Content Include="Photo\报警1级2.png" />
+    <Content Include="Photo\报警1级填充.png" />
+    <Content Include="Photo\报警1级填充2.png" />
+    <Content Include="Photo\报警1级填充3.png" />
+    <Content Include="Photo\报警2级.png" />
+    <Content Include="Photo\报警2级填充.png" />
+    <Content Include="Photo\报警3级.png" />
+    <Content Include="Photo\报警3级填充.png" />
+    <Content Include="Photo\报警3级填充2.png" />
+    <Content Include="Photo\报警_红色.png" />
+    <Content Include="Photo\报警_绿色.png" />
+    <Content Include="Photo\报警信息.png" />
+    <Content Include="Photo\报警信息2.png" />
+    <Content Include="Photo\报警信息3.png" />
+    <Content Include="Photo\报警图表.png" />
+    <Content Include="Photo\握手.jpg" />
+    <Content Include="Photo\故障1.png" />
+    <Content Include="Photo\故障2.jpg" />
+    <Content Include="Photo\故障2.png" />
+    <Content Include="Photo\故障2_b.png" />
+    <Content Include="Photo\故障3.png" />
+    <Content Include="Photo\温度.jpg" />
+    <Content Include="Photo\温度2.jpg" />
+    <Content Include="Photo\温度3.jpg" />
+    <Content Include="Photo\温度计.png" />
+    <Content Include="Photo\电池示意图.png" />
+    <Content Include="Photo\电池组串并方式.png" />
+    <Content Include="Photo\电池组图片.png" />
+    <Content Include="Photo\索引图标.png" />
+    <Content Include="Photo\绝缘性能.png" />
+    <Content Include="Photo\绝缘状态.png" />
+    <Content Include="Photo\退出按钮.jpg" />
+    <Content Include="Photo\通信设置.png" />
+    <Content Include="Photo\配置.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="FileData\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

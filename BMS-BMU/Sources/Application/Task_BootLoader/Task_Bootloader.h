@@ -19,9 +19,8 @@
                  Data[0]=0,代表升级一行S19文件成功,否则那一行S19文件升级失败。 
 ========================================================================*/
   #define  Boot_ID        0xF300   //扩展帧
-  #define  BMU_IDNUM      0xF0     //主板升级的第一个字节编号
+  #define  ID_BMU         0xF0     //主板升级的第一个字节编号
   //以下为Boot程序中的ID命名
-  //#define ID_BMU 	    0x0001//主板ID固定不变 
   //#define ID_Reply    0x01FF//主板和子板一致
   //#define ID01_6811   0x0002//子板的ID号以此类推
   //#define ID02_6811   0x0003//子板的ID号以此类推
@@ -29,6 +28,7 @@
   typedef struct
   {
      uint16 *Boot;
+     uint16 *Updateaddr;
      uint8  OnlineUpdateCheck;
   }Boot_Data_T;
   extern  Boot_Data_T Boot_Data;
