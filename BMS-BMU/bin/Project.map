@@ -1,5 +1,5 @@
 
-PROGRAM "C:\Users\hxya-005\Desktop\易动力裸机代码\Firstproject\BMS-BMU\bin\Project.abs"
+PROGRAM "F:\HXYA\BMU\项目\福建易动力电动叉车\GIT\Firstproject\BMS-BMU\bin\Project.abs"
 
 *********************************************************************************************
 TARGET SECTION
@@ -1805,10 +1805,10 @@ MODULE:                 -- Task_SOCSOH.c.o --
      Energy_TotalCal                         FE980D      64     100       4   .text       
      SOH_Cal                                 FE9871       B      11       2   .text       
 - VARIABLES:
-     socdata.4                                 2201      54      84       6   .data       
-     uocdata.5                                 2255      54      84      10   .data       
-     soc.2                                     22BF       4       4      10   .bss        
-     i.3                                       22C3       1       1       5   .bss        
+     socdata.3                                 2201      54      84       6   .data       
+     uocdata.4                                 2255      54      84      10   .data       
+     soc.1                                     22BF       4       4      10   .bss        
+     i.2                                       22C3       1       1       5   .bss        
      g_SOCInfo                                 2C8A      1D      29     147   .common     
      g_EnergyInfo                              2CA7       C      12      22   .common     
 MODULE:                 -- Task_CurrLimit.c.o --
@@ -1935,9 +1935,9 @@ MODULE:                 -- Charge_VoltCurrRequest.c.o --
      Charge_CurrInit                         FEBD87      3D      61       2   .text       
      ChargeEnd_CurrentOut                    FEBDC4      5F      95       2   .text       
 - VARIABLES:
-     cnt.2                                     232A       5       5      20   .bss        
-     currflag.3                                232F       1       1       3   .bss        
-     cnt.4                                     2330       1       1       4   .bss        
+     cnt.1                                     232A       5       5      20   .bss        
+     currflag.2                                232F       1       1       3   .bss        
+     cnt.3                                     2330       1       1       4   .bss        
 MODULE:                 -- ChargeToBMS.c.o --
 - PROCEDURES:
      CAN_ChargetoBMS                         FEBE23      56      86       2   .text       
@@ -2296,15 +2296,15 @@ SECTION: ".text"
   Charge_VoltCurrRequest ChargeEndJudge Charge_CurrInit ChargeEnd_CurrentOut 
   CAN_ChargetoBMS CAN_ToChargeInit CAN_BMSToCharge 
 SECTION: ".data"
-  workmode.11 socdata.4 uocdata.5 
+  workmode.11 socdata.3 uocdata.4 
 SECTION: ".bss"
   heap_end free_ptr cnt.1 cnt.1 cnt.2 cnt.3 cnt.4 cnt.5 cnt.6 cnt.7 cnt.8 
-  cnt.9 cnt.10 cnt.1 relaystate.2 soc.2 i.3 Current.1 state.32 state.38 cnt.1 
+  cnt.9 cnt.10 cnt.1 relaystate.2 soc.1 i.2 Current.1 state.32 state.38 cnt.1 
   FltL.2 cnt.3 FltL.4 cnt.5 FltL.6 cnt.7 FltL.8 cnt.9 FltL.10 cnt.11 FltL.12 
   cnt.13 FltL.14 cnt.15 FltL.16 cnt.17 FltL.18 cnt.19 FltL.20 cnt.21 FltL.22 
   cnt.23 FltL.24 cnt.25 FltL.26 cnt.27 FltL.28 cnt.29 FltL.30 cnt.31 cnt.33 
   FltL.34 cnt.35 flt.36 cnt.37 Time_Flag.1 Time_Cnt.2 SumVpositive.3 
-  SumVnegtive.4 Iso_Vposi.5 Iso_Vnegt.6 cnt.2 currflag.3 cnt.4 time.1 flg.2 
+  SumVnegtive.4 Iso_Vposi.5 Iso_Vnegt.6 cnt.1 currflag.2 cnt.3 time.1 flg.2 
   first_fault.1 first_fault.2 first_fault.3 first_fault.4 first_fault.5 
   first_fault.6 first_fault.7 first_fault.8 first_fault.9 first_fault.10 
   first_fault.11 first_fault.12 first_fault.13 first_fault.14 first_fault.15 
@@ -4575,8 +4575,8 @@ OBJECT LIST SORTED BY ADDRESS
      _TIM_OCPD                                  3FC       1       1       0   .abs_section_3fc
      _TIM_PTPSR                                 3FE       1       1       0   .abs_section_3fe
      workmode.11                               2200       1       1       6   .data       
-     socdata.4                                 2201      54      84       6   .data       
-     uocdata.5                                 2255      54      84      10   .data       
+     socdata.3                                 2201      54      84       6   .data       
+     uocdata.4                                 2255      54      84      10   .data       
      heap_end                                  22A9       2       2       3   .bss        
      free_ptr                                  22AB       2       2       8   .bss        
      cnt.1                                     22AD       5       5      15   .bss        
@@ -4592,8 +4592,8 @@ OBJECT LIST SORTED BY ADDRESS
      cnt.10                                    22BB       1       1       5   .bss        
      cnt.1                                     22BC       2       2       4   .bss        
      relaystate.2                              22BE       1       1       2   .bss        
-     soc.2                                     22BF       4       4      10   .bss        
-     i.3                                       22C3       1       1       5   .bss        
+     soc.1                                     22BF       4       4      10   .bss        
+     i.2                                       22C3       1       1       5   .bss        
      Current.1                                 22C4       4       4       7   .bss        
      state.32                                  22C8       1       1       3   .bss        
      state.38                                  22C9       1       1       3   .bss        
@@ -4639,9 +4639,9 @@ OBJECT LIST SORTED BY ADDRESS
      SumVnegtive.4                             231E       4       4      19   .bss        
      Iso_Vposi.5                               2322       4       4      12   .bss        
      Iso_Vnegt.6                               2326       4       4      16   .bss        
-     cnt.2                                     232A       5       5      20   .bss        
-     currflag.3                                232F       1       1       3   .bss        
-     cnt.4                                     2330       1       1       4   .bss        
+     cnt.1                                     232A       5       5      20   .bss        
+     currflag.2                                232F       1       1       3   .bss        
+     cnt.3                                     2330       1       1       4   .bss        
      time.1                                    2331       1       1       3   .bss        
      flg.2                                     2332       1       1       3   .bss        
      first_fault.1                             2333       1       1       2   .bss        
@@ -5003,8 +5003,6 @@ rtshc12.c.o (ansixb.lib):
   _CASE_SEARCH_8 _FCALL _FPCMP _PADD _PSUB _PINC _PDEC 
 VREGS.C.o (ansixb.lib):
   SL_PULK 
-WorkModeJudge.c.o:
-  ADC_CC2_State WorkMode_DelayTime 
 Task_VoltTempCollect.c.o:
   Task_ChipTempCMDSend Task_ChipTempCollect 
 DS3231_TimeGet.c.o:
@@ -5052,7 +5050,7 @@ DataFromCSSU.c.o:
 Task_DataProcess.c.o:
   crc15Table 
 Task_SOCSOH.c.o:
-  crc15Table Cellcap.1 
+  crc15Table 
 Task_CurrLimit.c.o:
   crc15Table 
 Task_FltLevJudg.c.o:
@@ -5064,7 +5062,7 @@ Task_UpMonitor.c.o:
 UpMonitorToBMS.c.o:
   crc15Table 
 Charge_VoltCurrRequest.c.o:
-  crc15Table cnt.1 
+  crc15Table 
 ChargeToBMS.c.o:
   crc15Table 
 Task_Charge.c.o:
@@ -5121,7 +5119,7 @@ Name of initialized Object : workmode.11
 Filling bytes inserted
  00000000
 ------- ROM-ADDRESS: 0xC6D5 ---- RAM-ADDRESS: 0x2205 ---- SIZE      78 ---
-Name of initialized Object : socdata.4:4
+Name of initialized Object : socdata.3:4
  3D4CCCCD3D CCCCCD3E19 999A3E4CCC
  CD3E800000 3E99999A3E B333333ECC
  CCCD3EE666 663F000000 3F0CCCCD3F
@@ -5132,7 +5130,7 @@ Name of initialized Object : socdata.4:4
 Filling bytes inserted
  0000
 ------- ROM-ADDRESS: 0xC725 ---- RAM-ADDRESS: 0x2255 ---- SIZE      84 ---
-Name of initialized Object : uocdata.5
+Name of initialized Object : uocdata.4
  402B851F40 48D4FE404C FDF4404E14
  7B404F7CEE 405072B040 5189374052
  6E9840527E FA40528F5C 40529FBE40
@@ -5419,7 +5417,7 @@ SOC_AhIntegral            USES _FUFLOAT _FDIV g_SOCInfo SOC_AhIntegral _FADD
                                 _FMUL _FUTRUNC _FCMP g_SysTime _FSUB 
                                 g_WorkStateJudge g_VoltInfo g_EnergyInfo Energy_TotalCal 
                                 EEprom_Data inition_soc 
-inition_soc               USES uocdata.5 _FCMP soc.2 i.3 socdata.4 inition_soc 
+inition_soc               USES uocdata.4 _FCMP soc.1 i.2 socdata.3 inition_soc 
                                 _FSUB _FMUL _FDIV _FADD 
 Energy_TotalCal           USES _FUFLOAT _FDIV _FMUL _FCMP _FADD 
 SOH_Cal                   USES g_BMSMonitor_SOH 
@@ -5514,9 +5512,9 @@ Charge_VoltCurrRequest    USES g_BMSCharge CurrLimit _FUFLOAT Charge_CurrInit
                                 g_VoltInfo ChargeEnd_CurrentOut _FUTRUNC g_SOCInfo 
                                 g_TempInfo g_Flt_Charge g_Charge_State ChargeEndJudge 
                                 BMSCharge_State State_Offline 
-ChargeEndJudge            USES _FADD _FCMP cnt.2 _FMUL _FUFLOAT _FDIV 
+ChargeEndJudge            USES _FADD _FCMP cnt.1 _FMUL _FUFLOAT _FDIV 
 Charge_CurrInit           USES _FCMP 
-ChargeEnd_CurrentOut      USES currflag.3 cnt.4 _FCMP _FMUL 
+ChargeEnd_CurrentOut      USES currflag.2 cnt.3 _FCMP _FMUL 
 CAN_ChargetoBMS           USES ChargePileBMS g_Charge_State 
 CAN_ToChargeInit          USES g_BMSCharge memset BMSCharge_State 
                                 ChargePileBMS g_Charge_State CAN1_Init 

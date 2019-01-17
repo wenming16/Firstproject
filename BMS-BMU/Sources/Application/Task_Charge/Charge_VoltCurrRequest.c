@@ -12,7 +12,7 @@ static uint8 ChargeEndJudge(float soc,float curr_end,uint16 cellvoltmax,uint8 te
 ========================================================================*/ 
 void Charge_VoltCurrRequest(void)
 {
-  static uint8 cnt;
+  //static uint8 cnt;
   float curr;
   //最大电压请求
   g_BMSCharge.Volt_Max_ChargePile = (CELL_VOLT_MAX * SYS_SERIES_YiDongLi + 5);         //最高允许充电端电压 分辨率:0.1V

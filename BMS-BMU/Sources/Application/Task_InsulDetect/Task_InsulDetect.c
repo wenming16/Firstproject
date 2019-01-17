@@ -85,7 +85,7 @@ void Task_InsulationDetect(void)
   static uint8 Time_Flag,Time_Cnt;
   static uint32  SumVpositive,SumVnegtive;
   float   Vpositive_1,Vnegtive_1;
-  uint16  VposBuff[12],VnegBuff[12],VposBuff1[12],VnegBuff1[12],VposBuff2[12],VnegBuff2[12];
+  uint16  VposBuff[12],VnegBuff[12],VposBuff1[12]/*,VnegBuff1[12],VposBuff2[12]*/,VnegBuff2[12];
   uint16  Max_Volt,Max_Volt1,Min_Volt,Min_Volt1;
   static  float Iso_Vposi,Iso_Vnegt;
 
