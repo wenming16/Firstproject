@@ -66,7 +66,7 @@ void BMSCheckself_UpMonitor(SysInitState_T*sysint, Flt_BMSCheckSelf_T*lev2)
   
   BMS_to_Upmonitor.m_IDE = 1;
 	BMS_to_Upmonitor.m_RTR = 0;
-	BMS_to_Upmonitor.m_dataLen = 6;
+	BMS_to_Upmonitor.m_dataLen = 6; //数据长度为6
 	BMS_to_Upmonitor.m_priority = 6;
 	//0x1820C0F4 
   BMS_to_Upmonitor.m_ID = 0x1820C0F4;

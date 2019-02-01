@@ -81,7 +81,7 @@ Entry point: 0xC000 (_Startup)
 _startupData is allocated at 0xC00F and uses 6 Bytes
 extern struct _tagStartup {
   unsigned nofZeroOut     1
-  _Range   pZeroOut       0x2200     3095
+  _Range   pZeroOut       0x2200     3096
   _Copy    *toCopyDownBeg 0xC6CC
 } _startupData;
 
@@ -94,7 +94,7 @@ Section Name                    Size  Type     From       To       Segment
 .rodata                          512     R     0xC051     0xC250   ROM_C000
 NON_BANKED                      1147     R     0xC251     0xC6CB   ROM_C000
 .copy                            175     R     0xC6CC     0xC77A   ROM_C000
-.text                          16084     R   0xFE8000   0xFEBED3   PAGE_FE
+.text                          16116     R   0xFE8000   0xFEBEF3   PAGE_FE
 .stack                           512   R/W     0x2000     0x21FF   RAM
 .data                            169   R/W     0x2200     0x22A8   RAM
 .abs_section_8                     1   N/I        0x8        0x8   .absSeg0
@@ -835,9 +835,9 @@ NON_BANKED                      1147     R     0xC251     0xC6CB   ROM_C000
 .abs_section_3ec                   2   N/I      0x3EC      0x3ED   .absSeg735
 .abs_section_3ee                   2   N/I      0x3EE      0x3EF   .absSeg736
 .abs_section_3f2                   2   N/I      0x3F2      0x3F3   .absSeg737
-.bss                             161   R/W     0x22A9     0x2349   RAM
-HEAP_SEGMENT                    2000   R/W     0x234A     0x2B19   RAM
-.common                          765   R/W     0x2B1A     0x2E16   RAM
+.bss                             162   R/W     0x22A9     0x234A   RAM
+HEAP_SEGMENT                    2000   R/W     0x234B     0x2B1A   RAM
+.common                          765   R/W     0x2B1B     0x2E17   RAM
 PAGE_FC_738                    13238     R   0xFC8000   0xFCB3B5   PAGE_FC
 .vectSeg739_vect                   2     R     0x7F7A     0x7F7B   .vectSeg739
 .vectSeg740_vect                   2     R     0x7FA2     0x7FA3   .vectSeg740
@@ -845,8 +845,8 @@ PAGE_FC_738                    13238     R   0xFC8000   0xFCB3B5   PAGE_FC
 .vectSeg742_vect                   2     R     0xFFFE     0xFFFF   .vectSeg742
 
 Summary of section sizes per section type:
-READ_ONLY (R):        7A0D (dec:    31245)
-READ_WRITE (R/W):      E17 (dec:     3607)
+READ_ONLY (R):        7A2D (dec:    31277)
+READ_WRITE (R/W):      E18 (dec:     3608)
 NO_INIT (N/I):         383 (dec:      899)
 
 *********************************************************************************************
@@ -1619,7 +1619,7 @@ MODULE:                 -- HEAP.C.o (ansixb.lib) --
 - PROCEDURES:
      _heapcrash_                             FE8033       C      12       6   .text       
 - VARIABLES:
-     _heap_                                    234A     7D0    2000       2   HEAP_SEGMENT
+     _heap_                                    234B     7D0    2000       2   HEAP_SEGMENT
 MODULE:                 -- STRING.C.o (ansixb.lib) --
 - PROCEDURES:
      memset                                  FE803F      17      23      72   .text       
@@ -1634,7 +1634,7 @@ MODULE:                 -- ALLOC.C.o (ansixb.lib) --
 MODULE:                 -- FADD.C.o (ansixb.lib) --
 - PROCEDURES:
      F_ADDKL                                   C251      5E      94       1   NON_BANKED  
-     _FADD                                     C2AF      15      21      30   NON_BANKED  
+     _FADD                                     C2AF      15      21      29   NON_BANKED  
      _FSUB                                     C2C4      13      19      18   NON_BANKED  
 - VARIABLES:
 MODULE:                 -- FCMP.C.o (ansixb.lib) --
@@ -1694,8 +1694,8 @@ MODULE:                 -- Init_Sys.c.o --
      Init_Sys                                FE81C2      3C      60       2   .text       
      Physic_Init                             FE81FE      8E     142       2   .text       
 - VARIABLES:
-     MemPtr                                    2B1A       2       2       1   .common     
-     g_SysInitState                            2B1C       C      12      27   .common     
+     MemPtr                                    2B1B       2       2       1   .common     
+     g_SysInitState                            2B1D       C      12      27   .common     
 MODULE:                 -- Task_Init.c.o --
 - PROCEDURES:
      Task_Register                           FE828C      18      24      42   .text       
@@ -1704,14 +1704,14 @@ MODULE:                 -- Task_Init.c.o --
      Task_Roll                               FE84F3     114     276       2   .text       
 - VARIABLES:
      cnt.1                                     22AD       5       5      15   .bss        
-     tasks                                     2B28      54      84      66   .common     
-     g_Roll_Tick                               2B7C      16      22      23   .common     
+     tasks                                     2B29      54      84      66   .common     
+     g_Roll_Tick                               2B7D      16      22      23   .common     
 MODULE:                 -- Task_Bootloader.c.o --
 - PROCEDURES:
      Boot_DelayTime                          FE8607      13      19       2   .text       
      Task_BootLoader                         FE861A      38      56       3   .text       
 - VARIABLES:
-     Boot_Data                                 2B92       5       5       8   .common     
+     Boot_Data                                 2B93       5       5       8   .common     
 MODULE:                 -- BMSCheckSelf.c.o --
 - PROCEDURES:
      CheckSelf_SysVoltLow_DischagTemp        FE8652       F      15       2   .text       
@@ -1745,7 +1745,7 @@ MODULE:                 -- BMSCheckSelf.c.o --
      cnt.8                                     22B9       1       1       5   .bss        
      cnt.9                                     22BA       1       1       5   .bss        
      cnt.10                                    22BB       1       1       5   .bss        
-     g_Flt_BMSCheckSelf                        2B97       9       9       5   .common     
+     g_Flt_BMSCheckSelf                        2B98       9       9       5   .common     
 MODULE:                 -- BMSCheckSelf_UpMonitor.c.o --
 - PROCEDURES:
      PhysicInitState_FltCode                 FE8ACA      66     102       2   .text       
@@ -1767,7 +1767,7 @@ MODULE:                 -- WorkModeJudge.c.o --
 - PROCEDURES:
      WokeModeJudgment                        FE8D84       5       5       4   .text       
 - VARIABLES:
-     g_WorkStateJudge                          2BA0       1       1      12   .common     
+     g_WorkStateJudge                          2BA1       1       1      12   .common     
 MODULE:                 -- Task_VoltTempCollect.c.o --
 - PROCEDURES:
      Task_VoltCMDSend                        FE8D89       8       8       5   .text       
@@ -1780,9 +1780,9 @@ MODULE:                 -- DataFromCSSU.c.o --
 - PROCEDURES:
      DataFromCSSU                            FE8DB1     151     337      13   .text       
 - VARIABLES:
-     g_FromCSSU_Volt                           2BA1      40      64      20   .common     
-     g_FromCSSU_Temp                           2BE1       A      10      14   .common     
-     g_FromCSSU_FltData                        2BEB       3       3       4   .common     
+     g_FromCSSU_Volt                           2BA2      40      64      20   .common     
+     g_FromCSSU_Temp                           2BE2       A      10      14   .common     
+     g_FromCSSU_FltData                        2BEC       3       3       4   .common     
 MODULE:                 -- Task_DataProcess.c.o --
 - PROCEDURES:
      Init_TaskDataProcess                    FE8F02      4C      76       2   .text       
@@ -1791,170 +1791,171 @@ MODULE:                 -- Task_DataProcess.c.o --
      DataProcess_Temp                        FE8FF4      82     130       2   .text       
      DataProcess_OpenWire                    FE9076       A      10       2   .text       
 - VARIABLES:
-     g_VoltInfo                                2BEE      72     114      63   .common     
-     g_TempInfo                                2C60      10      16      36   .common     
-     g_DataColletInfo                          2C70       5       5      21   .common     
-     g_OpenWireInfo                            2C75       D      13       5   .common     
-     g_InsulInfo                               2C82       A      10       1   .common     
+     g_VoltInfo                                2BEF      72     114      63   .common     
+     g_TempInfo                                2C61      10      16      36   .common     
+     g_DataColletInfo                          2C71       5       5      22   .common     
+     g_OpenWireInfo                            2C76       D      13       5   .common     
+     g_InsulInfo                               2C83       A      10       1   .common     
 MODULE:                 -- Task_SOCSOH.c.o --
 - PROCEDURES:
-     Task_SOCSOH                             FE9080      4B      75       3   .text       
-     ADC_Current                             FE90CB      4F      79       3   .text       
-     SOC_AhIntegral                          FE911A     5BE    1470      43   .text       
-     inition_soc                             FE96D8     141     321       5   .text       
-     Energy_TotalCal                         FE9819      64     100       4   .text       
-     SOH_Cal                                 FE987D       B      11       2   .text       
+     Task_SOCSOH                             FE9080      7B     123       3   .text       
+     ADC_Current                             FE90FB      4F      79       3   .text       
+     SOC_AhIntegral                          FE914A     5AE    1454      41   .text       
+     inition_soc                             FE96F8     141     321       5   .text       
+     Energy_TotalCal                         FE9839      64     100       4   .text       
+     SOH_Cal                                 FE989D       B      11       2   .text       
 - VARIABLES:
-     socdata.4                                 2201      54      84       6   .data       
-     uocdata.5                                 2255      54      84      10   .data       
-     soc.2                                     22BF       4       4      10   .bss        
-     i.3                                       22C3       1       1       5   .bss        
-     g_SOCInfo                                 2C8C      1D      29     147   .common     
-     g_EnergyInfo                              2CA9       C      12      22   .common     
+     socdata.5                                 2201      54      84       6   .data       
+     uocdata.6                                 2255      54      84      10   .data       
+     soctimeflg.1                              22BF       1       1       3   .bss        
+     soc.3                                     22C0       4       4      10   .bss        
+     i.4                                       22C4       1       1       5   .bss        
+     g_SOCInfo                                 2C8D      1D      29     148   .common     
+     g_EnergyInfo                              2CAA       C      12      22   .common     
 MODULE:                 -- Task_CurrLimit.c.o --
 - PROCEDURES:
-     Init_TaskCurrLimit                      FE9888      10      16       2   .text       
-     Task_CurrLimit                          FE9898      21      33       3   .text       
-     ChagCurrLimit_Cons                      FE98B9      41      65       2   .text       
+     Init_TaskCurrLimit                      FE98A8      10      16       2   .text       
+     Task_CurrLimit                          FE98B8      21      33       3   .text       
+     ChagCurrLimit_Cons                      FE98D9      41      65       2   .text       
 - VARIABLES:
-     Current.1                                 22C4       4       4       7   .bss        
-     CurrLimit                                 2CB5       4       4       9   .common     
+     Current.1                                 22C5       4       4       7   .bss        
+     CurrLimit                                 2CB6       4       4       9   .common     
 MODULE:                 -- Task_FltLevJudg.c.o --
 - PROCEDURES:
-     Init_TaskFltLevJudg                     FE98FA      3D      61       2   .text       
-     Task_FltLevJudg                         FE9937       8       8       3   .text       
-     FltLevJudg                              FE993F     1A0     416       4   .text       
-     Fault1_VoltSys_DisCharge                FE9ADF       F      15       2   .text       
-     Fault2_VoltSys_DisCharge                FE9AEE       F      15       4   .text       
-     Recover1_VoltSys_DisCharge              FE9AFD      12      18       2   .text       
-     Fault_DisChg_VoltSL                     FE9B0F      F7     247       8   .text       
-     Fault1_VoltCell_DisCharge               FE9C06       C      12       2   .text       
-     Fault2_VoltCell_DisCharge               FE9C12       C      12       2   .text       
-     Recover1_VoltCell_DisCharge             FE9C1E       F      15       2   .text       
-     Fault_DisChg_VoltCL                     FE9C2D      AD     173       2   .text       
-     Fault_DisChg_VoltCD                     FE9CDA      60      96       2   .text       
-     Fault_DisChg_TempH                      FE9D3A      AE     174       3   .text       
-     Fault_DisChg_TempL                      FE9DE8      AE     174       3   .text       
-     Fault_DisChg_TempD                      FE9E96      66     102       2   .text       
-     Fault_DisChg_CurrH                      FE9EFC      EC     236       9   .text       
-     Fault_DisChg_Insul                      FE9FE8      59      89       2   .text       
-     Fault_Charge_VoltSH                     FEA041     10D     269      10   .text       
-     Fault_Charge_VoltCH                     FEA14E      A8     168       3   .text       
-     Fault_Charge_VoltCD                     FEA1F6      60      96       2   .text       
-     Fault_Charge_TempH                      FEA256      AE     174       3   .text       
-     Fault_Charge_TempL                      FEA304      AE     174       3   .text       
-     Fault_Charge_TempD                      FEA3B2      66     102       2   .text       
-     Fault_Charge_CurrH                      FEA418     1CE     462      31   .text       
-     Fault_CSSU_OffLine                      FEA5E6      35      53       2   .text       
-     Fault_Charge_Insul                      FEA61B      59      89       2   .text       
-     Fault_Relay_BreakDown                   FEA674      E3     227       6   .text       
-     Fault_Charge_OffLine                    FEA757      36      54       2   .text       
+     Init_TaskFltLevJudg                     FE991A      3D      61       2   .text       
+     Task_FltLevJudg                         FE9957       8       8       3   .text       
+     FltLevJudg                              FE995F     1A0     416       4   .text       
+     Fault1_VoltSys_DisCharge                FE9AFF       F      15       2   .text       
+     Fault2_VoltSys_DisCharge                FE9B0E       F      15       4   .text       
+     Recover1_VoltSys_DisCharge              FE9B1D      12      18       2   .text       
+     Fault_DisChg_VoltSL                     FE9B2F      F7     247       8   .text       
+     Fault1_VoltCell_DisCharge               FE9C26       C      12       2   .text       
+     Fault2_VoltCell_DisCharge               FE9C32       C      12       2   .text       
+     Recover1_VoltCell_DisCharge             FE9C3E       F      15       2   .text       
+     Fault_DisChg_VoltCL                     FE9C4D      AD     173       2   .text       
+     Fault_DisChg_VoltCD                     FE9CFA      60      96       2   .text       
+     Fault_DisChg_TempH                      FE9D5A      AE     174       3   .text       
+     Fault_DisChg_TempL                      FE9E08      AE     174       3   .text       
+     Fault_DisChg_TempD                      FE9EB6      66     102       2   .text       
+     Fault_DisChg_CurrH                      FE9F1C      EC     236       9   .text       
+     Fault_DisChg_Insul                      FEA008      59      89       2   .text       
+     Fault_Charge_VoltSH                     FEA061     10D     269      10   .text       
+     Fault_Charge_VoltCH                     FEA16E      A8     168       3   .text       
+     Fault_Charge_VoltCD                     FEA216      60      96       2   .text       
+     Fault_Charge_TempH                      FEA276      AE     174       3   .text       
+     Fault_Charge_TempL                      FEA324      AE     174       3   .text       
+     Fault_Charge_TempD                      FEA3D2      66     102       2   .text       
+     Fault_Charge_CurrH                      FEA438     1CE     462      31   .text       
+     Fault_CSSU_OffLine                      FEA606      35      53       2   .text       
+     Fault_Charge_Insul                      FEA63B      59      89       2   .text       
+     Fault_Relay_BreakDown                   FEA694      E3     227       6   .text       
+     Fault_Charge_OffLine                    FEA777      36      54       2   .text       
 - VARIABLES:
-     state.32                                  22C8       1       1       3   .bss        
-     state.38                                  22C9       1       1       3   .bss        
-     cnt.1                                     22CA       4       4      19   .bss        
-     FltL.2                                    22CE       1       1       6   .bss        
-     cnt.3                                     22CF       4       4      19   .bss        
-     FltL.4                                    22D3       1       1       6   .bss        
-     cnt.5                                     22D4       2       2      10   .bss        
-     FltL.6                                    22D6       1       1       4   .bss        
-     cnt.7                                     22D7       4       4      19   .bss        
-     FltL.8                                    22DB       1       1       6   .bss        
-     cnt.9                                     22DC       4       4      19   .bss        
-     FltL.10                                   22E0       1       1       6   .bss        
-     cnt.11                                    22E1       2       2      10   .bss        
-     FltL.12                                   22E3       1       1       4   .bss        
-     cnt.13                                    22E4       4       4      19   .bss        
-     FltL.14                                   22E8       1       1       6   .bss        
-     cnt.15                                    22E9       4       4       4   .bss        
-     FltL.16                                   22ED       1       1       3   .bss        
-     cnt.17                                    22EE       4       4      19   .bss        
-     FltL.18                                   22F2       1       1       6   .bss        
-     cnt.19                                    22F3       4       4      19   .bss        
-     FltL.20                                   22F7       1       1       6   .bss        
-     cnt.21                                    22F8       2       2      10   .bss        
-     FltL.22                                   22FA       1       1       4   .bss        
-     cnt.23                                    22FB       4       4      19   .bss        
-     FltL.24                                   22FF       1       1       6   .bss        
-     cnt.25                                    2300       4       4      19   .bss        
-     FltL.26                                   2304       1       1       6   .bss        
-     cnt.27                                    2305       2       2      10   .bss        
-     FltL.28                                   2307       1       1       4   .bss        
-     cnt.29                                    2308       4       4      19   .bss        
-     FltL.30                                   230C       1       1       6   .bss        
-     cnt.31                                    230D       2       2       4   .bss        
-     cnt.33                                    230F       4       4       4   .bss        
-     FltL.34                                   2313       1       1       3   .bss        
-     cnt.35                                    2314       2       2      10   .bss        
-     flt.36                                    2316       1       1       5   .bss        
-     cnt.37                                    2317       1       1       4   .bss        
-     g_Flt_DisChg                              2CB9       9       9      47   .common     
-     g_Flt_Charge                              2CC2       B      11      66   .common     
-     State_Offline                             2CCD       5       5      13   .common     
-     HeartBeat                                 2CD2       2       2       9   .common     
+     state.32                                  22C9       1       1       3   .bss        
+     state.38                                  22CA       1       1       3   .bss        
+     cnt.1                                     22CB       4       4      19   .bss        
+     FltL.2                                    22CF       1       1       6   .bss        
+     cnt.3                                     22D0       4       4      19   .bss        
+     FltL.4                                    22D4       1       1       6   .bss        
+     cnt.5                                     22D5       2       2      10   .bss        
+     FltL.6                                    22D7       1       1       4   .bss        
+     cnt.7                                     22D8       4       4      19   .bss        
+     FltL.8                                    22DC       1       1       6   .bss        
+     cnt.9                                     22DD       4       4      19   .bss        
+     FltL.10                                   22E1       1       1       6   .bss        
+     cnt.11                                    22E2       2       2      10   .bss        
+     FltL.12                                   22E4       1       1       4   .bss        
+     cnt.13                                    22E5       4       4      19   .bss        
+     FltL.14                                   22E9       1       1       6   .bss        
+     cnt.15                                    22EA       4       4       4   .bss        
+     FltL.16                                   22EE       1       1       3   .bss        
+     cnt.17                                    22EF       4       4      19   .bss        
+     FltL.18                                   22F3       1       1       6   .bss        
+     cnt.19                                    22F4       4       4      19   .bss        
+     FltL.20                                   22F8       1       1       6   .bss        
+     cnt.21                                    22F9       2       2      10   .bss        
+     FltL.22                                   22FB       1       1       4   .bss        
+     cnt.23                                    22FC       4       4      19   .bss        
+     FltL.24                                   2300       1       1       6   .bss        
+     cnt.25                                    2301       4       4      19   .bss        
+     FltL.26                                   2305       1       1       6   .bss        
+     cnt.27                                    2306       2       2      10   .bss        
+     FltL.28                                   2308       1       1       4   .bss        
+     cnt.29                                    2309       4       4      19   .bss        
+     FltL.30                                   230D       1       1       6   .bss        
+     cnt.31                                    230E       2       2       4   .bss        
+     cnt.33                                    2310       4       4       4   .bss        
+     FltL.34                                   2314       1       1       3   .bss        
+     cnt.35                                    2315       2       2      10   .bss        
+     flt.36                                    2317       1       1       5   .bss        
+     cnt.37                                    2318       1       1       4   .bss        
+     g_Flt_DisChg                              2CBA       9       9      47   .common     
+     g_Flt_Charge                              2CC3       B      11      66   .common     
+     State_Offline                             2CCE       5       5      13   .common     
+     HeartBeat                                 2CD3       2       2       9   .common     
 MODULE:                 -- Task_InsulDetect.c.o --
 - PROCEDURES:
-     Insulation_Init                         FEA78D      1D      29       2   .text       
-     ADC_Insul_HVPositive                    FEA7AA       7       7       2   .text       
-     ADC_Insul_HVNegative                    FEA7B1       7       7       4   .text       
-     Task_InsulationDetect                   FEA7B8     5EF    1519      92   .text       
+     Insulation_Init                         FEA7AD      1D      29       2   .text       
+     ADC_Insul_HVPositive                    FEA7CA       7       7       2   .text       
+     ADC_Insul_HVNegative                    FEA7D1       7       7       4   .text       
+     Task_InsulationDetect                   FEA7D8     5EF    1519      92   .text       
 - VARIABLES:
-     Time_Flag.1                               2318       1       1       4   .bss        
-     Time_Cnt.2                                2319       1       1       5   .bss        
-     SumVpositive.3                            231A       4       4      13   .bss        
-     SumVnegtive.4                             231E       4       4      19   .bss        
-     Iso_Vposi.5                               2322       4       4      12   .bss        
-     Iso_Vnegt.6                               2326       4       4      16   .bss        
-     g_IsoDetect                               2CD4      12      18      39   .common     
+     Time_Flag.1                               2319       1       1       4   .bss        
+     Time_Cnt.2                                231A       1       1       5   .bss        
+     SumVpositive.3                            231B       4       4      13   .bss        
+     SumVnegtive.4                             231F       4       4      19   .bss        
+     Iso_Vposi.5                               2323       4       4      12   .bss        
+     Iso_Vnegt.6                               2327       4       4      16   .bss        
+     g_IsoDetect                               2CD5      12      18      39   .common     
 MODULE:                 -- Task_UpMonitor.c.o --
 - PROCEDURES:
-     CAN_UpMonitorInit                       FEADA7       8       8       2   .text       
-     CAN_ToUpMonitor                         FEADAF       B      11      10   .text       
-     Init_UpMonitor                          FEADBA      5B      91       2   .text       
-     UpMonitor_DelayTimeus                   FEAE15      13      19       4   .text       
-     CAN_ToUpMonitorMsg                      FEAE28     6BB    1723     117   .text       
-     Task_BMUToUpMonitor                     FEB4E3     23A     570      25   .text       
-     Task_BMSToUpMonitor                     FEB71D       E      14       3   .text       
+     CAN_UpMonitorInit                       FEADC7       8       8       2   .text       
+     CAN_ToUpMonitor                         FEADCF       B      11      10   .text       
+     Init_UpMonitor                          FEADDA      5B      91       2   .text       
+     UpMonitor_DelayTimeus                   FEAE35      13      19       4   .text       
+     CAN_ToUpMonitorMsg                      FEAE48     6BB    1723     117   .text       
+     Task_BMUToUpMonitor                     FEB503     23A     570      25   .text       
+     Task_BMSToUpMonitor                     FEB73D       E      14       3   .text       
 - VARIABLES:
-     g_BMSMonitor_Volt                         2CE6      12      18      68   .common     
-     g_BMSMonitor_Temp                         2CF8       A      10      65   .common     
-     g_BMSMonitor_Curr                         2D02       8       8      30   .common     
-     g_BMSMonitor_Insul                        2D0A       6       6       9   .common     
-     g_BMSMonitor_SOH                          2D10       4       4       6   .common     
-     g_BMSMonitor_New_LT                       2D14       8       8       3   .common     
+     g_BMSMonitor_Volt                         2CE7      12      18      68   .common     
+     g_BMSMonitor_Temp                         2CF9       A      10      65   .common     
+     g_BMSMonitor_Curr                         2D03       8       8      30   .common     
+     g_BMSMonitor_Insul                        2D0B       6       6       9   .common     
+     g_BMSMonitor_SOH                          2D11       4       4       6   .common     
+     g_BMSMonitor_New_LT                       2D15       8       8       3   .common     
 MODULE:                 -- UpMonitorToBMS.c.o --
 - PROCEDURES:
-     UpMonitor_to_Bms                        FEB72B     478    1144      39   .text       
+     UpMonitor_to_Bms                        FEB74B     478    1144      39   .text       
 - VARIABLES:
-     g_MonitorBMS_SOC                          2D1C      10      16      21   .common     
-     g_MonitorBMS_Start                        2D2C       2       2       7   .common     
+     g_MonitorBMS_SOC                          2D1D      10      16      21   .common     
+     g_MonitorBMS_Start                        2D2D       2       2       7   .common     
 MODULE:                 -- Charge_VoltCurrRequest.c.o --
 - PROCEDURES:
-     Charge_VoltCurrRequest                  FEBBA3      F2     242       2   .text       
-     ChargeEndJudge                          FEBC95      FE     254       2   .text       
-     Charge_CurrInit                         FEBD93      3D      61       2   .text       
-     ChargeEnd_CurrentOut                    FEBDD0      5F      95       2   .text       
+     Charge_VoltCurrRequest                  FEBBC3      F2     242       2   .text       
+     ChargeEndJudge                          FEBCB5      FE     254       2   .text       
+     Charge_CurrInit                         FEBDB3      3D      61       2   .text       
+     ChargeEnd_CurrentOut                    FEBDF0      5F      95       2   .text       
 - VARIABLES:
-     cnt.2                                     232A       5       5      20   .bss        
-     currflag.3                                232F       1       1       3   .bss        
-     cnt.4                                     2330       1       1       4   .bss        
+     cnt.2                                     232B       5       5      20   .bss        
+     currflag.3                                2330       1       1       3   .bss        
+     cnt.4                                     2331       1       1       4   .bss        
 MODULE:                 -- ChargeToBMS.c.o --
 - PROCEDURES:
-     CAN_ChargetoBMS                         FEBE2F      56      86       2   .text       
+     CAN_ChargetoBMS                         FEBE4F      56      86       2   .text       
 - VARIABLES:
-     ChargePileBMS                             2D2E       4       4       4   .common     
-     g_Charge_State                            2D32       6       6      10   .common     
+     ChargePileBMS                             2D2F       4       4       4   .common     
+     g_Charge_State                            2D33       6       6      10   .common     
 MODULE:                 -- Task_Charge.c.o --
 - PROCEDURES:
-     CAN_ToChargeInit                        FEBE85      44      68       2   .text       
-     CAN_BMSToCharge                         FEBEC9       B      11       2   .text       
+     CAN_ToChargeInit                        FEBEA5      44      68       2   .text       
+     CAN_BMSToCharge                         FEBEE9       B      11       2   .text       
      Charge_Strategy                         FC8000     15C     348       5   PAGE_FC_738 
      Task_Charge                             FC815C      5A      90       3   PAGE_FC_738 
 - VARIABLES:
-     time.1                                    2331       1       1       3   .bss        
-     flg.2                                     2332       1       1       3   .bss        
-     g_BMSCharge                               2D38      12      18      28   .common     
-     BMSCharge_State                           2D4A       6       6      20   .common     
+     time.1                                    2332       1       1       3   .bss        
+     flg.2                                     2333       1       1       3   .bss        
+     g_BMSCharge                               2D39      12      18      28   .common     
+     BMSCharge_State                           2D4B       6       6      20   .common     
 MODULE:                 -- Task_EEEReadWrite.c.o --
 - PROCEDURES:
      Get_EEprom_Value                        FC81B6      6D     109       2   PAGE_FC_738 
@@ -1964,7 +1965,7 @@ MODULE:                 -- Task_EEEReadWrite.c.o --
      EEprom_Write                            FC8552     15F     351       8   PAGE_FC_738 
      Task_EEpromWrite                        FC86B1       8       8       3   PAGE_FC_738 
 - VARIABLES:
-     EEprom_Data                               2D50       4       4      18   .common     
+     EEprom_Data                               2D51       4       4      18   .common     
 MODULE:                 -- Task_FltSave.c.o --
 - PROCEDURES:
      VoltSH                                  FC86B9      64     100       2   PAGE_FC_738 
@@ -1988,32 +1989,32 @@ MODULE:                 -- Task_FltSave.c.o --
      Task_FltCodeProcess                     FC8E51       D      13       3   PAGE_FC_738 
      Task_FltCodeStore                       FC8E5E     1DF     479       3   PAGE_FC_738 
 - VARIABLES:
-     first_fault.1                             2333       1       1       2   .bss        
-     first_fault.2                             2334       1       1       2   .bss        
-     first_fault.3                             2335       1       1       2   .bss        
-     first_fault.4                             2336       1       1       2   .bss        
-     first_fault.5                             2337       1       1       2   .bss        
-     first_fault.6                             2338       1       1       2   .bss        
-     first_fault.7                             2339       1       1       2   .bss        
-     first_fault.8                             233A       1       1       2   .bss        
-     first_fault.9                             233B       1       1       2   .bss        
-     first_fault.10                            233C       1       1       2   .bss        
-     first_fault.11                            233D       1       1       2   .bss        
-     first_fault.12                            233E       1       1       2   .bss        
-     first_fault.13                            233F       1       1       2   .bss        
-     first_fault.14                            2340       1       1       2   .bss        
-     first_fault.15                            2341       1       1       2   .bss        
-     first_fault.16                            2342       1       1       2   .bss        
-     g_FltCodeSave                             2D54       2       2       4   .common     
+     first_fault.1                             2334       1       1       2   .bss        
+     first_fault.2                             2335       1       1       2   .bss        
+     first_fault.3                             2336       1       1       2   .bss        
+     first_fault.4                             2337       1       1       2   .bss        
+     first_fault.5                             2338       1       1       2   .bss        
+     first_fault.6                             2339       1       1       2   .bss        
+     first_fault.7                             233A       1       1       2   .bss        
+     first_fault.8                             233B       1       1       2   .bss        
+     first_fault.9                             233C       1       1       2   .bss        
+     first_fault.10                            233D       1       1       2   .bss        
+     first_fault.11                            233E       1       1       2   .bss        
+     first_fault.12                            233F       1       1       2   .bss        
+     first_fault.13                            2340       1       1       2   .bss        
+     first_fault.14                            2341       1       1       2   .bss        
+     first_fault.15                            2342       1       1       2   .bss        
+     first_fault.16                            2343       1       1       2   .bss        
+     g_FltCodeSave                             2D55       2       2       4   .common     
 MODULE:                 -- Task_SysTimeGet.c.o --
 - PROCEDURES:
      Time_Init                               FC903D      5E      94       2   PAGE_FC_738 
-     Sleep_StaticTime                        FC909B      AE     174       2   PAGE_FC_738 
+     Sleep_StaticTime                        FC909B      AE     174       4   PAGE_FC_738 
      Task_SysTimeGet                         FC9149      7F     127       3   PAGE_FC_738 
 - VARIABLES:
-     Time_firstflag.1                          2343       1       1       3   .bss        
-     cnt.2                                     2344       4       4       8   .bss        
-     g_SysTime                                 2D56       F      15      41   .common     
+     Time_firstflag.1                          2344       1       1       3   .bss        
+     cnt.2                                     2345       4       4       8   .bss        
+     g_SysTime                                 2D57       F      15      41   .common     
 MODULE:                 -- Task_Screen.c.o --
 - PROCEDURES:
      Init_Screen                             FC91C8       F      15       2   PAGE_FC_738 
@@ -2023,15 +2024,15 @@ MODULE:                 -- Task_Screen.c.o --
      Screen_delay                            FC9330       B      11       2   PAGE_FC_738 
      Task_ScreenTransfer                     FC933B      25      37       3   PAGE_FC_738 
 - VARIABLES:
-     RS485_Receive                             2D65      25      37      30   .common     
+     RS485_Receive                             2D66      25      37      30   .common     
 MODULE:                 -- Task_BalanceControl.c.o --
 - PROCEDURES:
      BalanceControl_Strategy                 FC9360      EF     239       2   PAGE_FC_738 
      Task_BalanceControl_ON                  FC944F      4B      75       3   PAGE_FC_738 
      Task_BalanceControl_OFF                 FC949A      1A      26       3   PAGE_FC_738 
 - VARIABLES:
-     cnt.1                                     2348       2       2       4   .bss        
-     g_PassiveBalance                          2D8A       2       2       5   .common     
+     cnt.1                                     2349       2       2       4   .bss        
+     g_PassiveBalance                          2D8B       2       2       5   .common     
 MODULE:                 -- Init_ADC.c.o --
 - PROCEDURES:
      Init_ADC                                FC94B4       5       5       2   PAGE_FC_738 
@@ -2055,7 +2056,7 @@ MODULE:                 -- DS3231_TimeGet.c.o --
      DS3231_DelayTimeus                      FC950B      13      19       2   PAGE_FC_738 
      DS3231_Read_Time                        FC951E      66     102       4   PAGE_FC_738 
 - VARIABLES:
-     Read_IIC_Time                             2D8C       5       5      29   .common     
+     Read_IIC_Time                             2D8D       5       5      31   .common     
 MODULE:                 -- LTC6811_CMD.c.o --
 - PROCEDURES:
      Spi_LTC6811Init                         FC9584       D      13       2   PAGE_FC_738 
@@ -2078,39 +2079,39 @@ MODULE:                 -- LTC6811_CMD.c.o --
      HXYA_Gpio_Search                        FC9BFB     434    1076       2   PAGE_FC_738 
 - VARIABLES:
      crc15Table                                C051     200     512       2   .rodata     
-     ADCV                                      2D91       2       2       6   .common     
-     ADSTAT                                    2D93       2       2       2   .common     
-     ADOW                                      2D95       2       2       5   .common     
-     ADAX                                      2D97       2       2       5   .common     
+     ADCV                                      2D92       2       2       6   .common     
+     ADSTAT                                    2D94       2       2       2   .common     
+     ADOW                                      2D96       2       2       5   .common     
+     ADAX                                      2D98       2       2       5   .common     
 MODULE:                 -- LTC6811_Init.c.o --
 - PROCEDURES:
      Config_Fun                              FCA02F      C6     198       3   PAGE_FC_738 
      LTC6804_Init                            FCA0F5      45      69       2   PAGE_FC_738 
 - VARIABLES:
-     CFG1                                      2D99      12      18       9   .common     
+     CFG1                                      2D9A      12      18       9   .common     
 MODULE:                 -- LTC6811_OpWire.c.o --
 - PROCEDURES:
      LTC6811_OpenwireDetect                  FCA13A     251     593      38   PAGE_FC_738 
 - VARIABLES:
-     g_LTC6811_OpwireInfo                      2DAB       7       7       9   .common     
+     g_LTC6811_OpwireInfo                      2DAC       7       7       9   .common     
 MODULE:                 -- LTC6811_PassBalance.c.o --
 - PROCEDURES:
      LTC6811_BalanceCMDSend                  FCA38B      AE     174       6   PAGE_FC_738 
      LTC6811_BalanceControl                  FCA439      F6     246       7   PAGE_FC_738 
 - VARIABLES:
-     Balance_CFGR                              2DB2      12      18       4   .common     
+     Balance_CFGR                              2DB3      12      18       4   .common     
 MODULE:                 -- LTC6811_TempCollect.c.o --
 - PROCEDURES:
      LTC6811_TempCMDSend                     FCA52F      14      20       2   PAGE_FC_738 
      LTC6811_TempCollect                     FCA543     174     372       7   PAGE_FC_738 
 - VARIABLES:
-     g_LTC6811_TempInfo                        2DC4      12      18      39   .common     
+     g_LTC6811_TempInfo                        2DC5      12      18      39   .common     
 MODULE:                 -- LTC6811_VoltCollect.c.o --
 - PROCEDURES:
      LTC6811_VoltCMDSend                     FCA6B7       9       9       2   PAGE_FC_738 
      LTC6811_VoltCollect                     FCA6C0     214     532      17   PAGE_FC_738 
 - VARIABLES:
-     g_LTC6811_VoltInfo                        2DD6      3C      60      45   .common     
+     g_LTC6811_VoltInfo                        2DD7      3C      60      45   .common     
 MODULE:                 -- ADC.c.o --
 - PROCEDURES:
      ADC_init                                FCA8D4      1A      26       2   PAGE_FC_738 
@@ -2139,7 +2140,7 @@ MODULE:                 -- Flash.c.o --
      ErrorCheck                              FCAF00      13      19       4   PAGE_FC_738 
      LaunchFlashCommand                      FCAF13      B9     185       7   PAGE_FC_738 
 - VARIABLES:
-     FlashErr                                  2E12       3       3      15   .common     
+     FlashErr                                  2E13       3       3      15   .common     
 MODULE:                 -- Init_Flash.c.o --
 - PROCEDURES:
      Init_Flash                              FCAFCC      A1     161       2   PAGE_FC_738 
@@ -2170,7 +2171,7 @@ MODULE:                 -- PIT.c.o --
      PIT0_Init                               FCB28E      1E      30       2   PAGE_FC_738 
      Interrupt_PIT0                            C6AE      1E      30       0   NON_BANKED  
 - VARIABLES:
-     PIT_TimePeriod                            2E15       2       2       5   .common     
+     PIT_TimePeriod                            2E16       2       2       5   .common     
 MODULE:                 -- PLL.c.o --
 - PROCEDURES:
      PLL_Init                                FCB2AC      1E      30       2   PAGE_FC_738 
@@ -2219,7 +2220,7 @@ MODULE STATISTIC
   Task_VoltTempCollect.c.o                     0     40      0
   DataFromCSSU.c.o                            77    337      0
   Task_DataProcess.c.o                       158    382      0
-  Task_SOCSOH.c.o                            214   2056      0
+  Task_SOCSOH.c.o                            215   2088      0
   Task_CurrLimit.c.o                           8    114      0
   Task_FltLevJudg.c.o                        107   3731      0
   Task_InsulDetect.c.o                        36   1562      0
@@ -2296,19 +2297,19 @@ SECTION: ".text"
   Charge_VoltCurrRequest ChargeEndJudge Charge_CurrInit ChargeEnd_CurrentOut 
   CAN_ChargetoBMS CAN_ToChargeInit CAN_BMSToCharge 
 SECTION: ".data"
-  workmode.11 socdata.4 uocdata.5 
+  workmode.11 socdata.5 uocdata.6 
 SECTION: ".bss"
   heap_end free_ptr cnt.1 cnt.1 cnt.2 cnt.3 cnt.4 cnt.5 cnt.6 cnt.7 cnt.8 
-  cnt.9 cnt.10 cnt.1 relaystate.2 soc.2 i.3 Current.1 state.32 state.38 cnt.1 
-  FltL.2 cnt.3 FltL.4 cnt.5 FltL.6 cnt.7 FltL.8 cnt.9 FltL.10 cnt.11 FltL.12 
-  cnt.13 FltL.14 cnt.15 FltL.16 cnt.17 FltL.18 cnt.19 FltL.20 cnt.21 FltL.22 
-  cnt.23 FltL.24 cnt.25 FltL.26 cnt.27 FltL.28 cnt.29 FltL.30 cnt.31 cnt.33 
-  FltL.34 cnt.35 flt.36 cnt.37 Time_Flag.1 Time_Cnt.2 SumVpositive.3 
-  SumVnegtive.4 Iso_Vposi.5 Iso_Vnegt.6 cnt.2 currflag.3 cnt.4 time.1 flg.2 
-  first_fault.1 first_fault.2 first_fault.3 first_fault.4 first_fault.5 
-  first_fault.6 first_fault.7 first_fault.8 first_fault.9 first_fault.10 
-  first_fault.11 first_fault.12 first_fault.13 first_fault.14 first_fault.15 
-  first_fault.16 Time_firstflag.1 cnt.2 cnt.1 
+  cnt.9 cnt.10 cnt.1 relaystate.2 soctimeflg.1 soc.3 i.4 Current.1 state.32 
+  state.38 cnt.1 FltL.2 cnt.3 FltL.4 cnt.5 FltL.6 cnt.7 FltL.8 cnt.9 FltL.10 
+  cnt.11 FltL.12 cnt.13 FltL.14 cnt.15 FltL.16 cnt.17 FltL.18 cnt.19 FltL.20 
+  cnt.21 FltL.22 cnt.23 FltL.24 cnt.25 FltL.26 cnt.27 FltL.28 cnt.29 FltL.30 
+  cnt.31 cnt.33 FltL.34 cnt.35 flt.36 cnt.37 Time_Flag.1 Time_Cnt.2 
+  SumVpositive.3 SumVnegtive.4 Iso_Vposi.5 Iso_Vnegt.6 cnt.2 currflag.3 cnt.4 
+  time.1 flg.2 first_fault.1 first_fault.2 first_fault.3 first_fault.4 
+  first_fault.5 first_fault.6 first_fault.7 first_fault.8 first_fault.9 
+  first_fault.10 first_fault.11 first_fault.12 first_fault.13 first_fault.14 
+  first_fault.15 first_fault.16 Time_firstflag.1 cnt.2 cnt.1 
 SECTION: ".init"
   _Startup 
 SECTION: ".rodata"
@@ -4575,8 +4576,8 @@ OBJECT LIST SORTED BY ADDRESS
      _TIM_OCPD                                  3FC       1       1       0   .abs_section_3fc
      _TIM_PTPSR                                 3FE       1       1       0   .abs_section_3fe
      workmode.11                               2200       1       1       6   .data       
-     socdata.4                                 2201      54      84       6   .data       
-     uocdata.5                                 2255      54      84      10   .data       
+     socdata.5                                 2201      54      84       6   .data       
+     uocdata.6                                 2255      54      84      10   .data       
      heap_end                                  22A9       2       2       3   .bss        
      free_ptr                                  22AB       2       2       8   .bss        
      cnt.1                                     22AD       5       5      15   .bss        
@@ -4592,134 +4593,135 @@ OBJECT LIST SORTED BY ADDRESS
      cnt.10                                    22BB       1       1       5   .bss        
      cnt.1                                     22BC       2       2       4   .bss        
      relaystate.2                              22BE       1       1       2   .bss        
-     soc.2                                     22BF       4       4      10   .bss        
-     i.3                                       22C3       1       1       5   .bss        
-     Current.1                                 22C4       4       4       7   .bss        
-     state.32                                  22C8       1       1       3   .bss        
-     state.38                                  22C9       1       1       3   .bss        
-     cnt.1                                     22CA       4       4      19   .bss        
-     FltL.2                                    22CE       1       1       6   .bss        
-     cnt.3                                     22CF       4       4      19   .bss        
-     FltL.4                                    22D3       1       1       6   .bss        
-     cnt.5                                     22D4       2       2      10   .bss        
-     FltL.6                                    22D6       1       1       4   .bss        
-     cnt.7                                     22D7       4       4      19   .bss        
-     FltL.8                                    22DB       1       1       6   .bss        
-     cnt.9                                     22DC       4       4      19   .bss        
-     FltL.10                                   22E0       1       1       6   .bss        
-     cnt.11                                    22E1       2       2      10   .bss        
-     FltL.12                                   22E3       1       1       4   .bss        
-     cnt.13                                    22E4       4       4      19   .bss        
-     FltL.14                                   22E8       1       1       6   .bss        
-     cnt.15                                    22E9       4       4       4   .bss        
-     FltL.16                                   22ED       1       1       3   .bss        
-     cnt.17                                    22EE       4       4      19   .bss        
-     FltL.18                                   22F2       1       1       6   .bss        
-     cnt.19                                    22F3       4       4      19   .bss        
-     FltL.20                                   22F7       1       1       6   .bss        
-     cnt.21                                    22F8       2       2      10   .bss        
-     FltL.22                                   22FA       1       1       4   .bss        
-     cnt.23                                    22FB       4       4      19   .bss        
-     FltL.24                                   22FF       1       1       6   .bss        
-     cnt.25                                    2300       4       4      19   .bss        
-     FltL.26                                   2304       1       1       6   .bss        
-     cnt.27                                    2305       2       2      10   .bss        
-     FltL.28                                   2307       1       1       4   .bss        
-     cnt.29                                    2308       4       4      19   .bss        
-     FltL.30                                   230C       1       1       6   .bss        
-     cnt.31                                    230D       2       2       4   .bss        
-     cnt.33                                    230F       4       4       4   .bss        
-     FltL.34                                   2313       1       1       3   .bss        
-     cnt.35                                    2314       2       2      10   .bss        
-     flt.36                                    2316       1       1       5   .bss        
-     cnt.37                                    2317       1       1       4   .bss        
-     Time_Flag.1                               2318       1       1       4   .bss        
-     Time_Cnt.2                                2319       1       1       5   .bss        
-     SumVpositive.3                            231A       4       4      13   .bss        
-     SumVnegtive.4                             231E       4       4      19   .bss        
-     Iso_Vposi.5                               2322       4       4      12   .bss        
-     Iso_Vnegt.6                               2326       4       4      16   .bss        
-     cnt.2                                     232A       5       5      20   .bss        
-     currflag.3                                232F       1       1       3   .bss        
-     cnt.4                                     2330       1       1       4   .bss        
-     time.1                                    2331       1       1       3   .bss        
-     flg.2                                     2332       1       1       3   .bss        
-     first_fault.1                             2333       1       1       2   .bss        
-     first_fault.2                             2334       1       1       2   .bss        
-     first_fault.3                             2335       1       1       2   .bss        
-     first_fault.4                             2336       1       1       2   .bss        
-     first_fault.5                             2337       1       1       2   .bss        
-     first_fault.6                             2338       1       1       2   .bss        
-     first_fault.7                             2339       1       1       2   .bss        
-     first_fault.8                             233A       1       1       2   .bss        
-     first_fault.9                             233B       1       1       2   .bss        
-     first_fault.10                            233C       1       1       2   .bss        
-     first_fault.11                            233D       1       1       2   .bss        
-     first_fault.12                            233E       1       1       2   .bss        
-     first_fault.13                            233F       1       1       2   .bss        
-     first_fault.14                            2340       1       1       2   .bss        
-     first_fault.15                            2341       1       1       2   .bss        
-     first_fault.16                            2342       1       1       2   .bss        
-     Time_firstflag.1                          2343       1       1       3   .bss        
-     cnt.2                                     2344       4       4       8   .bss        
-     cnt.1                                     2348       2       2       4   .bss        
-     _heap_                                    234A     7D0    2000       2   HEAP_SEGMENT
-     MemPtr                                    2B1A       2       2       1   .common     
-     g_SysInitState                            2B1C       C      12      27   .common     
-     tasks                                     2B28      54      84      66   .common     
-     g_Roll_Tick                               2B7C      16      22      23   .common     
-     Boot_Data                                 2B92       5       5       8   .common     
-     g_Flt_BMSCheckSelf                        2B97       9       9       5   .common     
-     g_WorkStateJudge                          2BA0       1       1      12   .common     
-     g_FromCSSU_Volt                           2BA1      40      64      20   .common     
-     g_FromCSSU_Temp                           2BE1       A      10      14   .common     
-     g_FromCSSU_FltData                        2BEB       3       3       4   .common     
-     g_VoltInfo                                2BEE      72     114      63   .common     
-     g_TempInfo                                2C60      10      16      36   .common     
-     g_DataColletInfo                          2C70       5       5      21   .common     
-     g_OpenWireInfo                            2C75       D      13       5   .common     
-     g_InsulInfo                               2C82       A      10       1   .common     
-     g_SOCInfo                                 2C8C      1D      29     147   .common     
-     g_EnergyInfo                              2CA9       C      12      22   .common     
-     CurrLimit                                 2CB5       4       4       9   .common     
-     g_Flt_DisChg                              2CB9       9       9      47   .common     
-     g_Flt_Charge                              2CC2       B      11      66   .common     
-     State_Offline                             2CCD       5       5      13   .common     
-     HeartBeat                                 2CD2       2       2       9   .common     
-     g_IsoDetect                               2CD4      12      18      39   .common     
-     g_BMSMonitor_Volt                         2CE6      12      18      68   .common     
-     g_BMSMonitor_Temp                         2CF8       A      10      65   .common     
-     g_BMSMonitor_Curr                         2D02       8       8      30   .common     
-     g_BMSMonitor_Insul                        2D0A       6       6       9   .common     
-     g_BMSMonitor_SOH                          2D10       4       4       6   .common     
-     g_BMSMonitor_New_LT                       2D14       8       8       3   .common     
-     g_MonitorBMS_SOC                          2D1C      10      16      21   .common     
-     g_MonitorBMS_Start                        2D2C       2       2       7   .common     
-     ChargePileBMS                             2D2E       4       4       4   .common     
-     g_Charge_State                            2D32       6       6      10   .common     
-     g_BMSCharge                               2D38      12      18      28   .common     
-     BMSCharge_State                           2D4A       6       6      20   .common     
-     EEprom_Data                               2D50       4       4      18   .common     
-     g_FltCodeSave                             2D54       2       2       4   .common     
-     g_SysTime                                 2D56       F      15      41   .common     
-     RS485_Receive                             2D65      25      37      30   .common     
-     g_PassiveBalance                          2D8A       2       2       5   .common     
-     Read_IIC_Time                             2D8C       5       5      29   .common     
-     ADCV                                      2D91       2       2       6   .common     
-     ADSTAT                                    2D93       2       2       2   .common     
-     ADOW                                      2D95       2       2       5   .common     
-     ADAX                                      2D97       2       2       5   .common     
-     CFG1                                      2D99      12      18       9   .common     
-     g_LTC6811_OpwireInfo                      2DAB       7       7       9   .common     
-     Balance_CFGR                              2DB2      12      18       4   .common     
-     g_LTC6811_TempInfo                        2DC4      12      18      39   .common     
-     g_LTC6811_VoltInfo                        2DD6      3C      60      45   .common     
-     FlashErr                                  2E12       3       3      15   .common     
-     PIT_TimePeriod                            2E15       2       2       5   .common     
+     soctimeflg.1                              22BF       1       1       3   .bss        
+     soc.3                                     22C0       4       4      10   .bss        
+     i.4                                       22C4       1       1       5   .bss        
+     Current.1                                 22C5       4       4       7   .bss        
+     state.32                                  22C9       1       1       3   .bss        
+     state.38                                  22CA       1       1       3   .bss        
+     cnt.1                                     22CB       4       4      19   .bss        
+     FltL.2                                    22CF       1       1       6   .bss        
+     cnt.3                                     22D0       4       4      19   .bss        
+     FltL.4                                    22D4       1       1       6   .bss        
+     cnt.5                                     22D5       2       2      10   .bss        
+     FltL.6                                    22D7       1       1       4   .bss        
+     cnt.7                                     22D8       4       4      19   .bss        
+     FltL.8                                    22DC       1       1       6   .bss        
+     cnt.9                                     22DD       4       4      19   .bss        
+     FltL.10                                   22E1       1       1       6   .bss        
+     cnt.11                                    22E2       2       2      10   .bss        
+     FltL.12                                   22E4       1       1       4   .bss        
+     cnt.13                                    22E5       4       4      19   .bss        
+     FltL.14                                   22E9       1       1       6   .bss        
+     cnt.15                                    22EA       4       4       4   .bss        
+     FltL.16                                   22EE       1       1       3   .bss        
+     cnt.17                                    22EF       4       4      19   .bss        
+     FltL.18                                   22F3       1       1       6   .bss        
+     cnt.19                                    22F4       4       4      19   .bss        
+     FltL.20                                   22F8       1       1       6   .bss        
+     cnt.21                                    22F9       2       2      10   .bss        
+     FltL.22                                   22FB       1       1       4   .bss        
+     cnt.23                                    22FC       4       4      19   .bss        
+     FltL.24                                   2300       1       1       6   .bss        
+     cnt.25                                    2301       4       4      19   .bss        
+     FltL.26                                   2305       1       1       6   .bss        
+     cnt.27                                    2306       2       2      10   .bss        
+     FltL.28                                   2308       1       1       4   .bss        
+     cnt.29                                    2309       4       4      19   .bss        
+     FltL.30                                   230D       1       1       6   .bss        
+     cnt.31                                    230E       2       2       4   .bss        
+     cnt.33                                    2310       4       4       4   .bss        
+     FltL.34                                   2314       1       1       3   .bss        
+     cnt.35                                    2315       2       2      10   .bss        
+     flt.36                                    2317       1       1       5   .bss        
+     cnt.37                                    2318       1       1       4   .bss        
+     Time_Flag.1                               2319       1       1       4   .bss        
+     Time_Cnt.2                                231A       1       1       5   .bss        
+     SumVpositive.3                            231B       4       4      13   .bss        
+     SumVnegtive.4                             231F       4       4      19   .bss        
+     Iso_Vposi.5                               2323       4       4      12   .bss        
+     Iso_Vnegt.6                               2327       4       4      16   .bss        
+     cnt.2                                     232B       5       5      20   .bss        
+     currflag.3                                2330       1       1       3   .bss        
+     cnt.4                                     2331       1       1       4   .bss        
+     time.1                                    2332       1       1       3   .bss        
+     flg.2                                     2333       1       1       3   .bss        
+     first_fault.1                             2334       1       1       2   .bss        
+     first_fault.2                             2335       1       1       2   .bss        
+     first_fault.3                             2336       1       1       2   .bss        
+     first_fault.4                             2337       1       1       2   .bss        
+     first_fault.5                             2338       1       1       2   .bss        
+     first_fault.6                             2339       1       1       2   .bss        
+     first_fault.7                             233A       1       1       2   .bss        
+     first_fault.8                             233B       1       1       2   .bss        
+     first_fault.9                             233C       1       1       2   .bss        
+     first_fault.10                            233D       1       1       2   .bss        
+     first_fault.11                            233E       1       1       2   .bss        
+     first_fault.12                            233F       1       1       2   .bss        
+     first_fault.13                            2340       1       1       2   .bss        
+     first_fault.14                            2341       1       1       2   .bss        
+     first_fault.15                            2342       1       1       2   .bss        
+     first_fault.16                            2343       1       1       2   .bss        
+     Time_firstflag.1                          2344       1       1       3   .bss        
+     cnt.2                                     2345       4       4       8   .bss        
+     cnt.1                                     2349       2       2       4   .bss        
+     _heap_                                    234B     7D0    2000       2   HEAP_SEGMENT
+     MemPtr                                    2B1B       2       2       1   .common     
+     g_SysInitState                            2B1D       C      12      27   .common     
+     tasks                                     2B29      54      84      66   .common     
+     g_Roll_Tick                               2B7D      16      22      23   .common     
+     Boot_Data                                 2B93       5       5       8   .common     
+     g_Flt_BMSCheckSelf                        2B98       9       9       5   .common     
+     g_WorkStateJudge                          2BA1       1       1      12   .common     
+     g_FromCSSU_Volt                           2BA2      40      64      20   .common     
+     g_FromCSSU_Temp                           2BE2       A      10      14   .common     
+     g_FromCSSU_FltData                        2BEC       3       3       4   .common     
+     g_VoltInfo                                2BEF      72     114      63   .common     
+     g_TempInfo                                2C61      10      16      36   .common     
+     g_DataColletInfo                          2C71       5       5      22   .common     
+     g_OpenWireInfo                            2C76       D      13       5   .common     
+     g_InsulInfo                               2C83       A      10       1   .common     
+     g_SOCInfo                                 2C8D      1D      29     148   .common     
+     g_EnergyInfo                              2CAA       C      12      22   .common     
+     CurrLimit                                 2CB6       4       4       9   .common     
+     g_Flt_DisChg                              2CBA       9       9      47   .common     
+     g_Flt_Charge                              2CC3       B      11      66   .common     
+     State_Offline                             2CCE       5       5      13   .common     
+     HeartBeat                                 2CD3       2       2       9   .common     
+     g_IsoDetect                               2CD5      12      18      39   .common     
+     g_BMSMonitor_Volt                         2CE7      12      18      68   .common     
+     g_BMSMonitor_Temp                         2CF9       A      10      65   .common     
+     g_BMSMonitor_Curr                         2D03       8       8      30   .common     
+     g_BMSMonitor_Insul                        2D0B       6       6       9   .common     
+     g_BMSMonitor_SOH                          2D11       4       4       6   .common     
+     g_BMSMonitor_New_LT                       2D15       8       8       3   .common     
+     g_MonitorBMS_SOC                          2D1D      10      16      21   .common     
+     g_MonitorBMS_Start                        2D2D       2       2       7   .common     
+     ChargePileBMS                             2D2F       4       4       4   .common     
+     g_Charge_State                            2D33       6       6      10   .common     
+     g_BMSCharge                               2D39      12      18      28   .common     
+     BMSCharge_State                           2D4B       6       6      20   .common     
+     EEprom_Data                               2D51       4       4      18   .common     
+     g_FltCodeSave                             2D55       2       2       4   .common     
+     g_SysTime                                 2D57       F      15      41   .common     
+     RS485_Receive                             2D66      25      37      30   .common     
+     g_PassiveBalance                          2D8B       2       2       5   .common     
+     Read_IIC_Time                             2D8D       5       5      31   .common     
+     ADCV                                      2D92       2       2       6   .common     
+     ADSTAT                                    2D94       2       2       2   .common     
+     ADOW                                      2D96       2       2       5   .common     
+     ADAX                                      2D98       2       2       5   .common     
+     CFG1                                      2D9A      12      18       9   .common     
+     g_LTC6811_OpwireInfo                      2DAC       7       7       9   .common     
+     Balance_CFGR                              2DB3      12      18       4   .common     
+     g_LTC6811_TempInfo                        2DC5      12      18      39   .common     
+     g_LTC6811_VoltInfo                        2DD7      3C      60      45   .common     
+     FlashErr                                  2E13       3       3      15   .common     
+     PIT_TimePeriod                            2E16       2       2       5   .common     
      _Startup                                  C000       F      15       0   .init       
      crc15Table                                C051     200     512       2   .rodata     
      F_ADDKL                                   C251      5E      94       1   NON_BANKED  
-     _FADD                                     C2AF      15      21      30   NON_BANKED  
+     _FADD                                     C2AF      15      21      29   NON_BANKED  
      _FSUB                                     C2C4      13      19      18   NON_BANKED  
      _FCMP                                     C2D7      26      38      64   NON_BANKED  
      F_TOLONGK                                 C2FD      32      50       1   NON_BANKED  
@@ -4787,7 +4789,7 @@ OBJECT LIST SORTED BY ADDRESS
      Task_FltCodeProcess                     FC8E51       D      13       3   PAGE_FC_738 
      Task_FltCodeStore                       FC8E5E     1DF     479       3   PAGE_FC_738 
      Time_Init                               FC903D      5E      94       2   PAGE_FC_738 
-     Sleep_StaticTime                        FC909B      AE     174       2   PAGE_FC_738 
+     Sleep_StaticTime                        FC909B      AE     174       4   PAGE_FC_738 
      Task_SysTimeGet                         FC9149      7F     127       3   PAGE_FC_738 
      Init_Screen                             FC91C8       F      15       2   PAGE_FC_738 
      SCI_ScreenTransfer                      FC91D7       D      13       4   PAGE_FC_738 
@@ -4923,62 +4925,62 @@ OBJECT LIST SORTED BY ADDRESS
      DataProcess_Volt                        FE8F5E      96     150       2   .text       
      DataProcess_Temp                        FE8FF4      82     130       2   .text       
      DataProcess_OpenWire                    FE9076       A      10       2   .text       
-     Task_SOCSOH                             FE9080      4B      75       3   .text       
-     ADC_Current                             FE90CB      4F      79       3   .text       
-     SOC_AhIntegral                          FE911A     5BE    1470      43   .text       
-     inition_soc                             FE96D8     141     321       5   .text       
-     Energy_TotalCal                         FE9819      64     100       4   .text       
-     SOH_Cal                                 FE987D       B      11       2   .text       
-     Init_TaskCurrLimit                      FE9888      10      16       2   .text       
-     Task_CurrLimit                          FE9898      21      33       3   .text       
-     ChagCurrLimit_Cons                      FE98B9      41      65       2   .text       
-     Init_TaskFltLevJudg                     FE98FA      3D      61       2   .text       
-     Task_FltLevJudg                         FE9937       8       8       3   .text       
-     FltLevJudg                              FE993F     1A0     416       4   .text       
-     Fault1_VoltSys_DisCharge                FE9ADF       F      15       2   .text       
-     Fault2_VoltSys_DisCharge                FE9AEE       F      15       4   .text       
-     Recover1_VoltSys_DisCharge              FE9AFD      12      18       2   .text       
-     Fault_DisChg_VoltSL                     FE9B0F      F7     247       8   .text       
-     Fault1_VoltCell_DisCharge               FE9C06       C      12       2   .text       
-     Fault2_VoltCell_DisCharge               FE9C12       C      12       2   .text       
-     Recover1_VoltCell_DisCharge             FE9C1E       F      15       2   .text       
-     Fault_DisChg_VoltCL                     FE9C2D      AD     173       2   .text       
-     Fault_DisChg_VoltCD                     FE9CDA      60      96       2   .text       
-     Fault_DisChg_TempH                      FE9D3A      AE     174       3   .text       
-     Fault_DisChg_TempL                      FE9DE8      AE     174       3   .text       
-     Fault_DisChg_TempD                      FE9E96      66     102       2   .text       
-     Fault_DisChg_CurrH                      FE9EFC      EC     236       9   .text       
-     Fault_DisChg_Insul                      FE9FE8      59      89       2   .text       
-     Fault_Charge_VoltSH                     FEA041     10D     269      10   .text       
-     Fault_Charge_VoltCH                     FEA14E      A8     168       3   .text       
-     Fault_Charge_VoltCD                     FEA1F6      60      96       2   .text       
-     Fault_Charge_TempH                      FEA256      AE     174       3   .text       
-     Fault_Charge_TempL                      FEA304      AE     174       3   .text       
-     Fault_Charge_TempD                      FEA3B2      66     102       2   .text       
-     Fault_Charge_CurrH                      FEA418     1CE     462      31   .text       
-     Fault_CSSU_OffLine                      FEA5E6      35      53       2   .text       
-     Fault_Charge_Insul                      FEA61B      59      89       2   .text       
-     Fault_Relay_BreakDown                   FEA674      E3     227       6   .text       
-     Fault_Charge_OffLine                    FEA757      36      54       2   .text       
-     Insulation_Init                         FEA78D      1D      29       2   .text       
-     ADC_Insul_HVPositive                    FEA7AA       7       7       2   .text       
-     ADC_Insul_HVNegative                    FEA7B1       7       7       4   .text       
-     Task_InsulationDetect                   FEA7B8     5EF    1519      92   .text       
-     CAN_UpMonitorInit                       FEADA7       8       8       2   .text       
-     CAN_ToUpMonitor                         FEADAF       B      11      10   .text       
-     Init_UpMonitor                          FEADBA      5B      91       2   .text       
-     UpMonitor_DelayTimeus                   FEAE15      13      19       4   .text       
-     CAN_ToUpMonitorMsg                      FEAE28     6BB    1723     117   .text       
-     Task_BMUToUpMonitor                     FEB4E3     23A     570      25   .text       
-     Task_BMSToUpMonitor                     FEB71D       E      14       3   .text       
-     UpMonitor_to_Bms                        FEB72B     478    1144      39   .text       
-     Charge_VoltCurrRequest                  FEBBA3      F2     242       2   .text       
-     ChargeEndJudge                          FEBC95      FE     254       2   .text       
-     Charge_CurrInit                         FEBD93      3D      61       2   .text       
-     ChargeEnd_CurrentOut                    FEBDD0      5F      95       2   .text       
-     CAN_ChargetoBMS                         FEBE2F      56      86       2   .text       
-     CAN_ToChargeInit                        FEBE85      44      68       2   .text       
-     CAN_BMSToCharge                         FEBEC9       B      11       2   .text       
+     Task_SOCSOH                             FE9080      7B     123       3   .text       
+     ADC_Current                             FE90FB      4F      79       3   .text       
+     SOC_AhIntegral                          FE914A     5AE    1454      41   .text       
+     inition_soc                             FE96F8     141     321       5   .text       
+     Energy_TotalCal                         FE9839      64     100       4   .text       
+     SOH_Cal                                 FE989D       B      11       2   .text       
+     Init_TaskCurrLimit                      FE98A8      10      16       2   .text       
+     Task_CurrLimit                          FE98B8      21      33       3   .text       
+     ChagCurrLimit_Cons                      FE98D9      41      65       2   .text       
+     Init_TaskFltLevJudg                     FE991A      3D      61       2   .text       
+     Task_FltLevJudg                         FE9957       8       8       3   .text       
+     FltLevJudg                              FE995F     1A0     416       4   .text       
+     Fault1_VoltSys_DisCharge                FE9AFF       F      15       2   .text       
+     Fault2_VoltSys_DisCharge                FE9B0E       F      15       4   .text       
+     Recover1_VoltSys_DisCharge              FE9B1D      12      18       2   .text       
+     Fault_DisChg_VoltSL                     FE9B2F      F7     247       8   .text       
+     Fault1_VoltCell_DisCharge               FE9C26       C      12       2   .text       
+     Fault2_VoltCell_DisCharge               FE9C32       C      12       2   .text       
+     Recover1_VoltCell_DisCharge             FE9C3E       F      15       2   .text       
+     Fault_DisChg_VoltCL                     FE9C4D      AD     173       2   .text       
+     Fault_DisChg_VoltCD                     FE9CFA      60      96       2   .text       
+     Fault_DisChg_TempH                      FE9D5A      AE     174       3   .text       
+     Fault_DisChg_TempL                      FE9E08      AE     174       3   .text       
+     Fault_DisChg_TempD                      FE9EB6      66     102       2   .text       
+     Fault_DisChg_CurrH                      FE9F1C      EC     236       9   .text       
+     Fault_DisChg_Insul                      FEA008      59      89       2   .text       
+     Fault_Charge_VoltSH                     FEA061     10D     269      10   .text       
+     Fault_Charge_VoltCH                     FEA16E      A8     168       3   .text       
+     Fault_Charge_VoltCD                     FEA216      60      96       2   .text       
+     Fault_Charge_TempH                      FEA276      AE     174       3   .text       
+     Fault_Charge_TempL                      FEA324      AE     174       3   .text       
+     Fault_Charge_TempD                      FEA3D2      66     102       2   .text       
+     Fault_Charge_CurrH                      FEA438     1CE     462      31   .text       
+     Fault_CSSU_OffLine                      FEA606      35      53       2   .text       
+     Fault_Charge_Insul                      FEA63B      59      89       2   .text       
+     Fault_Relay_BreakDown                   FEA694      E3     227       6   .text       
+     Fault_Charge_OffLine                    FEA777      36      54       2   .text       
+     Insulation_Init                         FEA7AD      1D      29       2   .text       
+     ADC_Insul_HVPositive                    FEA7CA       7       7       2   .text       
+     ADC_Insul_HVNegative                    FEA7D1       7       7       4   .text       
+     Task_InsulationDetect                   FEA7D8     5EF    1519      92   .text       
+     CAN_UpMonitorInit                       FEADC7       8       8       2   .text       
+     CAN_ToUpMonitor                         FEADCF       B      11      10   .text       
+     Init_UpMonitor                          FEADDA      5B      91       2   .text       
+     UpMonitor_DelayTimeus                   FEAE35      13      19       4   .text       
+     CAN_ToUpMonitorMsg                      FEAE48     6BB    1723     117   .text       
+     Task_BMUToUpMonitor                     FEB503     23A     570      25   .text       
+     Task_BMSToUpMonitor                     FEB73D       E      14       3   .text       
+     UpMonitor_to_Bms                        FEB74B     478    1144      39   .text       
+     Charge_VoltCurrRequest                  FEBBC3      F2     242       2   .text       
+     ChargeEndJudge                          FEBCB5      FE     254       2   .text       
+     Charge_CurrInit                         FEBDB3      3D      61       2   .text       
+     ChargeEnd_CurrentOut                    FEBDF0      5F      95       2   .text       
+     CAN_ChargetoBMS                         FEBE4F      56      86       2   .text       
+     CAN_ToChargeInit                        FEBEA5      44      68       2   .text       
+     CAN_BMSToCharge                         FEBEE9       B      11       2   .text       
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
@@ -5052,7 +5054,7 @@ DataFromCSSU.c.o:
 Task_DataProcess.c.o:
   crc15Table 
 Task_SOCSOH.c.o:
-  crc15Table Cellcap.1 
+  crc15Table Cellcap.2 
 Task_CurrLimit.c.o:
   crc15Table 
 Task_FltLevJudg.c.o:
@@ -5121,7 +5123,7 @@ Name of initialized Object : workmode.11
 Filling bytes inserted
  00000000
 ------- ROM-ADDRESS: 0xC6D5 ---- RAM-ADDRESS: 0x2205 ---- SIZE      78 ---
-Name of initialized Object : socdata.4:4
+Name of initialized Object : socdata.5:4
  3D4CCCCD3D CCCCCD3E19 999A3E4CCC
  CD3E800000 3E99999A3E B333333ECC
  CCCD3EE666 663F000000 3F0CCCCD3F
@@ -5132,7 +5134,7 @@ Name of initialized Object : socdata.4:4
 Filling bytes inserted
  0000
 ------- ROM-ADDRESS: 0xC725 ---- RAM-ADDRESS: 0x2255 ---- SIZE      84 ---
-Name of initialized Object : uocdata.5
+Name of initialized Object : uocdata.6
  402B851F40 48D4FE404C FDF4404E14
  7B404F7CEE 405072B040 5189374052
  6E9840527E FA40528F5C 40529FBE40
@@ -5412,14 +5414,14 @@ DataProcess_Temp          USES g_LTC6811_TempInfo g_TempInfo g_FromCSSU_Temp
 DataProcess_OpenWire      USES g_LTC6811_OpwireInfo g_FromCSSU_FltData 
                                 g_OpenWireInfo 
 Task_SOCSOH               USES ADC_Current g_DataColletInfo 
-                                FilterFunction_Median g_VoltInfo SOC_AhIntegral g_SOCInfo SOH_Cal 
-                                g_Roll_Tick 
+                                FilterFunction_Median Read_IIC_Time Sleep_StaticTime soctimeflg.1 
+                                g_SOCInfo g_VoltInfo SOC_AhIntegral SOH_Cal g_Roll_Tick 
 ADC_Current               USES ADC_Value _FUFLOAT _FDIV _FMUL _FADD 
-SOC_AhIntegral            USES _FUFLOAT _FDIV g_SOCInfo SOC_AhIntegral _FADD 
-                                _FMUL _FUTRUNC _FCMP g_SysTime _FSUB 
-                                g_WorkStateJudge g_VoltInfo g_EnergyInfo Energy_TotalCal 
-                                EEprom_Data inition_soc 
-inition_soc               USES uocdata.5 _FCMP soc.2 i.3 socdata.4 inition_soc 
+SOC_AhIntegral            USES _FUFLOAT _FDIV g_SOCInfo SOC_AhIntegral _FMUL 
+                                _FUTRUNC _FCMP g_SysTime _FSUB g_WorkStateJudge 
+                                g_VoltInfo _FADD g_EnergyInfo Energy_TotalCal EEprom_Data 
+                                inition_soc 
+inition_soc               USES uocdata.6 _FCMP soc.3 i.4 socdata.5 inition_soc 
                                 _FSUB _FMUL _FDIV _FADD 
 Energy_TotalCal           USES _FUFLOAT _FDIV _FMUL _FCMP _FADD 
 SOH_Cal                   USES g_BMSMonitor_SOH 
@@ -6103,13 +6105,13 @@ DEPENDENCY TREE
  |  |     |  |  |  
  |  |     |  |  +- _FADD                (see above)
  |  |     |  |     
+ |  |     |  +- Sleep_StaticTime     (see above)
+ |  |     |  |  
  |  |     |  +- SOC_AhIntegral      
  |  |     |  |  | 
  |  |     |  |  +- _FUFLOAT             (see above)
  |  |     |  |  |  
  |  |     |  |  +- _FDIV                (see above)
- |  |     |  |  |  
- |  |     |  |  +- _FADD                (see above)
  |  |     |  |  |  
  |  |     |  |  +- _FMUL                (see above)
  |  |     |  |  |  
@@ -6118,6 +6120,8 @@ DEPENDENCY TREE
  |  |     |  |  +- _FCMP                (see above)
  |  |     |  |  |  
  |  |     |  |  +- _FSUB                (see above)
+ |  |     |  |  |  
+ |  |     |  |  +- _FADD                (see above)
  |  |     |  |  |  
  |  |     |  |  +- Energy_TotalCal     
  |  |     |  |  |  | 
@@ -6510,5 +6514,5 @@ STATISTIC SECTION
 ExeFile:
 --------
 Number of blocks to be downloaded: 10
-Total size of all blocks to be downloaded: 31245
+Total size of all blocks to be downloaded: 31277
 

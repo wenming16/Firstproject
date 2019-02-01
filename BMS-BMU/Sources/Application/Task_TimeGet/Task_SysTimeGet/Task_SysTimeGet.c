@@ -58,7 +58,7 @@ uint8 Sleep_StaticTime(uint8 readhour, uint8 readminite, float current, float cu
         if(Time_firstflag == 0)
         { 
            Time_firstflag = 1;    
-           g_SysTime.BMS_SleepStatic_Time = ((uint16)readhour<<8) | readminite ;           
+           g_SysTime.BMS_SleepStatic_Time = ((uint16)readhour<<8) | readminite ;   
         }
         else
         {   
@@ -80,7 +80,7 @@ uint8 Sleep_StaticTime(uint8 readhour, uint8 readminite, float current, float cu
         }
       }       
     }
-    else if((++cnt[1])*PEWERONOFF_PERIO/1000 >= 2)//电流跳变持续超过2s才认为它是处于非工作状态
+    else if((++cnt[1])*PEWERONOFF_PERIO/1000 >= 2)//电流跳变持续超过1s才认为它是处于非工作状态
     {
        cnt[0] = 0; 
        cnt[1] = (uint8)(2000/PEWERONOFF_PERIO);

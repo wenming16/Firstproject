@@ -30,11 +30,26 @@ static void   SOH_Cal(void);
 ========================================================================*/
 void Task_SOCSOH(void)                                
 {       
-  uint8 Value=0;    
+  uint8 Value=0;
+  static uint8 soctimeflg;    
   
   //采集电流
   g_DataColletInfo.DataCollet_Current_Filter = FilterFunction_Median(ADC_Current, g_DataColletInfo.DataCollet_Current_Filter);// 取出真实电流值，并做滤波
-  
+  //在电流小于5A时持续时间为4小时进行SOC查表
+  if(Sleep_StaticTime(Read_IIC_Time.IIC_Read_Hour, Read_IIC_Time.IIC_Read_Minute,\
+                      g_DataColletInfo.DataCollet_Current_Filter, 5, 4)==TRUE)
+                                                   
+  { 
+    if(soctimeflg == 0) //确认4小时只查表1次
+    {
+      soctimeflg = 1;
+      g_SOCInfo.SOC_CheckTable_Flag = 1; 
+    }
+  }
+  else
+  {
+    soctimeflg = 0;
+  }
   //SOC的估算 
   if(g_VoltInfo.CellVolt_Min != 0 || g_VoltInfo.CellVolt_Max != 0xFFFF)     // 数据有效性判断
   {                                    
@@ -44,6 +59,7 @@ void Task_SOCSOH(void)
   {   
     g_SOCInfo.SOC_Init = 0;
   }
+  
   SOH_Cal();
   
   g_Roll_Tick.Roll_SOCSOH++;
@@ -92,28 +108,30 @@ void SOC_AhIntegral(float current, uint16 Voltagemin, uint16 Voltagemax, uint16 
   Vmax = Voltagemax/10000.0;
   T = SampleTime/1000.0;// 100ms时间转变为秒
        
-  if((g_SOCInfo.SOC_Init <= 0)||(g_SOCInfo.SOC_Init >= 100)) //EFPROM里的值为0时，查初值(首次下载用到)
+  if((g_SOCInfo.SOC_Init <= 0)||(g_SOCInfo.SOC_Init >= 100))  //EFPROM里的值为0时，查初值(首次下载用到)
   { 
-      //SOC_LEP_DATA.SOC_t = 1;                         //CAN外发标记
+      //SOC_LEP_DATA.SOC_t = 1;                               //CAN外发标记
       g_SOCInfo.SOC_LowestVoltGet = inition_soc(Vmin);        //按最小电压查表得到的SOC 
       g_SOCInfo.SOC_HighestVoltGet = inition_soc(Vmax);       //按最大电压查表得到的SOC 
       g_SOCInfo.SOC_ValueVoltGet = g_SOCInfo.SOC_LowestVoltGet/(1+g_SOCInfo.SOC_LowestVoltGet-g_SOCInfo.SOC_HighestVoltGet);
-      g_SOCInfo.SOC_ValueRead = g_SOCInfo.SOC_ValueVoltGet;  //首次初始化SOC值，首次的一致性较好  
+      g_SOCInfo.SOC_ValueRead = g_SOCInfo.SOC_ValueVoltGet;   //首次初始化SOC值，首次的一致性较好  
       g_SOCInfo.SOC_ValueInitDiff = 0; 
       g_SOCInfo.SOC_ValueRealtimeDiff = g_SOCInfo.SOC_ValueInitDiff ;          
       g_SOCInfo.SOC_Init =  (uint16)(g_SOCInfo.SOC_ValueRead*100);
-      *(uint16*)(0x0D10) =  (uint16)(g_SOCInfo.SOC_Init); //g_SOCInfo.SOC_Init
+      *(uint16*)(0x0D10) =  (uint16)(g_SOCInfo.SOC_Init);     //g_SOCInfo.SOC_Init
 
   }
-  else if(((g_SOCInfo.SOC_ValueRead < 0.2)||(g_SOCInfo.SOC_ValueRead > 0.9)||(Vmax>=3.5)||(Vmin<=3.242)&&(Vmin>=2.68)) && (g_SysTime.SOC_Static_Time >= 4))
+  else if(((g_SOCInfo.SOC_ValueRead < 0.2)||(g_SOCInfo.SOC_ValueRead > 0.9)||(Vmax>=3.4)||((Vmin<=3.242)&&(Vmin>=2.68)))\
+           && ((g_SysTime.SOC_Static_Time >= 4)||(g_SOCInfo.SOC_CheckTable_Flag == 1)))
   {   //当SOC小于20%或大于90%,且电池静置时间大于4小时,或在常电状态下电流小于0.5A持续时间大于3小时进行查表     
       //SOC_LEP_DATA.SOC_t = 2;
-      g_SysTime.SOC_Static_Time = 0;
+      g_SOCInfo.SOC_CheckTable_Flag = 0;
+      g_SysTime.SOC_Static_Time = 0; 
       g_SOCInfo.SOC_LowestVoltGet = inition_soc(Vmin);        //按最小电压查表得到的SOC 
       g_SOCInfo.SOC_HighestVoltGet = inition_soc(Vmax);       //按最大电压查表得到的SOC 
       g_SOCInfo.SOC_ValueVoltGet = g_SOCInfo.SOC_LowestVoltGet/(1+g_SOCInfo.SOC_LowestVoltGet - g_SOCInfo.SOC_HighestVoltGet);
       g_SOCInfo.SOC_ValueInitDiff  = g_SOCInfo.SOC_ValueRead - g_SOCInfo.SOC_ValueVoltGet;
-      g_SOCInfo.SOC_ValueRealtimeDiff = g_SOCInfo.SOC_ValueInitDiff ;
+      g_SOCInfo.SOC_ValueRealtimeDiff = g_SOCInfo.SOC_ValueInitDiff;
   } 
    
   //安时积分，需要避免大数吃小数
@@ -128,7 +146,7 @@ void SOC_AhIntegral(float current, uint16 Voltagemin, uint16 Voltagemax, uint16 
     if(g_VoltInfo.CellVolt_Max >= (CELL_VOLT_MAX-0.02)*10000)                         
     //if(g_TempInfo.CellVolt_Max >= (MaxVolt_Cal(g_Batt_TempMesg.aveTemp)-0.02)*10000)          //当电压达到(最大值-0.02)时，进行充电末端的校正    
     {     
-      g_SOCInfo.SOC_HighestVoltGet = 1.0;                             // 高电压单体SOC先为1；
+      g_SOCInfo.SOC_HighestVoltGet = 1.0;                             //高电压单体SOC先为1；
       if(g_SOCInfo.SOC_ValueRead > g_SOCInfo.SOC_ValueVoltGet)        //充电状态max_V达到(最大值-0.01)V时,R>V,重置SOC_deta和SOC_K的值
       {  //soc_v未置1前soc_r>soc_v,当第二次进入此函数时soc_v=1,此时soc_v>soc_r
         g_SOCInfo.SOC_ValueRealtimeDiff = g_SOCInfo.SOC_ValueRead - 1; 
@@ -181,7 +199,7 @@ void SOC_AhIntegral(float current, uint16 Voltagemin, uint16 Voltagemax, uint16 
     g_SOCInfo.SOC_CalTime = 0;
     if((abs(current)>=0.5) && ((abs(g_SOCInfo.SOC_ValueRealtimeDiff))>=0.001))
     {
-       if( (g_WorkStateJudge.WorkState == MODE_CHARGE) && ((g_SOCInfo.SOC_ValueVoltGet >= 0.9)))     //充电，S_V>0.9
+       if((g_WorkStateJudge.WorkState == MODE_CHARGE) && ((g_SOCInfo.SOC_ValueVoltGet >= 0.9)))     //充电，S_V>0.9
        {
          if(g_SOCInfo.SOC_ValueVoltGet < 1)
          {
