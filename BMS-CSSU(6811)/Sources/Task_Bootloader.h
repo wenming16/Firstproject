@@ -28,6 +28,7 @@
   typedef struct
   {
      uint16 *Boot;
+     uint16 *Updateaddr;
      uint8  OnlineUpdateCheck;      
   }Boot_Data_T;
   extern  Boot_Data_T Boot_Data;

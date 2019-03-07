@@ -197,11 +197,7 @@ void LTC6811_VoltCollect(void)
           break;  
      }  
   }
-          
-  //最大最小电压及序号 
-  maxvol = g_LTC6811_VoltInfo.CellVolt[0];  
-  minvol = g_LTC6811_VoltInfo.CellVolt[0];
-  
+
   for(i=0; i<NUM_Battery; i++)    
   {
     if(maxvol<g_LTC6811_VoltInfo.CellVolt[i]) 

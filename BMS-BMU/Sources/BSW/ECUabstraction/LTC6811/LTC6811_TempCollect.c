@@ -37,10 +37,10 @@ void LTC6811_TempCMDSend(void)
 void LTC6811_TempCollect(void)        
 {
    uint8  j,k;
-   uint16 cell_temp[NUM_IC][6];    // 读取辅助寄存器中的Pack温度值 
+   uint16 cell_temp[NUM_IC][6];      // 读取辅助寄存器中的Pack温度值 
    uint16 Cell_temp[NUM_IC][6];      // 温度寄存器
    uint8  PEC_error_t[NUM_IC];
-   uint8  maxtemp,mintemp;           // maxtemp=0x8000,mintemp=0X7FFF 32767 = (15个1);
+   uint8  maxtemp=0,mintemp=0xFF;    // maxtemp=0x8000,mintemp=0X7FFF 32767 = (15个1);
    int16  Temperature[NUM_IC][5];    // PACK温度 
    
    for(k = 0; k < NUM_IC; k++)
@@ -92,8 +92,8 @@ void LTC6811_TempCollect(void)
   }
   g_LTC6811_TempInfo.CellTemp_Ave = g_LTC6811_TempInfo.CellTemp_Tatoltemp/NUM_Tem;
   
-  maxtemp=mintemp=g_LTC6811_TempInfo.CellTemp[0];
-  g_LTC6811_TempInfo.CellTemp_MaxNode = g_LTC6811_TempInfo.CellTemp_MinNode=0;
+  //maxtemp=mintemp=g_LTC6811_TempInfo.CellTemp[0];
+  //g_LTC6811_TempInfo.CellTemp_MaxNode = g_LTC6811_TempInfo.CellTemp_MinNode=0;
   
   for(k = 0; k <NUM_Tem; k++) 
   {

@@ -44,13 +44,15 @@ void Task_BootLoader()
    if(Boot_Data.OnlineUpdateCheck == 1)
    {
      Boot_Data.OnlineUpdateCheck = 0;
-     Boot_Data.Boot=(uint16 *)0x0C00;
-     *(Boot_Data.Boot) = 0x66;
+     Boot_Data.Boot              = (uint16 *)0x0C00;
+     Boot_Data.Updateaddr        = (uint16 *)0x0C02; 
+     *(Boot_Data.Boot)           = 0x66;
+     *(Boot_Data.Updateaddr)     = 0x77;
      
      Boot_DelayTime(100);
      
-     COPCTL=0x01;                              // enable watchdog     
-     ARMCOP=0x00; 
+     COPCTL=0x01; //µ¥Æ¬»ú¸´Î»                              
+     ARMCOP=0x00;
    }
    EnableInterrupts; 
    Task_Flag_Counter.Counter_Roll_Boot++;     

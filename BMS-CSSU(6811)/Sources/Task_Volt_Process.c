@@ -229,8 +229,8 @@ void Task_Volt_Process(void)
      }
             
     //最大最小电压及序号 
-    maxvol=VoltInfo.CellVolt[0];  
-    minvol=VoltInfo.CellVolt[0];
+    //maxvol=VoltInfo.CellVolt[0];  
+    //minvol=VoltInfo.CellVolt[0];
     
     for(i=0;i<NUM_Battery;i++)    
     {

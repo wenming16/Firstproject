@@ -838,14 +838,14 @@ NON_BANKED                      1147     R     0xC251     0xC6CB   ROM_C000
 .bss                             162   R/W     0x22A9     0x234A   RAM
 HEAP_SEGMENT                    2000   R/W     0x234B     0x2B1A   RAM
 .common                          765   R/W     0x2B1B     0x2E17   RAM
-PAGE_FC_738                    13238     R   0xFC8000   0xFCB3B5   PAGE_FC
+PAGE_FC_738                    13229     R   0xFC8000   0xFCB3AC   PAGE_FC
 .vectSeg739_vect                   2     R     0x7F7A     0x7F7B   .vectSeg739
 .vectSeg740_vect                   2     R     0x7FA2     0x7FA3   .vectSeg740
 .vectSeg741_vect                   2     R     0x7FAA     0x7FAB   .vectSeg741
 .vectSeg742_vect                   2     R     0xFFFE     0xFFFF   .vectSeg742
 
 Summary of section sizes per section type:
-READ_ONLY (R):        7A2D (dec:    31277)
+READ_ONLY (R):        7A24 (dec:    31268)
 READ_WRITE (R/W):      E18 (dec:     3608)
 NO_INIT (N/I):         383 (dec:      899)
 
@@ -2103,94 +2103,94 @@ MODULE:                 -- LTC6811_PassBalance.c.o --
 MODULE:                 -- LTC6811_TempCollect.c.o --
 - PROCEDURES:
      LTC6811_TempCMDSend                     FCA52F      14      20       2   PAGE_FC_738 
-     LTC6811_TempCollect                     FCA543     174     372       7   PAGE_FC_738 
+     LTC6811_TempCollect                     FCA543     16A     362       7   PAGE_FC_738 
 - VARIABLES:
-     g_LTC6811_TempInfo                        2DC5      12      18      39   .common     
+     g_LTC6811_TempInfo                        2DC5      12      18      35   .common     
 MODULE:                 -- LTC6811_VoltCollect.c.o --
 - PROCEDURES:
-     LTC6811_VoltCMDSend                     FCA6B7       9       9       2   PAGE_FC_738 
-     LTC6811_VoltCollect                     FCA6C0     214     532      17   PAGE_FC_738 
+     LTC6811_VoltCMDSend                     FCA6AD       9       9       2   PAGE_FC_738 
+     LTC6811_VoltCollect                     FCA6B6     215     533      17   PAGE_FC_738 
 - VARIABLES:
-     g_LTC6811_VoltInfo                        2DD7      3C      60      45   .common     
+     g_LTC6811_VoltInfo                        2DD7      3C      60      44   .common     
 MODULE:                 -- ADC.c.o --
 - PROCEDURES:
-     ADC_init                                FCA8D4      1A      26       2   PAGE_FC_738 
-     ADC_Value                               FCA8EE       C      12       6   PAGE_FC_738 
+     ADC_init                                FCA8CB      1A      26       2   PAGE_FC_738 
+     ADC_Value                               FCA8E5       C      12       6   PAGE_FC_738 
 - VARIABLES:
 MODULE:                 -- CAN1.c.o --
 - PROCEDURES:
-     CAN1_Init                               FCA8FA      C8     200       2   PAGE_FC_738 
-     CAN1_SendMsg                            FCA9C2      D3     211       3   PAGE_FC_738 
-     CAN1_GetMsg                             FCAA95      E4     228       3   PAGE_FC_738 
-     CAN1_GetMsg_Process                     FCAB79      28      40       2   PAGE_FC_738 
+     CAN1_Init                               FCA8F1      C8     200       2   PAGE_FC_738 
+     CAN1_SendMsg                            FCA9B9      D3     211       3   PAGE_FC_738 
+     CAN1_GetMsg                             FCAA8C      E4     228       3   PAGE_FC_738 
+     CAN1_GetMsg_Process                     FCAB70      28      40       2   PAGE_FC_738 
      Interrupt_CAN1                            C696       C      12       0   NON_BANKED  
 - VARIABLES:
 MODULE:                 -- CAN2.c.o --
 - PROCEDURES:
-     CAN2_Init                               FCABA1      C8     200       2   PAGE_FC_738 
-     CAN2_SendMsg                            FCAC69      D2     210       3   PAGE_FC_738 
-     CAN2_GetMsg                             FCAD3B      F3     243       3   PAGE_FC_738 
-     CAN2_GetMsg_Process                     FCAE2E      93     147       2   PAGE_FC_738 
+     CAN2_Init                               FCAB98      C8     200       2   PAGE_FC_738 
+     CAN2_SendMsg                            FCAC60      D2     210       3   PAGE_FC_738 
+     CAN2_GetMsg                             FCAD32      F3     243       3   PAGE_FC_738 
+     CAN2_GetMsg_Process                     FCAE25      93     147       2   PAGE_FC_738 
      Interrupt_CAN2                            C6A2       C      12       0   NON_BANKED  
 - VARIABLES:
 MODULE:                 -- Flash.c.o --
 - PROCEDURES:
-     Init_Eeprom                             FCAEC1      1C      28       2   PAGE_FC_738 
-     ChecPartErr                             FCAEDD      23      35       2   PAGE_FC_738 
-     ErrorCheck                              FCAF00      13      19       4   PAGE_FC_738 
-     LaunchFlashCommand                      FCAF13      B9     185       7   PAGE_FC_738 
+     Init_Eeprom                             FCAEB8      1C      28       2   PAGE_FC_738 
+     ChecPartErr                             FCAED4      23      35       2   PAGE_FC_738 
+     ErrorCheck                              FCAEF7      13      19       4   PAGE_FC_738 
+     LaunchFlashCommand                      FCAF0A      B9     185       7   PAGE_FC_738 
 - VARIABLES:
      FlashErr                                  2E13       3       3      15   .common     
 MODULE:                 -- Init_Flash.c.o --
 - PROCEDURES:
-     Init_Flash                              FCAFCC      A1     161       2   PAGE_FC_738 
+     Init_Flash                              FCAFC3      A1     161       2   PAGE_FC_738 
 - VARIABLES:
 MODULE:                 -- GPIO.c.o --
 - PROCEDURES:
-     GPIO_Init                               FCB06D      2A      42       4   PAGE_FC_738 
-     GPIO_Get                                FCB097      52      82       2   PAGE_FC_738 
-     GPIO_Set                                FCB0E9      8D     141       8   PAGE_FC_738 
-     ABEK_Bit                                FCB176      23      35       4   PAGE_FC_738 
-     ADEK_AddrChg                            FCB199      39      57       4   PAGE_FC_738 
+     GPIO_Init                               FCB064      2A      42       4   PAGE_FC_738 
+     GPIO_Get                                FCB08E      52      82       2   PAGE_FC_738 
+     GPIO_Set                                FCB0E0      8D     141       8   PAGE_FC_738 
+     ABEK_Bit                                FCB16D      23      35       4   PAGE_FC_738 
+     ADEK_AddrChg                            FCB190      39      57       4   PAGE_FC_738 
 - VARIABLES:
 MODULE:                 -- Port_Control.c.o --
 - PROCEDURES:
-     Light_Init                              FCB1D2      14      20       4   PAGE_FC_738 
-     Light_Control                           FCB1E6      12      18       8   PAGE_FC_738 
-     Port_Init                               FCB1F8      14      20       6   PAGE_FC_738 
-     Port_Control                            FCB20C      12      18       6   PAGE_FC_738 
-     Port_StateGet                           FCB21E      10      16      10   PAGE_FC_738 
+     Light_Init                              FCB1C9      14      20       4   PAGE_FC_738 
+     Light_Control                           FCB1DD      12      18       8   PAGE_FC_738 
+     Port_Init                               FCB1EF      14      20       6   PAGE_FC_738 
+     Port_Control                            FCB203      12      18       6   PAGE_FC_738 
+     Port_StateGet                           FCB215      10      16      10   PAGE_FC_738 
 - VARIABLES:
 MODULE:                 -- IIC.c.o --
 - PROCEDURES:
-     IIC_Init                                FCB22E       C      12       2   PAGE_FC_738 
-     IIC_read                                FCB23A      54      84      10   PAGE_FC_738 
+     IIC_Init                                FCB225       C      12       2   PAGE_FC_738 
+     IIC_read                                FCB231      54      84      10   PAGE_FC_738 
 - VARIABLES:
 MODULE:                 -- PIT.c.o --
 - PROCEDURES:
-     PIT0_Init                               FCB28E      1E      30       2   PAGE_FC_738 
+     PIT0_Init                               FCB285      1E      30       2   PAGE_FC_738 
      Interrupt_PIT0                            C6AE      1E      30       0   NON_BANKED  
 - VARIABLES:
      PIT_TimePeriod                            2E16       2       2       5   .common     
 MODULE:                 -- PLL.c.o --
 - PROCEDURES:
-     PLL_Init                                FCB2AC      1E      30       2   PAGE_FC_738 
+     PLL_Init                                FCB2A3      1E      30       2   PAGE_FC_738 
 - VARIABLES:
 MODULE:                 -- SCI.c.o --
 - PROCEDURES:
-     SCI1_Init                               FCB2CA       D      13       2   PAGE_FC_738 
-     SCI1_Send_Byte                          FCB2D7       C      12       2   PAGE_FC_738 
-     SCI1_Send_NByte                         FCB2E3      20      32       2   PAGE_FC_738 
+     SCI1_Init                               FCB2C1       D      13       2   PAGE_FC_738 
+     SCI1_Send_Byte                          FCB2CE       C      12       2   PAGE_FC_738 
+     SCI1_Send_NByte                         FCB2DA      20      32       2   PAGE_FC_738 
 - VARIABLES:
 MODULE:                 -- SPI.c.o --
 - PROCEDURES:
-     SPI1_Init                               FCB303       C      12       2   PAGE_FC_738 
-     SPI1_Write                              FCB30F       9       9       8   PAGE_FC_738 
-     SPI1_read                               FCB318       A      10       4   PAGE_FC_738 
+     SPI1_Init                               FCB2FA       C      12       2   PAGE_FC_738 
+     SPI1_Write                              FCB306       9       9       8   PAGE_FC_738 
+     SPI1_read                               FCB30F       A      10       4   PAGE_FC_738 
 - VARIABLES:
 MODULE:                 -- Filter_Function.c.o --
 - PROCEDURES:
-     FilterFunction_Median                   FCB322      94     148       2   PAGE_FC_738 
+     FilterFunction_Median                   FCB319      94     148       2   PAGE_FC_738 
 - VARIABLES:
 
 *********************************************************************************************
@@ -2243,8 +2243,8 @@ MODULE STATISTIC
   LTC6811_Init.c.o                            18    267      0
   LTC6811_OpWire.c.o                           7    593      0
   LTC6811_PassBalance.c.o                     18    420      0
-  LTC6811_TempCollect.c.o                     18    392      0
-  LTC6811_VoltCollect.c.o                     60    541      0
+  LTC6811_TempCollect.c.o                     18    382      0
+  LTC6811_VoltCollect.c.o                     60    542      0
   ADC.c.o                                      0     38      0
   CAN1.c.o                                     0    691      0
   CAN2.c.o                                     0    812      0
@@ -4714,8 +4714,8 @@ OBJECT LIST SORTED BY ADDRESS
      CFG1                                      2D9A      12      18       9   .common     
      g_LTC6811_OpwireInfo                      2DAC       7       7       9   .common     
      Balance_CFGR                              2DB3      12      18       4   .common     
-     g_LTC6811_TempInfo                        2DC5      12      18      39   .common     
-     g_LTC6811_VoltInfo                        2DD7      3C      60      45   .common     
+     g_LTC6811_TempInfo                        2DC5      12      18      35   .common     
+     g_LTC6811_VoltInfo                        2DD7      3C      60      44   .common     
      FlashErr                                  2E13       3       3      15   .common     
      PIT_TimePeriod                            2E16       2       2       5   .common     
      _Startup                                  C000       F      15       0   .init       
@@ -4832,45 +4832,45 @@ OBJECT LIST SORTED BY ADDRESS
      LTC6811_BalanceCMDSend                  FCA38B      AE     174       6   PAGE_FC_738 
      LTC6811_BalanceControl                  FCA439      F6     246       7   PAGE_FC_738 
      LTC6811_TempCMDSend                     FCA52F      14      20       2   PAGE_FC_738 
-     LTC6811_TempCollect                     FCA543     174     372       7   PAGE_FC_738 
-     LTC6811_VoltCMDSend                     FCA6B7       9       9       2   PAGE_FC_738 
-     LTC6811_VoltCollect                     FCA6C0     214     532      17   PAGE_FC_738 
-     ADC_init                                FCA8D4      1A      26       2   PAGE_FC_738 
-     ADC_Value                               FCA8EE       C      12       6   PAGE_FC_738 
-     CAN1_Init                               FCA8FA      C8     200       2   PAGE_FC_738 
-     CAN1_SendMsg                            FCA9C2      D3     211       3   PAGE_FC_738 
-     CAN1_GetMsg                             FCAA95      E4     228       3   PAGE_FC_738 
-     CAN1_GetMsg_Process                     FCAB79      28      40       2   PAGE_FC_738 
-     CAN2_Init                               FCABA1      C8     200       2   PAGE_FC_738 
-     CAN2_SendMsg                            FCAC69      D2     210       3   PAGE_FC_738 
-     CAN2_GetMsg                             FCAD3B      F3     243       3   PAGE_FC_738 
-     CAN2_GetMsg_Process                     FCAE2E      93     147       2   PAGE_FC_738 
-     Init_Eeprom                             FCAEC1      1C      28       2   PAGE_FC_738 
-     ChecPartErr                             FCAEDD      23      35       2   PAGE_FC_738 
-     ErrorCheck                              FCAF00      13      19       4   PAGE_FC_738 
-     LaunchFlashCommand                      FCAF13      B9     185       7   PAGE_FC_738 
-     Init_Flash                              FCAFCC      A1     161       2   PAGE_FC_738 
-     GPIO_Init                               FCB06D      2A      42       4   PAGE_FC_738 
-     GPIO_Get                                FCB097      52      82       2   PAGE_FC_738 
-     GPIO_Set                                FCB0E9      8D     141       8   PAGE_FC_738 
-     ABEK_Bit                                FCB176      23      35       4   PAGE_FC_738 
-     ADEK_AddrChg                            FCB199      39      57       4   PAGE_FC_738 
-     Light_Init                              FCB1D2      14      20       4   PAGE_FC_738 
-     Light_Control                           FCB1E6      12      18       8   PAGE_FC_738 
-     Port_Init                               FCB1F8      14      20       6   PAGE_FC_738 
-     Port_Control                            FCB20C      12      18       6   PAGE_FC_738 
-     Port_StateGet                           FCB21E      10      16      10   PAGE_FC_738 
-     IIC_Init                                FCB22E       C      12       2   PAGE_FC_738 
-     IIC_read                                FCB23A      54      84      10   PAGE_FC_738 
-     PIT0_Init                               FCB28E      1E      30       2   PAGE_FC_738 
-     PLL_Init                                FCB2AC      1E      30       2   PAGE_FC_738 
-     SCI1_Init                               FCB2CA       D      13       2   PAGE_FC_738 
-     SCI1_Send_Byte                          FCB2D7       C      12       2   PAGE_FC_738 
-     SCI1_Send_NByte                         FCB2E3      20      32       2   PAGE_FC_738 
-     SPI1_Init                               FCB303       C      12       2   PAGE_FC_738 
-     SPI1_Write                              FCB30F       9       9       8   PAGE_FC_738 
-     SPI1_read                               FCB318       A      10       4   PAGE_FC_738 
-     FilterFunction_Median                   FCB322      94     148       2   PAGE_FC_738 
+     LTC6811_TempCollect                     FCA543     16A     362       7   PAGE_FC_738 
+     LTC6811_VoltCMDSend                     FCA6AD       9       9       2   PAGE_FC_738 
+     LTC6811_VoltCollect                     FCA6B6     215     533      17   PAGE_FC_738 
+     ADC_init                                FCA8CB      1A      26       2   PAGE_FC_738 
+     ADC_Value                               FCA8E5       C      12       6   PAGE_FC_738 
+     CAN1_Init                               FCA8F1      C8     200       2   PAGE_FC_738 
+     CAN1_SendMsg                            FCA9B9      D3     211       3   PAGE_FC_738 
+     CAN1_GetMsg                             FCAA8C      E4     228       3   PAGE_FC_738 
+     CAN1_GetMsg_Process                     FCAB70      28      40       2   PAGE_FC_738 
+     CAN2_Init                               FCAB98      C8     200       2   PAGE_FC_738 
+     CAN2_SendMsg                            FCAC60      D2     210       3   PAGE_FC_738 
+     CAN2_GetMsg                             FCAD32      F3     243       3   PAGE_FC_738 
+     CAN2_GetMsg_Process                     FCAE25      93     147       2   PAGE_FC_738 
+     Init_Eeprom                             FCAEB8      1C      28       2   PAGE_FC_738 
+     ChecPartErr                             FCAED4      23      35       2   PAGE_FC_738 
+     ErrorCheck                              FCAEF7      13      19       4   PAGE_FC_738 
+     LaunchFlashCommand                      FCAF0A      B9     185       7   PAGE_FC_738 
+     Init_Flash                              FCAFC3      A1     161       2   PAGE_FC_738 
+     GPIO_Init                               FCB064      2A      42       4   PAGE_FC_738 
+     GPIO_Get                                FCB08E      52      82       2   PAGE_FC_738 
+     GPIO_Set                                FCB0E0      8D     141       8   PAGE_FC_738 
+     ABEK_Bit                                FCB16D      23      35       4   PAGE_FC_738 
+     ADEK_AddrChg                            FCB190      39      57       4   PAGE_FC_738 
+     Light_Init                              FCB1C9      14      20       4   PAGE_FC_738 
+     Light_Control                           FCB1DD      12      18       8   PAGE_FC_738 
+     Port_Init                               FCB1EF      14      20       6   PAGE_FC_738 
+     Port_Control                            FCB203      12      18       6   PAGE_FC_738 
+     Port_StateGet                           FCB215      10      16      10   PAGE_FC_738 
+     IIC_Init                                FCB225       C      12       2   PAGE_FC_738 
+     IIC_read                                FCB231      54      84      10   PAGE_FC_738 
+     PIT0_Init                               FCB285      1E      30       2   PAGE_FC_738 
+     PLL_Init                                FCB2A3      1E      30       2   PAGE_FC_738 
+     SCI1_Init                               FCB2C1       D      13       2   PAGE_FC_738 
+     SCI1_Send_Byte                          FCB2CE       C      12       2   PAGE_FC_738 
+     SCI1_Send_NByte                         FCB2DA      20      32       2   PAGE_FC_738 
+     SPI1_Init                               FCB2FA       C      12       2   PAGE_FC_738 
+     SPI1_Write                              FCB306       9       9       8   PAGE_FC_738 
+     SPI1_read                               FCB30F       A      10       4   PAGE_FC_738 
+     FilterFunction_Median                   FCB319      94     148       2   PAGE_FC_738 
      main                                    FE8000       A      10       2   .text       
      Init                                    FE800A      29      41       2   .text       
      _heapcrash_                             FE8033       C      12       6   .text       
@@ -6514,5 +6514,5 @@ STATISTIC SECTION
 ExeFile:
 --------
 Number of blocks to be downloaded: 10
-Total size of all blocks to be downloaded: 31277
+Total size of all blocks to be downloaded: 31268
 

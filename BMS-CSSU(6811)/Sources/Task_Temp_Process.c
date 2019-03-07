@@ -49,10 +49,10 @@ uint16 cell_temp[NUM_IC][6];
 void Task_Pack_Temp_Process(void)        
 {
    uint8 j,r,i,k,valu8,m;
-   //uint16 cell_temp[NUM_IC][6];                 /* 读取辅助寄存器中的Pack温度值 */
+   //uint16 cell_temp[NUM_IC][6];            /* 读取辅助寄存器中的Pack温度值 */
    uint16 Cell_temp[NUM_IC][6];              // 温度寄存器
    uint8  PEC_error_t[NUM_IC];
-   uint8  maxtemp,mintemp;           //maxtemp=0x8000,mintemp=0X7FFF 32767 = (15个1);
+   uint8  maxtemp=0,mintemp=0xFF;           //maxtemp=0x8000,mintemp=0X7FFF 32767 = (15个1);
    int16  Single_Temperature[2*NUM_IC]; 
    uint8  TEr;
    uint8  TEr1;
@@ -182,8 +182,8 @@ void Task_Pack_Temp_Process(void)
     } 
    } 
    */      
-          maxtemp=mintemp=TempInfo.CellTemp[0];
-          TempInfo.CellTemp_MaxNode=TempInfo.CellTemp_MinNode=0;
+          //maxtemp=mintemp=TempInfo.CellTemp[0];
+          //TempInfo.CellTemp_MaxNode=TempInfo.CellTemp_MinNode=0;
          for(k = 0; k <NUM_Tem; k++) 
          {
           
@@ -239,7 +239,7 @@ void Task_Chip_Temp_Process(void)
    static int16 voltage_temp[NUM_IC];
    int16  Temp_IC[NUM_IC];                                       
    uint8  PEC_error_s[NUM_IC];
-   uint8  maxtemp, mintemp;
+   uint8  maxtemp=0, mintemp=0xFF;
     
     for(i = 0;i < NUM_IC;i++)
     {                                                                                                                                                                                                                                                                                          
@@ -277,7 +277,8 @@ void Task_Chip_Temp_Process(void)
        }
     }  
     
-    maxtemp = mintemp = TempInfo.CellTemp_ic[0];
+    //maxtemp = mintemp = TempInfo.CellTemp_ic[0];
+    
     for(k = 0; k< NUM_IC; k++)
     {
         if(maxtemp < TempInfo.CellTemp_ic[k])

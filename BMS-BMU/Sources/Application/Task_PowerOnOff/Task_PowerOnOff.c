@@ -154,14 +154,12 @@ void PowerOnOff_Control(uint8 FltLevel, uint8 FltSeconds, uint8 StaticCurrSet, u
          PositiveRelay_Control(Relay_OFF);
          CSSUPowerRelay_Control(Relay_OFF);
          ScreenPowerRelay_Control(Relay_OFF);
+         
       }
+      
       else
       {
-         if(relaystate == 0)
-         {
-            relaystate = 1;
-            PositiveRelay_Control(Relay_ON); //上电继电器只开启1次
-         }
+         PositiveRelay_Control(Relay_ON); //上电继电器只开启1次
       }
    }    
 }

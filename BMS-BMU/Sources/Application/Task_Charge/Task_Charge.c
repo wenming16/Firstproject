@@ -82,6 +82,13 @@ void Charge_Strategy(void)
     	BMS_to_ChargePile.m_data[1] = (uint8)(g_BMSCharge.Volt_Max_ChargePile*10);                              
     	BMS_to_ChargePile.m_data[2] = (g_BMSCharge.Curr_Max_ChargePile*10)>> 8;     //最高允许充充电电流高字节   已经过分辨率(0.1A/bit)处理   
     	BMS_to_ChargePile.m_data[3] = (uint8)(g_BMSCharge.Curr_Max_ChargePile*10); 
+    	if(g_BMSCharge.Control_ChargePile == 1)
+    	{
+    	  BMS_to_ChargePile.m_data[0] = 0;
+    	  BMS_to_ChargePile.m_data[1] = 0;
+    	  BMS_to_ChargePile.m_data[2] = 0;
+    	  BMS_to_ChargePile.m_data[3] = 0;
+    	}   	
     	BMS_to_ChargePile.m_data[4] = g_BMSCharge.Control_ChargePile;               //控制充电桩    0:开启    1:关闭
     	BMS_to_ChargePile.m_data[5] = (((0x00)&0x01) + \
     	                               ((BMSCharge_State.TempH_Cell<<1)&0x02) + \
